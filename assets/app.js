@@ -356,6 +356,27 @@ document.addEventListener('click', e => {
   addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
 })();
 
+/* add-to-cart buttons stay switchback amber while that item is in the cart */
+function syncAdded() {
+  const ids = new Set(cart.map(l => l.id));
+  $$('.add[data-h]').forEach(b => {
+    const v = byH[b.dataset.h].v[+b.dataset.i], on = ids.has(v.id);
+    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to cart';
+  });
+  $$('[data-add]').forEach(b => {
+    const on = ids.has(byH[b.dataset.add].v[0].id);
+    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to cart';
+  });
+  const ca = $('#countAdd'); if (ca) ca.classList.toggle('in-cart', ids.has(byH['84-chip-pure-white-rocklights'].v[0].id));
+}
+(function () {
+  const _render = renderCart;
+  renderCart = function () { _render(); syncAdded(); };
+  const _paint = paint;
+  paint = function (el, p) { _paint(el, p); syncAdded(); };
+  syncAdded();
+})();
+
 /* preview build: every outbound action is switched off */
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-preview-off], #checkout'); if (!a) return;
