@@ -1038,6 +1038,133 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -2px 0 rgba(0,0,0,.18),0 0 0 1px rgba(255,201,120,.9),0 0 22px rgba(255,164,43,.6)}
 .add.in-cart:hover,.btn-primary.in-cart:hover{filter:brightness(1.06);background:linear-gradient(180deg,#FFC15E 0%,#FFA42B 48%,#E8800F 100%)}
 
+/* ---------- v36: "Shop by light" — slanted LED-bar panels that switch on in sequence ---------- */
+.lanes{padding:28px 0 56px}
+.lane-head{margin-bottom:16px}
+.lane-grid{display:flex;gap:0;grid-template-columns:none}
+.lane{--sl:38px;flex:1 1 0;min-width:0;min-height:300px;margin-left:calc(var(--sl) * -1 + 8px);
+  border:0;border-radius:0;background:#05060A;padding:22px calc(var(--sl) + 16px) 26px calc(var(--sl) + 6px);
+  clip-path:polygon(var(--sl) 0,100% 0,calc(100% - var(--sl)) 100%,0 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;gap:6px;text-align:left;overflow:hidden;isolation:isolate;
+  transform:none!important;opacity:1!important;transition:filter .4s}
+.lane:first-child{margin-left:0;clip-path:polygon(0 0,100% 0,calc(100% - var(--sl)) 100%,0 100%);padding-left:22px}
+.lane:last-child{clip-path:polygon(var(--sl) 0,100% 0,100% 100%,0 100%);padding-right:22px}
+.lane::after{content:none!important}
+.lane::before{background:linear-gradient(180deg,rgba(5,6,10,.1) 10%,rgba(5,6,10,.55) 55%,rgba(5,6,10,.95) 100%)}
+.lane img{filter:brightness(.32) saturate(.5) contrast(1.05);transition:filter .7s var(--ease),transform .9s var(--ease)}
+.lane-t{font-size:clamp(20px,1.9vw,27px);line-height:1;color:#7d848f;transition:color .5s,text-shadow .5s}
+.lane-d{display:block;min-height:2.7em;font-size:13.5px;line-height:1.35;color:#9aa1ad;margin:0}
+.lane-go{font:400 11px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--c);opacity:.0;transform:translateX(-6px);transition:opacity .4s,transform .4s var(--ease)}
+/* the LED strip along the bottom edge */
+.lane-led{position:absolute;left:0;right:0;bottom:0;height:5px;z-index:2;
+  background:radial-gradient(circle,var(--c) 0 1.6px,transparent 2.2px) 0 50%/9px 5px repeat-x;opacity:.18;
+  transition:opacity .5s,filter .5s}
+/* switched on (in view, staggered left to right) */
+.lane.in img{filter:brightness(.92) saturate(1.05);transition-delay:calc(var(--n,0) * 180ms)}
+.lane.in .lane-t{color:#fff;text-shadow:0 0 18px color-mix(in srgb,var(--c) 45%,transparent);transition-delay:calc(var(--n,0) * 180ms)}
+.lane.in .lane-led{opacity:1;filter:drop-shadow(0 0 4px var(--c)) drop-shadow(0 -6px 14px var(--c));transition-delay:calc(var(--n,0) * 180ms)}
+.lane.in .lane-go{opacity:.9;transform:none;transition-delay:calc(var(--n,0) * 180ms + 150ms)}
+.lane:nth-child(1){--n:0}.lane:nth-child(2){--n:1}.lane:nth-child(3){--n:2}.lane:nth-child(4){--n:3}
+.lane:hover img{filter:brightness(1.08) saturate(1.1);transform:scale(1.05);transition-delay:0s}
+.lane:hover .lane-led{animation:ledChase .9s linear infinite}
+.lane:hover .lane-go{opacity:1}
+@keyframes ledChase{to{background-position:9px 50%}}
+.lane:focus-visible{outline:none;filter:drop-shadow(0 0 0 #0789E3) drop-shadow(0 0 10px rgba(7,137,227,.8))}
+/* phones: four wide slanted bands */
+@media (max-width:940px){
+  .lane-grid{flex-direction:column;gap:8px}
+  .lane,.lane:first-child,.lane:last-child{--sl:18px;margin-left:0;min-height:0;aspect-ratio:auto;height:118px;
+    clip-path:polygon(var(--sl) 0,100% 0,calc(100% - var(--sl)) 100%,0 100%);padding:14px 40px 16px 30px;justify-content:center}
+  .lane img{object-position:50% 55%}
+  .lane::before{background:linear-gradient(90deg,rgba(5,6,10,.92) 0%,rgba(5,6,10,.6) 50%,rgba(5,6,10,.15) 100%)}
+  .lane-t{font-size:20px}
+  .lane-d{display:block;min-height:0;font-size:12.5px;max-width:58%}
+  .lane-go{position:absolute;right:34px;bottom:16px}
+}
+@media (prefers-reduced-motion:reduce){ .lane img{filter:brightness(.92)} .lane-t{color:#fff} .lane-led{opacity:1} }
+@media (max-width:940px){ .lane,.lane:first-child,.lane:last-child{flex:none} }
+
+/* ---------- v37: desktop sizing pass (≥941px) — nothing reads small, no dead gaps ---------- */
+@media (min-width:941px){
+  :root{--wrap:1320px}
+  body{font-size:17px}
+  .brand img{height:46px}
+  .kick{font-size:13.5px}
+  .body,.lede{font-size:17.5px}
+  /* lanes + lineup */
+  .lanes{padding:36px 0 8px}
+  .lane{min-height:330px}
+  .lane-t{font-size:clamp(24px,2.2vw,32px)}
+  .lane-d{font-size:15px}
+  .lane-go{font-size:12.5px}
+  .shop{padding:64px 0 88px}
+  .sec-head{margin-bottom:28px}
+  .chip{font-size:13.5px;padding:13px 22px}
+  .grid{gap:22px}
+  .c-body{padding:18px 18px 20px}
+  .c-cat{font-size:12px}
+  .c-name{font-size:21px}
+  .c-sub{font-size:15.5px}
+  .specs li{font-size:12.5px;padding:6px 9px}
+  .rating{font-size:13.5px}
+  .var{font-size:13.5px;padding:9px 12px;min-height:38px}
+  .price .now{font-size:25px}
+  .price .was{font-size:15px}
+  .add{height:46px;padding:0 18px;font-size:13.5px}
+  .badge{font-size:12px;padding:7px 10px}
+  /* count */
+  .count{padding:96px 0}
+  .seg{gap:14px}
+  .seg button{width:70px;height:70px;font-size:23px}
+  .math dt{font-size:12px}
+  .math dd{font-size:36px}
+  .vf-tag{font-size:12.5px}
+  .count .btn{min-height:56px;font-size:14px}
+  /* features */
+  .feats{padding:88px 0}
+  .feat h3{font-size:30px}
+  .feat p{font-size:16.5px}
+  .price-line .now{font-size:28px}
+  /* reviews + gallery */
+  .reviews{padding:96px 0 80px}
+  .score div{font-size:15px}
+  .rv{width:380px}
+  .rv p{font-size:16.5px}
+  .rv-who b{font-size:14.5px}
+  .rv-who span{font-size:12px}
+  .gallery{padding:24px 0 96px}
+  .mosaic{grid-template-rows:320px 320px}
+  .mosaic figcaption{font-size:12.5px;padding:8px 11px}
+  .social a{font-size:15px}
+  .feature-me{font-size:16px}
+  /* booking */
+  .book{padding:100px 0}
+  .booker legend{font-size:28px}
+  .opt{font-size:14px;padding:11px 18px}
+  .opts.small .opt{font-size:13px}
+  .field>span{font-size:12.5px}
+  .field input,.field select,.field textarea{font-size:17px;padding:14px 16px}
+  .steps li{font-size:17px}
+  .steps b{font-size:18px}
+  .bq p{font-size:17px}
+  /* faq + footer */
+  .faq{padding:96px 0 110px}
+  .acc summary{font-size:21px;padding:24px 48px 24px 0}
+  .acc p{font-size:17px}
+  .foot-brand img{height:64px}
+  .foot-brand p{font-size:16px}
+  .foot h4{font-size:13px}
+  .foot-grid a:not(.btn){font-size:16px}
+  .foot-base{font-size:14px}
+  /* nav menu panel */
+  .sm-txt b{font-size:17px}
+  .sm-txt i{font-size:13px}
+  .sm-links a{font-size:13px}
+}
+/* v37b: lane titles never break mid-word */
+.lane-t{overflow-wrap:normal!important;word-break:keep-all;hyphens:none}
+@media (min-width:941px){ .lane-t{font-size:clamp(20px,1.75vw,26px)} }
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
