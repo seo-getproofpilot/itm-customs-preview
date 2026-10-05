@@ -1165,6 +1165,36 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .lane-t{overflow-wrap:normal!important;word-break:keep-all;hyphens:none}
 @media (min-width:941px){ .lane-t{font-size:clamp(20px,1.75vw,26px)} }
 
+/* ---------- v38: mobile sizing pass ---------- */
+@media (max-width:560px){
+  .specs li{font-size:12px;padding:6px 8px}
+  .c-cat{font-size:11px}
+  .rating{font-size:13px}
+  .lane-d{max-width:52%;font-size:12.5px;line-height:1.35}
+  .lane-go{bottom:14px}
+  .faq{padding:56px 0 48px}
+  .foot{padding-top:40px}
+  .foot .ridge.flip{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:28px 20px}
+  .foot-brand{grid-column:1/-1}
+  .foot-grid>div:not(.foot-brand){gap:10px}
+  .foot h4{margin:0 0 6px}
+  .foot-grid a:not(.btn){font-size:15px}
+  .foot-base{margin-top:28px}
+}
+/* v38b: mobile floor — nothing under 11px, every tap target ≥34px */
+@media (max-width:560px){
+  .chip{font-size:11.5px}
+  .badge{font-size:11px}
+  .math dt{font-size:10.5px;letter-spacing:.08em}
+  .vf-tag,.vf-tag b{font-size:11px}
+  .nav-in>.nav-book{font-size:10.5px}
+  .price-line .tag,.rv-who span,.mosaic figcaption,.book-pic figcaption{font-size:11px}
+  .opts.small .opt{min-height:36px}
+  .li-rm{padding:8px 0;font-size:13px}
+  .cart-n{font-size:11px}
+}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
