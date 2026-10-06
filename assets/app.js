@@ -327,20 +327,21 @@ form.addEventListener('submit', e => {
 
 /* ---------- reviews belt (verbatim from Judge.me, light typo fixes only) ---------- */
 const R = [
-  ['Bray','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-6-crop','Probably the brightest rock lights I’ve seen. I’ve been using them on my projects since August 2025. They’ve always worked and never quit. Recommend this brand!'],
-  ['cds performance','Installer · 72-Chip','p-72-chip-pure-white-rock-light-1','Man, I’m blown away by how bright they are. 16 pieces was perfect for the truck. I do lighting and sound systems for a living. Best rock light I’ve had someone bring me to install!'],
-  ['Erick Mendoza','10-Row Wheel Lights','p-10-row-pure-white-wheel-lights-0','I own the truck in the picture. These 10-row rim lights have been nothing but sick. No problems, bright, turning heads everywhere I go.'],
-  ['Ricky Frazier','ITM customer','itm-customs-chrome-decals','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.'],
-  ['Chino','Install · 5-Row Wheel Lights','p-5-row-pure-white-wheel-lights-1','I needed some lights installed. I came to ITM and they got it done fast and right. Great customer service and great work. 10/10.'],
+  ['Bray','72-Chip Rock Lights','build-bray-mower-rock-lights','Probably the brightest rock lights I’ve seen. I’ve been using them on my projects since August 2025. They’ve always worked and never quit. Recommend this brand!','bray-sierra-1500-and-mower'],
+  ['Paul Pena','Install · Rock + pillar lights','build-paul-pena-rock-pillar-lights','I’ve had rock lights and pillar lights installed on two separate occasions, and both times have been quality, clean and fast work. They definitely take pride in their work.','paul-pena-rock-and-pillar-lights'],
+  ['cds performance','Installer · 72-Chip','build-cds-silverado-rock-lights','Man, I’m blown away by how bright they are. 16 pieces was perfect for the truck. I do lighting and sound systems for a living. Best rock light I’ve had someone bring me to install!','cds-performance-16-rock-lights'],
+  ['Erick Mendoza','10-Row Wheel Lights','build-erick-ram-10-row-wheel-lights','I own the truck in the picture. These 10-row rim lights have been nothing but sick. No problems, bright, turning heads everywhere I go.','erick-10-row-wheel-lights'],
+  ['Chino','Install · 5-Row Wheel Lights','build-chino-wheel-lights-install','I needed some lights installed. I came to ITM and they got it done fast and right. Great customer service and great work. 10/10.','chino-5-row-wheel-lights'],
+  ['Ricky Frazier','ITM customer','build-ricky-wheel-well-rock-lights','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.','ricky-rock-lights'],
+  ['Ethan Robbins','72-Chip Rock Lights','build-ethan-rock-lights-two-trucks','Quality of the light is very good and super bright.','ethan-rock-lights'],
   ['Troy Gross','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-5-crop','Insanely bright for the price. I would highly recommend these lights.'],
   ['j.','Magnetic T-Bracket','p-magnetic-t-bracket-mount-3','It gives the rock lights a cleaner, more proper look. Get these!'],
   ['Connor','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-2-crop','It’s super bright and surprised me so much. Worth the wait. You’ve got to be patient for it to come in!'],
-  ['Jaime','Magnetic T-Bracket','p-magnetic-t-bracket-mount-4','The magnet is very strong. Highly recommend!'],
 ];
 const run = $('#beltRun');
-const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[1]} reviewed by ${r[0]}" loading="lazy"></div><div class="rv-b">
+const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[4] ? 'Photo from ' + r[0] + '’s review: ' + r[1] : r[1] + ' product photo'}" loading="lazy">${r[4] ? '' : '<span class="rv-tag">Product photo</span>'}</div><div class="rv-b">
   <span class="rv-stars" aria-label="5 stars">★★★★★</span><p>${r[3]}</p>
-  <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div></div></article>`;
+  <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div>${r[4] ? `<a class="rv-build" href="builds/${r[4]}/">See the build <i aria-hidden="true">&rarr;</i></a>` : ''}</div></article>`;
 run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class="rv"/g, '<article class="rv" aria-hidden="true"');
 
 /* ---------- nav + reveals ---------- */
@@ -605,6 +606,23 @@ function syncAdded() {
     const a = e.target.closest('.up-add'); if (a) { add(a.dataset.h, +a.dataset.i); T('add_to_cart', { item: a.dataset.h, from: 'cart_upsell' }); }
     if (e.target.closest('.up-book')) { bookFor(cart.map(l => l.h), 'cart'); openCart(false); }
   });
+})();
+
+/* ---------- deep links from build and area pages: ?book=1&work=…&kit=…&veh=…  /  ?add=<handle> ---------- */
+(function () {
+  const q = new URLSearchParams(location.search);
+  if (q.has('add') && byH[q.get('add')]) {
+    const p = byH[q.get('add')], i = p.def ?? 0;
+    if (p.v[i].ok) setTimeout(() => { add(p.h, i); openCart(true); }, 400);
+  }
+  if (q.has('book')) {
+    if (q.get('veh')) pick('vehicle', q.get('veh'));
+    q.getAll('work').forEach(w => pick('work', w));
+    const kits = q.getAll('kit').filter(h => byH[h]);
+    if (kits.length && window.ITMbookFor) window.ITMbookFor(kits, 'subpage');
+    if (location.hash === '#book') setTimeout(() => document.getElementById('book').scrollIntoView(), 700);
+    window.ITMtrack && ITMtrack('book_deeplink', { work: q.getAll('work').join(','), kit: kits.join(',') });
+  }
 })();
 
 /* preview build: every outbound action is switched off */

@@ -1423,6 +1423,14 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 }
 .rv-hint{display:none;align-items:center;gap:8px;margin:14px var(--gut) 0;font:400 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .rv-hint i{font-style:normal;color:var(--amber)}
+.rv-img{position:relative}
+.rv-tag{position:absolute;left:10px;bottom:10px;font:400 9.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#C9CED7;background:rgba(6,8,12,.8);padding:5px 7px;border-radius:3px}
+.rv-build{margin-top:12px;font:400 11.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber);text-decoration:none}
+.rv-build i{font-style:normal}
+/* v81: footer gains Service areas; links to build pages */
+.foot-grid-5{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
+@media (max-width:940px){ .foot-grid-5{grid-template-columns:1fr 1fr} }
+.feature-me .all-builds{display:inline-block;margin-right:10px;color:var(--amber);text-decoration:none;font:400 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
