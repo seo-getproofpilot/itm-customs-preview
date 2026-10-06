@@ -217,35 +217,64 @@ function pick(name, label) {
   if (o && !o.classList.contains('on')) o.click();
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
-/* drop-off picker: the next 14 days x three windows. When ITM connects a scheduler
+/* drop-off picker: a month calendar (tomorrow to 60 days out) + a window + an exact time.
+   HOURS is the shop's drop-off schedule; confirm with ITM. When ITM connects a scheduler
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
-const SLOT_OPEN = () => true;
+const HOURS = {
+  days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
+  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
+  Midday:    ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM'],
+  Afternoon: ['2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'],
+  ahead: 60,
+};
+const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
 const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form);
 const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-(function buildDays() {
-  const wrap = $('#slotDays'), t0 = new Date(); t0.setHours(12, 0, 0, 0);
-  for (let i = 1; i <= 14; i++) {
-    const d = new Date(t0); d.setDate(t0.getDate() + i);
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'sday'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
-    b.dataset.d = fmtDay(d);
-    b.innerHTML = `<span>${d.toLocaleDateString('en-US', { weekday: 'short' })}</span><b>${d.getDate()}</b><span>${d.toLocaleDateString('en-US', { month: 'short' })}</span>`;
-    b.setAttribute('aria-label', d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }));
-    if (!SLOT_OPEN(d)) b.disabled = true;
-    wrap.appendChild(b);
+const dkey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+const cal = (() => {
+  const t0 = new Date(); t0.setHours(12, 0, 0, 0);
+  const min = new Date(t0); min.setDate(t0.getDate() + 1);
+  const max = new Date(t0); max.setDate(t0.getDate() + HOURS.ahead);
+  let view = new Date(min.getFullYear(), min.getMonth(), 1), picked = null;
+  const grid = $('#slotDays');
+  function render() {
+    $('#calMonth').textContent = view.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const y = view.getFullYear(), m = view.getMonth(), days = new Date(y, m + 1, 0).getDate();
+    let h = '<span class="cal-pad"></span>'.repeat(new Date(y, m, 1).getDay());
+    for (let i = 1; i <= days; i++) {
+      const d = new Date(y, m, i, 12), ok = d >= min && d <= max && SLOT_OPEN(d), on = picked && dkey(picked) === dkey(d);
+      const why = d < min || d > max ? '' : ok ? '' : ', closed';
+      h += `<button type="button" class="sday${on ? ' on' : ''}" role="radio" aria-checked="${!!on}" data-k="${dkey(d)}"${ok ? '' : ' disabled'} aria-label="${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}${why}">${i}</button>`;
+    }
+    grid.innerHTML = h;
+    $('.cal-nav[data-m="-1"]').disabled = y === min.getFullYear() && m <= min.getMonth();
+    $('.cal-nav[data-m="1"]').disabled = y === max.getFullYear() && m >= max.getMonth();
   }
+  $$('.cal-nav').forEach(b => b.onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + +b.dataset.m, 1); render(); });
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('.sday'); if (!b || b.disabled) return;
+    const [y, m, d] = b.dataset.k.split('-').map(Number); picked = new Date(y, m, d, 12);
+    dayIn.value = fmtDay(picked); render(); slotLabel();
+  });
+  render();
+  return { render };
 })();
 function choose(group, btn) {
   $$('[role=radio]', group).forEach(x => { const on = x === btn; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
 }
-$('#slotDays').addEventListener('click', e => { const b = e.target.closest('.sday'); if (!b || b.disabled) return;
-  choose($('#slotDays'), b); dayIn.value = b.dataset.d; slotLabel(); });
 $('#slotTimes').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b) return;
-  choose($('#slotTimes'), b); timeIn.value = b.dataset.t; slotLabel(); });
+  choose($('#slotTimes'), b);
+  const hrs = $('#slotHours');
+  hrs.innerHTML = HOURS[b.dataset.t].map(t => `<button type="button" class="stime${timeIn.value === t ? ' on' : ''}" role="radio" aria-checked="${timeIn.value === t}" data-t="${t}">${t}</button>`).join('');
+  hrs.hidden = false;
+  if (!HOURS[b.dataset.t].includes(timeIn.value)) timeIn.value = '';
+  slotLabel(); });
+$('#slotHours').addEventListener('click', e => { const b = e.target.closest('.stime'); if (!b) return;
+  choose($('#slotHours'), b); timeIn.value = b.dataset.t; slotLabel(); });
 function slotLabel() {
   const d = dayIn.value, t = timeIn.value;
-  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t.toLowerCase()}` : d ? `Book ${d}` : 'Book my install';
-  $$('.bad', $('.slot-days').parentNode).forEach(x => x.classList.remove('bad'));
+  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t}` : d ? `Book ${d}` : 'Book my install';
+  $$('#slotDays, #slotTimes, #slotHours').forEach(g => $('.on', g) && g.classList.remove('bad'));
 }
 /* live parts estimate from the catalog prices above; labor is quoted by ITM */
 const FROM = { 'Rock lights': ['rock lights', 55], 'Wheel lights': ['wheel lights', 380], 'Switchback / amber': ['switchback kit', 200], 'RGBW color kit': ['RGBW kit', 200], 'Push-button switch': ['switch', 10] };
@@ -265,10 +294,10 @@ form.addEventListener('submit', e => {
   const miss = ['name', 'contact'].filter(k => !f[k].trim());
   const noSlot = !f.day || !f.time;
   if (!picked('work').length || noSlot || miss.length) {
-    if (noSlot) $$('#slotDays, #slotTimes').forEach(g => !$('.on', g) && g.classList.add('bad'));
+    if (noSlot) $$('#slotDays, #slotTimes, #slotHours').forEach(g => !$('.on', g) && g.classList.add('bad'));
     miss.forEach(k => $(`[name=${k}]`, form).classList.add('bad'));
     msg.className = 'fine err';
-    msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? 'Pick a drop-off day and time.' : 'Add your name and a way to reach you.';
+    msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? (!f.day ? 'Pick a drop-off day on the calendar.' : 'Pick a drop-off time.') : 'Add your name and a way to reach you.';
     return;
   }
   const body = [
@@ -461,7 +490,7 @@ function syncAdded() {
   addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
   document.addEventListener('click', e => {
     if (e.target.closest('.mbar-msg')) window.ITMtrack && ITMtrack('message_click', { location: 'mobile_bar' });
-    if (e.target.closest('.sday, .slot')) window.ITMtrack && ITMtrack('slot_select', { day: dayIn.value, time: timeIn.value });
+    if (e.target.closest('.sday, .stime')) window.ITMtrack && ITMtrack('slot_select', { day: dayIn.value, time: timeIn.value });
     setTimeout(tick, 50);
   });
 })();

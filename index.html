@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p155">
+<link rel="stylesheet" href="assets/site.css?v=p945">
 
 
 </head>
@@ -329,12 +329,22 @@
       </fieldset>
       <fieldset>
         <legend><span class="q">03</span>Pick a drop-off time</legend>
-        <div class="slot-days" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
-        <div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Drop-off time">
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>Drop off early</span></button>
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>Around lunch</span></button>
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>After work</span></button>
+        <div class="cal" id="cal">
+          <div class="cal-head">
+            <button type="button" class="cal-nav" data-m="-1" aria-label="Previous month">&lsaquo;</button>
+            <b id="calMonth" aria-live="polite"></b>
+            <button type="button" class="cal-nav" data-m="1" aria-label="Next month">&rsaquo;</button>
+          </div>
+          <div class="cal-dow" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div class="cal-grid" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
         </div>
+        <div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Part of the day">
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>9 &ndash; 11:30 AM</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>12 &ndash; 1:30 PM</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>2 &ndash; 4:30 PM</span></button>
+        </div>
+        <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
+        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Book up to two months out.</p>
         <input type="hidden" name="day"><input type="hidden" name="time">
       </fieldset>
       <fieldset>
@@ -432,6 +442,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p155"></script>
+<script src="assets/app.js?v=p945"></script>
 </body>
 </html>
