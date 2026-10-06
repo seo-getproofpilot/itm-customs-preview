@@ -1411,6 +1411,19 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .wired li span{font-size:13.5px;line-height:1.45;color:#A9B1BD}
 @media (max-width:560px){ .wired ul{grid-template-columns:1fr} .wired{padding:16px 14px 14px} }
 
+/* ---------- v80: reviews on phones = native swipe row (iOS Safari blanks the 5,000px masked marquee layer) ---------- */
+@media (max-width:760px){
+  .belt{-webkit-mask:none;mask:none;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding:0 var(--gut) 6px;scroll-padding-left:var(--gut)}
+  .belt::-webkit-scrollbar{display:none}
+  .belt-run{animation:none!important;transform:none!important;gap:12px;padding:4px 0 8px}
+  .belt-run .rv[aria-hidden="true"]{display:none}
+  .rv{width:min(82vw,320px);scroll-snap-align:start}
+  .rv-hint{display:flex}
+}
+.rv-hint{display:none;align-items:center;gap:8px;margin:14px var(--gut) 0;font:400 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.rv-hint i{font-style:normal;color:var(--amber)}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
