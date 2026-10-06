@@ -375,9 +375,20 @@ window.ITMreveal = () => $$('.rv-in').forEach(el => el.classList.add('in'));
     [1500,600,70,75,Wt,2300],                                                                                       // rear wheel well
     [1555,570,10,14,R,2380],[1554,605,10,16,R,2380]                                                                 // tail lights
   ];
-  const pct = (v, t) => (v / t * 100).toFixed(2) + '%';
-  stage.insertAdjacentHTML('beforeend', L.map(([x,y,rx,ry,c,d]) =>
-    `<i class="lt${rx > 40 ? ' big' : ''}" style="--x:${pct(x,W)};--y:${pct(y,H)};--w:${pct(rx*(rx > 40 ? 3.6 : 3.1),W)};--h:${pct(ry*(rx > 40 ? 3.6 : 3.1),H)};--c:${c};--d:${d}ms"></i>`).join(''));
+  const pct = (v, t) => (v / t * 100).toFixed(3) + '%';
+  /* each light is a small feathered window onto the lit photo itself, so the real lamp detail switches on
+     (crisp LED pods, sharp markers), plus a short bloom that fades once the whole frame is lit */
+  const lit = stage.querySelector('.hb-on');
+  const src = () => `url("${lit.currentSrc || lit.src}")`;
+  stage.insertAdjacentHTML('beforeend', L.map(([x,y,rx,ry,c,d]) => {
+    const big = rx > 40, k = big ? 2.3 : 2.6, ew = rx * k, eh = ry * k;
+    return `<i class="lt${big ? ' big' : ''}" style="--x:${pct(x,W)};--y:${pct(y,H)};--w:${pct(ew,W)};--h:${pct(eh,H)};--c:${c};--d:${d}ms;` +
+      `--bs:${(W / ew * 100).toFixed(2)}% ${(H / eh * 100).toFixed(2)}%;--bp:${((x - ew / 2) / (W - ew) * 100).toFixed(3)}% ${((y - eh / 2) / (H - eh) * 100).toFixed(3)}%"></i>`;
+  }).join(''));
+  stage.insertAdjacentHTML('beforeend', '<div class="hb-bloom" aria-hidden="true">' + L.filter(l => l[2] <= 40).map(([x,y,rx,ry,c,d]) =>
+    `<i style="--x:${pct(x,W)};--y:${pct(y,H)};--w:${pct(rx*2.2,W)};--h:${pct(ry*2.2,H)};--c:${c};--d:${d}ms"></i>`).join('') + '</div>');
+  const setSrc = () => stage.style.setProperty('--lit', src());
+  lit.complete ? setSrc() : lit.addEventListener('load', setSrc, { once: true });
 })();
 
 /* ---------- intro + hero light-up ---------- */

@@ -427,7 +427,7 @@ section[id]{scroll-margin-top:84px}
   .grid{grid-template-columns:repeat(3,1fr)}
   .links{gap:18px}
 }
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .links{display:none}
   .nav-act{margin-left:auto}
   .hero{display:block;min-height:0;padding:min(53svh,470px) 0 64px}
@@ -546,7 +546,7 @@ section[id]{scroll-margin-top:84px}
 .book .display-2{font-size:clamp(26px,2.6vw,38px)}
 
 /* ---------- v5: hero fits the fold and stays left of the truck at every desktop size ---------- */
-@media (min-width:941px){
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){
   .hero{padding:clamp(76px,10vh,104px) 0 clamp(40px,6vh,70px)}
   .hero-in{max-width:var(--wrap)}
   .hero-in>*{max-width:min(820px,44vw)}
@@ -579,7 +579,7 @@ section[id]{scroll-margin-top:84px}
 .card:hover .card-chrome{filter:brightness(1.15)}
 
 /* ---------- v7: hero copy sits ~2in (190px) further left, never closer than a clean edge margin ---------- */
-@media (min-width:941px){
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){
   .hero-in.wrap{max-width:none;margin:0;
     padding-left:max(clamp(24px,3.4vw,56px),calc((100vw - var(--wrap)) / 2 + var(--gut) - 190px))}
 }
@@ -589,7 +589,7 @@ section[id]{scroll-margin-top:84px}
 .hero .lede{color:#F1F3F7;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.85),0 2px 18px rgba(0,0,0,.75)}
 .hero .kick{color:#E2E7EE;text-shadow:0 1px 2px rgba(0,0,0,.85)}
 .proof span{color:#C4CAD4;text-shadow:0 1px 2px rgba(0,0,0,.8)}
-@media (min-width:941px){
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){
   .hero-scrim{background:
     radial-gradient(70% 85% at 12% 58%,rgba(4,5,8,.78) 0%,rgba(4,5,8,.5) 45%,transparent 75%),
     linear-gradient(90deg,rgba(5,6,10,.9) 0%,rgba(5,6,10,.62) 32%,rgba(5,6,10,.12) 58%,transparent 76%),
@@ -638,7 +638,7 @@ section[id]{scroll-margin-top:84px}
   40%{opacity:1;filter:none drop-shadow(0 0 22px rgba(74,168,238,1)) drop-shadow(0 0 60px rgba(7,137,227,.8))}
   100%{opacity:1;filter:drop-shadow(0 0 10px rgba(74,168,238,.55)) drop-shadow(0 0 28px rgba(7,137,227,.35)) drop-shadow(0 12px 30px rgba(0,0,0,.6))}}
 .hero.lit .hero-mark{transition-delay:3.6s}
-@media (max-width:940px){ .hb-stage{--px:.76} }
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){ .hb-stage{--px:.76} }
 @media (prefers-reduced-motion:reduce){
   .lt{display:none}.hb-on{opacity:1!important;-webkit-mask:none!important;mask:none!important}
   .hero-logo{opacity:1!important;filter:drop-shadow(0 0 10px rgba(74,168,238,.55))!important}
@@ -741,7 +741,7 @@ section[id]{scroll-margin-top:84px}
 }
 
 /* ---------- v12: mobile hero shows the whole F-250, nose to tailgate ---------- */
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .hero{padding-top:calc(min(108vw,640px) * .84)}
   .hero-bg,.hero-scrim{height:min(108vw,640px)}
   .hb-stage{--px:.905;--py:.62}
@@ -862,7 +862,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .opt.on::before{background:#FFB23F;box-shadow:0 0 8px #FFB23F,0 0 14px rgba(255,178,63,.6)}
 
 /* ---------- v20: mobile hero copy sits higher so "after dark." lights up in view ---------- */
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .hero{padding-top:calc(min(108vw,640px) * .66)}
 }
 @media (max-width:560px){
@@ -873,7 +873,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 
 /* ---------- v21: mobile hero fills exactly one screen, buttons flush at the bottom ---------- */
 .proof-m-wrap{display:none}
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
     padding:calc(min(108vw,640px) * .5) 0 calc(20px + env(safe-area-inset-bottom,0px))}
   .hero-bg,.hero-scrim{top:-34px}
@@ -926,7 +926,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .sm-txt i{font-style:normal;font-size:12px;color:#A1A8B4}
 .sm-n{position:absolute;top:8px;right:8px;min-width:24px;height:22px;padding:0 6px;display:grid;place-items:center;border-radius:4px;
   background:rgba(7,8,11,.85);border:1px solid rgba(7,137,227,.6);font:400 11px/1 var(--f-mono);color:#fff}
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .sm-grid{grid-template-columns:repeat(3,1fr);gap:10px}
 }
 @media (max-width:560px){
@@ -1071,7 +1071,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 @keyframes ledChase{to{background-position:9px 50%}}
 .lane:focus-visible{outline:none;filter:drop-shadow(0 0 0 #0789E3) drop-shadow(0 0 10px rgba(7,137,227,.8))}
 /* phones: four wide slanted bands */
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .lane-grid{flex-direction:column;gap:8px}
   .lane,.lane:first-child,.lane:last-child{--sl:18px;margin-left:0;min-height:0;aspect-ratio:auto;height:118px;
     clip-path:polygon(var(--sl) 0,100% 0,calc(100% - var(--sl)) 100%,0 100%);padding:14px 40px 16px 30px;justify-content:center}
@@ -1082,10 +1082,10 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
   .lane-go{position:absolute;right:34px;bottom:16px}
 }
 @media (prefers-reduced-motion:reduce){ .lane img{filter:brightness(.92)} .lane-t{color:#fff} .lane-led{opacity:1} }
-@media (max-width:940px){ .lane,.lane:first-child,.lane:last-child{flex:none} }
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){ .lane,.lane:first-child,.lane:last-child{flex:none} }
 
 /* ---------- v37: desktop sizing pass (≥941px) — nothing reads small, no dead gaps ---------- */
-@media (min-width:941px){
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){
   :root{--wrap:1320px}
   body{font-size:17px}
   .brand img{height:46px}
@@ -1163,7 +1163,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 }
 /* v37b: lane titles never break mid-word */
 .lane-t{overflow-wrap:normal!important;word-break:keep-all;hyphens:none}
-@media (min-width:941px){ .lane-t{font-size:clamp(20px,1.75vw,26px)} }
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){ .lane-t{font-size:clamp(20px,1.75vw,26px)} }
 
 /* ---------- v38: mobile sizing pass ---------- */
 @media (max-width:560px){
@@ -1196,7 +1196,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 }
 
 /* ---------- v39: both hero CTAs inside the first screen on real phones (browser bars included) ---------- */
-@media (max-width:940px){
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .hero{padding-top:calc(min(108vw,640px) * .42)}
 }
 @media (max-width:560px) and (max-height:800px){
@@ -1331,7 +1331,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .slot-hours.bad .stime{border-color:#C0361C}
 .stime:focus-visible,.cal-nav:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #0789E3}
 .slot-note{font-size:12.5px;color:var(--sand-mute);margin:10px 0 0}
-@media (min-width:941px){ .cal{max-width:520px} .cal-grid .sday{min-height:42px;font-size:17px} .slot-times{max-width:none} }
+@media (min-width:941px) and (orientation:landscape), (min-width:1101px){ .cal{max-width:520px} .cal-grid .sday{min-height:42px;font-size:17px} .slot-times{max-width:none} }
 @media (max-width:560px){ .cal{padding:12px 10px 10px} .slot-hours{grid-template-columns:repeat(3,minmax(0,1fr))} .stime{font-size:12px} }
 @media (max-width:560px){ .slot b{font-size:11px;letter-spacing:.03em;gap:5px} .slot.on b::before{width:6px;height:6px;flex:none} .slot{padding:11px 8px 10px} }
 
@@ -1436,7 +1436,7 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .rv-build i{font-style:normal}
 /* v81: footer gains Service areas; links to build pages */
 .foot-grid-5{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
-@media (max-width:940px){ .foot-grid-5{grid-template-columns:1fr 1fr} }
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){ .foot-grid-5{grid-template-columns:1fr 1fr} }
 .feature-me .all-builds{display:inline-block;margin-right:10px;color:var(--amber);text-decoration:none;font:400 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 
 /* ---------- v83: product detail view (all photos + ITM's description), vertical scroll only ---------- */
@@ -1496,7 +1496,7 @@ html.pv-open{overflow:hidden}
 .feature-me .all-builds{display:inline-flex;align-items:center;min-height:34px}
 
 /* ---------- v90: tablets (561–940px): 3-up compact product grid, calendar at a sensible size, touch-size labels ---------- */
-@media (min-width:561px) and (max-width:940px){
+@media (min-width:561px) and (max-width:940px), (min-width:561px) and (max-width:1100px) and (orientation:portrait){
   .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
   .c-sub,.specs{display:none}
   .c-body{padding:14px 12px 14px}
@@ -1512,6 +1512,23 @@ html.pv-open{overflow:hidden}
   .rv-build{display:inline-flex;align-items:center;min-height:34px;margin-top:4px}
   .var{min-height:34px}
 }
+@media (max-width:1100px){ .rv-tag{font-size:11px} .look-add{min-height:34px;padding:8px 14px} .look-book{display:inline-flex;align-items:center;min-height:34px} }
+
+/* ---------- v91: hero lights = the photo's own lamps switching on (no orbs). Each .lt is a feathered window onto the
+   lit frame; a short bloom flashes on with it and fades once the full frame is revealed ---------- */
+.lt{border-radius:0;background:var(--lit) var(--bp)/var(--bs) no-repeat;filter:brightness(1.05) saturate(1.05);
+  -webkit-mask:radial-gradient(closest-side,#000 58%,transparent 100%);mask:radial-gradient(closest-side,#000 58%,transparent 100%)}
+.lt.big{background:var(--lit) var(--bp)/var(--bs) no-repeat;filter:none;
+  -webkit-mask:radial-gradient(closest-side,#000 35%,transparent 100%);mask:radial-gradient(closest-side,#000 35%,transparent 100%)}
+/* bloom: a sibling glow layer drawn by the stage, keyed to each light's position */
+.lt::after{content:none}
+.hb-bloom{position:absolute;inset:0;pointer-events:none;opacity:0}
+.hb-bloom i{position:absolute;left:calc(var(--x) - var(--w));top:calc(var(--y) - var(--h));width:calc(var(--w) * 2);height:calc(var(--h) * 2);
+  border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 40%,transparent),transparent 70%);opacity:0;mix-blend-mode:screen}
+.hero.lit .hb-bloom{opacity:1;animation:bloomOut 1.2s 3.4s ease-out forwards}
+.hero.lit .hb-bloom i{animation:ltOn .42s var(--d) steps(1,end) forwards}
+@keyframes bloomOut{to{opacity:0}}
+@media (prefers-reduced-motion:reduce){ .hb-bloom{display:none} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
