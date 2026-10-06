@@ -1597,6 +1597,26 @@ html.pv-open{overflow:hidden}
 .stime.taken{opacity:.4;text-decoration:line-through;cursor:not-allowed;background:transparent}
 .booker .book-foot .fine.pending{color:#C9D6E6}
 
+/* ---------- v99: "You're Booked" confirmation card ---------- */
+.booker.done fieldset,.booker.done .book-foot{display:none}
+.bk-done{margin:14px clamp(14px,2.4vw,24px) 22px;display:grid;gap:16px}
+.bk-done-top{display:flex;align-items:center;gap:16px;padding:18px;border-radius:6px;background:linear-gradient(120deg,#0B0D12,#132238 70%,#0857B8 150%);color:#fff;border-left:3px solid #FFB23F}
+.bk-done-light{flex:none;width:18px;height:18px;border-radius:50%;background:#FFB23F;box-shadow:0 0 12px #FFB23F,0 0 30px rgba(255,178,63,.7);animation:bkPulse 1.6s ease-in-out 3}
+@keyframes bkPulse{50%{box-shadow:0 0 4px #FFB23F,0 0 10px rgba(255,178,63,.4)}}
+.bk-done-top small{display:block;font:400 11px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#FFB23F}
+.bk-done-top b{display:block;margin-top:6px;font:italic 800 clamp(20px,2.4vw,26px)/1.1 var(--f-disp);font-stretch:125%;text-transform:uppercase}
+.bk-done-top span{display:block;margin-top:4px;font-size:14px;color:#C9D6E6}
+.bk-done-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;margin:0;background:rgba(7,137,227,.16);border:1px solid rgba(7,137,227,.16);border-radius:4px;overflow:hidden}
+.bk-done-rows div{background:#F1F7FE;padding:12px 14px;display:grid;gap:4px;min-width:0}
+.bk-done-rows dt{font:400 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sand-mute)}
+.bk-done-rows dd{margin:0;font-size:15px;color:var(--sand-ink);overflow-wrap:anywhere}
+.bk-done-next{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:n}
+.bk-done-next li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:2px 12px;font-size:14px;color:var(--sand-mute);counter-increment:n}
+.bk-done-next li::before{content:counter(n);grid-row:span 2;width:30px;height:30px;display:grid;place-items:center;border-radius:6px;background:var(--blue-metal);color:#fff;font:italic 800 14px/1 var(--f-disp)}
+.bk-done-next b{color:var(--sand-ink);font-weight:600}
+.bk-done-act{display:flex;flex-wrap:wrap;gap:12px}
+@media (max-width:560px){ .bk-done{margin:12px 10px 18px} .bk-done-act .btn{flex:1 1 100%;justify-content:center} }
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

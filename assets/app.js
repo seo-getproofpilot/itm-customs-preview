@@ -256,8 +256,9 @@ function sampleDay(d) {               // demo data only: a day off now and then,
   if (!SLOT_OPEN(d)) return { open: false, reason: 'closed', times: [] };
   const n = d.getDate() + d.getMonth() * 31;
   if (n % 11 === 3) return { open: false, reason: 'off', times: [] };
-  const times = ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0);
-  return { open: true, reason: '', times };
+  let mine = []; try { mine = JSON.parse(sessionStorage.getItem('itm_demo_booked') || '[]'); } catch (e) {}
+  const times = ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0 && !mine.includes(isoOf(d) + ' ' + t));
+  return { open: times.length > 0, reason: times.length ? '' : 'full', times };
 }
 const calStatus = t => { const el = $('#calStatus'); if (el) el.textContent = t; };
 async function loadMonth(y, m, done) {
@@ -353,17 +354,44 @@ form.addEventListener('submit', e => {
     msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? (!f.day ? 'Pick a drop-off day on the calendar.' : 'Pick a drop-off time.') : 'Add your name and a way to reach you.';
     return;
   }
-  if (BOOK_API) { bookLive(f, msg); return; }
-  const body = [
-    `Vehicle: ${picked('vehicle')[0] || '-'}${f.ymm ? ' / ' + f.ymm : ''}`,
-    `Work: ${picked('work').join(', ')}`,
-    `Lights: ${picked('parts')[0] || '-'}`,
-    `Drop-off: ${f.day || 'Any day'} · ${f.time || 'Any time'}`,
-    `Name: ${f.name}`, `Contact: ${f.contact}`, f.notes ? `Notes: ${f.notes}` : ''
-  ].filter(Boolean).join('\n');
-  void body;
-  msg.className = 'fine ok'; msg.textContent = 'Preview only. On the live site this request lands on ITM\'s schedule.';
+  (BOOK_API ? bookLive : bookDemo)(f, msg);
 });
+/* demo: the same flow without a calendar connected (the slot is held for this browser session) */
+function bookDemo(f, msg) {
+  const btn = $('button[type=submit]', form), label = $('#bookBtnT');
+  btn.disabled = true; label.textContent = 'Booking…'; msg.className = 'fine pending'; msg.textContent = 'Saving your drop-off to the shop calendar…';
+  setTimeout(() => {
+    try { const k = 'itm_demo_booked', v = JSON.parse(sessionStorage.getItem(k) || '[]'); v.push(f.date + ' ' + f.time); sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+    AV_DONE.clear(); Object.keys(AV).forEach(k => delete AV[k]);
+    window.ITMtrack && ITMtrack('booking_submit', { day: f.date, time: f.time, live: false });
+    btn.disabled = false; msg.className = 'fine'; msg.textContent = '';
+    showBooked(f, `${f.day} at ${f.time}`);
+  }, 900);
+}
+/* the confirmation card that replaces the form */
+function showBooked(f, when) {
+  const d = new Date(f.date + 'T12:00:00'), [h, mi, ap] = f.time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
+  const H = (+h % 12) + (ap === 'PM' ? 12 : 0), pad = n => String(n).padStart(2, '0');
+  const st = `${f.date.replace(/-/g, '')}T${pad(H)}${mi}00`;
+  const end = +mi + 30 >= 60 ? `${f.date.replace(/-/g, '')}T${pad(H + 1)}0000` : `${f.date.replace(/-/g, '')}T${pad(H)}${pad(+mi + 30)}00`;
+  const gcal = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('ITM Customs install drop-off') +
+    `&dates=${st}/${end}&ctz=America/Phoenix&location=` + encodeURIComponent('ITM Customs, Mesa, AZ') + '&details=' + encodeURIComponent('Work: ' + picked('work').join(', '));
+  const veh = [picked('vehicle')[0], f.ymm].filter(Boolean).join(' · ');
+  const box = document.createElement('div'); box.className = 'bk-done'; box.setAttribute('role', 'status');
+  box.innerHTML = `<div class="bk-done-top"><span class="bk-done-light" aria-hidden="true"></span><div><small>You’re Booked</small>
+      <b>${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</b><span>Drop-off at ${f.time} · ITM Customs, Mesa</span></div></div>
+    <dl class="bk-done-rows"><div><dt>Work</dt><dd>${picked('work').join(', ')}</dd></div>${veh ? `<div><dt>Vehicle</dt><dd>${veh.replace(/</g, '&lt;')}</dd></div>` : ''}
+      <div><dt>Lights</dt><dd>${picked('parts')[0] || 'Not Sure Yet'}</dd></div><div><dt>Contact</dt><dd>${String(f.contact).replace(/</g, '&lt;')}</dd></div></dl>
+    <ol class="bk-done-next"><li><b>We Confirm</b>Your quote comes by ${/@/.test(f.contact) ? 'email' : 'text'} before any work starts.</li>
+      <li><b>Roll In</b>Bring it to the shop at your time.</li><li><b>Roll Out Lit</b>Every light tested with you at pickup.</li></ol>
+    <div class="bk-done-act"><a class="btn btn-primary" href="${gcal}" target="_blank" rel="noopener"><span>Add To My Calendar</span></a>
+      <button type="button" class="btn btn-chrome bk-again"><span>Book Another Install</span></button></div>`;
+  form.classList.add('done'); $('.bk-head', form).after(box);
+  box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  $('.bk-again', box).onclick = () => { box.remove(); form.classList.remove('done'); form.reset(); $$('.on', form).forEach(x => { x.classList.remove('on'); x.setAttribute('aria-checked', 'false'); x.setAttribute('aria-pressed', 'false'); });
+    dayIn.value = dateIn.value = timeIn.value = ''; $('#slotHours').hidden = true; $('#bookBtnT').textContent = 'Book My Install'; $('#est').innerHTML = ''; cal.render(); };
+}
+
 
 /* book straight onto the shop's Google Calendar */
 async function bookLive(f, msg) {
@@ -376,9 +404,8 @@ async function bookLive(f, msg) {
         parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '' }) });
     const j = await r.json();
     if (j.ok) {
-      msg.className = 'fine ok';
-      msg.textContent = `You’re booked for ${j.when || f.day + ' at ' + f.time}. ` + (/@/.test(f.contact) ? 'A confirmation is on its way to your email.' : 'We’ll text you to confirm.');
-      label.textContent = 'Booked ✓';
+      msg.className = 'fine'; msg.textContent = ''; label.textContent = 'Book My Install';
+      showBooked(f, j.when || f.day + ' at ' + f.time);
       window.ITMtrack && ITMtrack('booking_submit', { day: f.date, time: f.time, live: true });
       AV_DONE.clear(); Object.keys(AV).forEach(k => delete AV[k]); cal.render();
       return;
