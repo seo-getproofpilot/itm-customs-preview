@@ -5,7 +5,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const IMG = n => `assets/img/${n}.webp`;
 const STORE = 'https://itmcustoms.com';
-const money = n => '$' + (Number.isInteger(n) ? n : n.toFixed(2));
+const money = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 });
 
 /* ---------- catalog ---------- */
 const P = [
@@ -27,7 +27,7 @@ const P = [
     v:[{t:'4 pc',id:46981680857341,p:200,ok:false}] },
   { h:'10-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel lights', name:'10-Row Pure White Wheel Lights',
     sub:'17″ rings with 5 rows inside and 5 outside. Module and wireless remote included.', specs:['17″','10 row','Plug and play','Wireless remote'],
-    imgs:['p-10-row-pure-white-wheel-lights-1'], rating:[5.0,1],
+    imgs:['p-10-row-pure-white-wheel-lights-0','p-10-row-pure-white-wheel-lights-2'], rating:[5.0,1],
     v:[{t:'17″ kit',id:47012636819709,p:499,was:650,ok:true}] },
   { h:'5-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel lights', name:'5-Row Pure White Wheel Lights',
     sub:'17″ rings, plug and play with module and wireless remote.', specs:['17″','5 row','Plug and play'],
@@ -59,6 +59,9 @@ const P = [
     v:[{t:'Chrome',id:46223875047677,p:5,ok:false}] },
 ];
 const byH = Object.fromEntries(P.map(p => [p.h, p]));
+/* option labels in title case everywhere they show (cards, cart, toasts): "16 Lights", "17″ Kit"; units and small words stay lowercase */
+const TC = t => t.replace(/[A-Za-z]+/g, (w, i) => (i && /^(of|a|an|and|for|the|ft|in|w|mm|pc)$/i.test(w)) ? w.toLowerCase() : /^[a-z]/.test(w) ? w[0].toUpperCase() + w.slice(1) : w);
+P.forEach(p => p.v.forEach(v => { v.t = TC(v.t); }));
 /* install-first: how each kit goes on (from the product specs and FAQ) and which booking job it maps to */
 const INST = {
   '84-chip-pure-white-rocklights': ['DIY wiring', 'Rock lights'],
@@ -142,14 +145,14 @@ function renderCart() {
   const n = cart.reduce((a, l) => a + l.q, 0);
   const cn = $('#cartN'); cn.textContent = n; cn.classList.toggle('has', n > 0);
   const body = $('#drBody');
-  if (!cart.length) { body.innerHTML = '<p class="dr-empty">Nothing here yet. Start with a set of rock lights.</p>'; }
+  if (!cart.length) { body.innerHTML = '<p class="dr-empty">Nothing here yet. Start with a set of Rock Lights.</p>'; }
   else body.innerHTML = cart.map((l, k) => { const p = byH[l.h], v = p.v[l.i];
     return `<div class="li"><img src="${IMG(p.imgs[0])}" alt="">
       <div><div class="li-n">${p.name}</div><div class="li-v">${v.t}</div>
         <div class="qty"><button data-k="${k}" data-d="-1" aria-label="Less">−</button><span>${l.q}</span><button data-k="${k}" data-d="1" aria-label="More">+</button></div></div>
       <div><div class="li-p">${money(+(v.p * l.q).toFixed(2))}</div><button class="li-rm" data-k="${k}">Remove</button></div></div>`; }).join('');
   const tot = cart.reduce((a, l) => a + byH[l.h].v[l.i].p * l.q, 0);
-  $('#drTotal').textContent = '$' + tot.toFixed(2);
+  $('#drTotal').textContent = '$' + tot.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const co = $('#checkout');
   co.href = '#';
   co.toggleAttribute('aria-disabled', !cart.length); co.style.pointerEvents = cart.length ? '' : 'none'; co.style.opacity = cart.length ? '' : '.45';
@@ -167,7 +170,7 @@ document.addEventListener('click', e => {
 const drawer = $('#drawer'), scrim = $('#scrim');
 function openCart(on) {
   drawer.classList.toggle('on', on); drawer.setAttribute('aria-hidden', !on);
-  if (on) { scrim.hidden = false; void scrim.offsetWidth; scrim.classList.add('on'); $('#cartClose').focus(); }
+  if (on) { $('#toast').classList.remove('on'); scrim.hidden = false; void scrim.offsetWidth; scrim.classList.add('on'); $('#cartClose').focus(); }
   else { scrim.classList.remove('on'); setTimeout(() => scrim.hidden = true, 300); }
 }
 $('#cartOpen').onclick = () => openCart(true);
@@ -177,7 +180,7 @@ function bump() { const c = $('#cartN'); c.classList.remove('bump'); void c.offs
 let tt;
 function toast(msg) {
   if ($('#drawer')?.classList.contains('on')) return;
-  const t = $('#toast'); t.innerHTML = `<span>${msg}</span><button type="button">View cart</button>`;
+  const t = $('#toast'); t.innerHTML = `<span>${msg}</span><button type="button">View Cart</button>`;
   $('button', t).onclick = () => { t.classList.remove('on'); openCart(true); };
   t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3200);
 }
@@ -415,7 +418,7 @@ document.addEventListener('click', e => {
     ['all', 'All lights', 'p-84-chip-pure-white-rocklights-0', 'Every product'],
     ['rock', 'Rock lights', 'p-72-chip-pure-white-rock-light-0', 'White + RGBW sets'],
     ['switch', 'Switchbacks', 'switchback-rock-light-kit-amber-truck', 'White / amber kits'],
-    ['wheel', 'Wheel lights', 'p-5-row-pure-white-wheel-lights-1', '17″ 5 and 10 row'],
+    ['wheel', 'Wheel lights', 'ram-1500-white-wheel-lights-night', '17″ 5 and 10 row'],
     ['parts', 'Mounts & wiring', 'p-magnetic-mount-for-rocklights-0', 'Mounts, switches, leads'],
     ['merch', 'Merch', 'p-itm-truck-t-shirt-0', 'Tees + decals'],
   ];
@@ -598,7 +601,7 @@ function syncAdded() {
     const up = $('#drUp'), hs = cart.map(l => l.h), lights = hs.filter(h => INST[h] && !/mount|untitled/.test(h));
     if (!lights.length) { up.innerHTML = ''; return; }
     const ext = byH['3-pin-wire-extension'], hasExt = hs.includes('3-pin-wire-extension');
-    up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
+    up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft Wire Extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
       `<a href="#book" class="up-book">We install it in Mesa <i aria-hidden="true">&rarr;</i></a>`;
   }
   new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
@@ -623,6 +626,63 @@ function syncAdded() {
     if (location.hash === '#book') setTimeout(() => document.getElementById('book').scrollIntoView(), 700);
     window.ITMtrack && ITMtrack('book_deeplink', { work: q.getAll('work').join(','), kit: kits.join(',') });
   }
+})();
+
+/* ---------- product detail view: every store photo + ITM's own description (from itmcustoms.com) ---------- */
+const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-rocklights-0", "p-84-chip-pure-white-rocklights-1", "p-84-chip-pure-white-rocklights-2", "p-84-chip-pure-white-rocklights-3", "p-84-chip-pure-white-rocklights-4", "p-84-chip-pure-white-rocklights-5"], "note": "PLEASE ALLOW 2-3 weeks for processing", "lines": ["SET OF 4 lights (8 lights shown on truck)", "1 quantity=4 lights example: 20 lights would be 5 quantity (5 quantity x 4 lights each set =20 lights)", "Comes with 4 rubber mounting pads and the necessary bolts, washers and nuts.", "These rocklights are DIY, each light has about 11” of wire attached. You will need to wire them together yourself.", "20watt light please wire accordingly", "Extremely bright!"]}, "72-chip-pure-white-rock-light": {"imgs": ["p-72-chip-pure-white-rock-light-0", "p-72-chip-pure-white-rock-light-1", "p-72-chip-pure-white-rock-light-2", "p-72-chip-pure-white-rock-light-3", "p-72-chip-pure-white-rock-light-4", "p-72-chip-pure-white-rock-light-5", "p-72-chip-pure-white-rock-light-6"], "note": "PLEASE ALLOW 2-3 weeks for processing", "lines": ["SET OF 4 lights", "1 quantity=4 lights example: 20 lights would be 5 quantity (5 quantity x 4 lights each set =20 lights)", "Comes with 4 rubber mounting pads and the necessary bolts, washers and nuts.", "These rocklights are DIY, each light has about 11” of wire attached. You will need to wire them together yourself.", "14w, 1.2amp @12v", "Extremely bright!"]}, "16-count": {"imgs": ["p-16-count-0", "p-16-count-1", "p-16-count-2", "p-8-count-0", "p-4-count-0", "p-4-count-1"], "note": "PLEASE ALLOW 2-3 weeks for processing and shipping.", "lines": ["Included:", "Each light has 15ft of wire", "Complete plug and play connectors with Bluetooth module that has an inline fuse to connect to battery", "Mounting hardware (nuts and bolts)", "Remote control", "App Features:", "Solid white/Solid amber", "Wigwag/Strobe modes", "Speed and brightness control", "**Note** Wire extensions may be needed for your setup(Ex: Crewcab long bed, Rear bumper, etc)"]}, "4pc-rgbw-rock-light-kit": {"imgs": ["p-4pc-rgbw-rock-light-kit-0", "p-4pc-rgbw-rock-light-kit-1", "p-4pc-rgbw-rock-light-kit-2", "p-4pc-rgbw-rock-light-kit-3", "p-4pc-rgbw-rock-light-kit-4"], "note": "PLEASE ALLOW 2-3 weeks for processing and shipping.", "lines": ["Included:", "4pc 44chip RGBW rock light with connectors", "Bluetooth module harness plug and play (with necessary splitters)", "Remote"]}, "10-row-pure-white-wheel-lights": {"imgs": ["p-10-row-pure-white-wheel-lights-0", "p-10-row-pure-white-wheel-lights-1", "p-10-row-pure-white-wheel-lights-2"], "note": "PLEASE ALLOW 2-3 weeks for production and shipping", "lines": ["17” 10 row (5 inside, 5 outside) pure white wheel lights", "Comes as a plug and play kit with module and wireless controller."]}, "5-row-pure-white-wheel-lights": {"imgs": ["p-5-row-pure-white-wheel-lights-0", "p-5-row-pure-white-wheel-lights-1", "p-5-row-pure-white-wheel-lights-2", "p-5-row-pure-white-wheel-lights-3"], "note": "PLEASE ALLOW 2-3 weeks for production and shipping", "lines": ["17” 5 row pure white wheel lights", "Comes as a plug and play kit with module and wireless controller."]}, "magnetic-mount-for-rocklights": {"imgs": ["p-magnetic-mount-for-rocklights-0", "p-magnetic-mount-for-rocklights-1", "p-magnetic-mount-for-rocklights-2", "p-magnetic-mount-for-rocklights-3"], "note": "", "lines": ["Introducing our custom magnetic mounts built specifically to work with our 72 and 84 chip rock lights.", "Details:", "Material: 1/8” thick aluminum CNC cut and made in USA.", "Powerful Magnet: Allows you to skip the drilling into your frame and ensure they stay on over any terrain.", "Universal fit: Designed to be installed on any vehicle, from bumpers, frame rails, rocker panels these mounts will stick to anything metal!", "What’s included: ONE mount with magnet. NO LIGHT included."]}, "magnetic-t-bracket-mount": {"imgs": ["p-magnetic-t-bracket-mount-0", "p-magnetic-t-bracket-mount-1", "p-magnetic-t-bracket-mount-2", "p-magnetic-t-bracket-mount-3", "p-magnetic-t-bracket-mount-4"], "note": "", "lines": ["A great solution to mounting rock lights on vertical surfaces whether that be on the frame or rocker panels or anywhere else!", "110lb rated magnet, stays on even over bumpy terrain", "*price is for one bracket, no light", "* Wire can be inserted on either side, and the other side will be zip tied ensuring the light is secured. We recommend wrapping the rock light wire after passing through the bracket so it will not slip out."]}, "3-pin-wire-extension": {"imgs": ["p-3-pin-wire-extension-0"], "note": "", "lines": ["Plug and play solution for your rock lights that are located far away from your module and won’t reach", "available in 5ft and 10ft options"]}, "untitled-jun19_07-48": {"imgs": ["latching-push-button-switch-wiring", "latching-push-button-switch-dash", "p-untitled-jun19_07-48-2", "p-untitled-jun19_07-48-3"], "note": "", "lines": ["19mm latching push button", "Black stainless steel, White led ring.", "level up your install with this high quality switch button. This goes spliced into place of your regular button.", "WIRING:", "Black wire=Positive from battery", "Yellow=Ground", "Green+blue=Positive trigger for device and led ring"]}, "itm-truck-t-shirt": {"imgs": ["p-itm-truck-t-shirt-0", "p-itm-truck-t-shirt-1"], "note": "", "lines": ["Available in S-XXL", "High quality screen printed design on 100% cotton shirt.", "Front pocket: ITM CUSTOMS", "Back: Truck design"]}, "6-decal": {"imgs": ["p-6-decal-0"], "note": "", "lines": ["6” decals", "High quality weatherproof vinyl"]}};
+(function () {
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="pv" id="pv" aria-labelledby="pvName"><div class="pv-in">
+    <button type="button" class="pv-x" aria-label="Close">&times;</button>
+    <div class="pv-gal"><figure class="pv-main"><img id="pvImg" alt=""></figure><div class="pv-thumbs" id="pvThumbs"></div></div>
+    <div class="pv-info" id="pvInfo"></div></div></dialog>`);
+  const dlg = $('#pv');
+  let cur = null, sel = 0;
+  const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function show(n, k) {
+    const im = $('#pvImg'); im.src = IMG(n); im.alt = `${cur.name}, photo ${k + 1} of ${PX[cur.h].imgs.length}`;
+    $$('.pv-thumbs button').forEach((b, i) => b.classList.toggle('on', i === k));
+  }
+  function info() {
+    const p = cur, v = p.v[sel], x = PX[p.h], ins = INST[p.h];
+    const desc = x.lines.map(l => l.replace(/\*\*Note\*\*\s*/i, 'Note: ')).map(l => /:$/.test(l) ? `<h4>${esc(l.replace(/:$/, ''))}</h4>` : `<li>${esc(l)}</li>`).join('')
+      .replace(/(<li>.*?<\/li>)+/g, m => `<ul>${m}</ul>`);
+    $('#pvInfo').innerHTML = `<span class="c-cat">${p.catL}</span><h3 class="pv-name" id="pvName">${p.name}</h3>
+      ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0] % 1 ? 2 : 1)} <span>(${p.rating[1]} review${p.rating[1] > 1 ? 's' : ''})</span></div>` : ''}
+      <div class="pv-price"><span class="now">${money(v.p)}</span>${v.was ? `<span class="was">${money(v.was)}</span>` : ''}${v.ok ? '' : '<span class="pv-out">Out of stock</span>'}</div>
+      ${p.v.length > 1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((y, i) => `<button type="button" class="var${i === sel ? ' on' : ''}${y.ok ? '' : ' so'}" data-pi="${i}" role="radio" aria-checked="${i === sel}">${y.t}</button>`).join('')}</div>` : ''}
+      <div class="pv-act">${v.ok ? `<button type="button" class="btn btn-primary pv-add"><span>Add to cart</span></button>` : ''}
+        ${ins ? `<a href="#book" class="btn btn-chrome pv-inst"><span>We install it <i aria-hidden="true">&rarr;</i></span></a>` : ''}</div>
+      ${ins ? `<p class="pv-how"><b>${ins[0]}</b> · or book the install at our Mesa shop.</p>` : ''}
+      <div class="pv-desc">${desc}</div>
+      ${x.note ? `<p class="pv-note">${esc(x.note.charAt(0) + x.note.slice(1).toLowerCase()).replace(/\.*$/, '')}.</p>` : ''}`;
+  }
+  function open(h) {
+    cur = byH[h]; if (!cur || !PX[h]) return;
+    const card = $(`.card[data-h="${h}"]`); sel = card && card._sel != null ? card._sel : (cur.def ?? 0);
+    $('#pvThumbs').innerHTML = PX[h].imgs.map((n, k) => `<button type="button" data-k="${k}" aria-label="Photo ${k + 1}"><img src="${IMG(n)}" alt="" loading="lazy"></button>`).join('');
+    $('#pvThumbs').hidden = PX[h].imgs.length < 2;
+    show(PX[h].imgs[0], 0); info();
+    dlg.showModal(); document.documentElement.classList.add('pv-open'); dlg.scrollTop = 0; $('.pv-in', dlg).scrollTop = 0;
+    window.ITMtrack && ITMtrack('view_item', { item: h });
+  }
+  function close() { dlg.close(); }
+  dlg.addEventListener('close', () => document.documentElement.classList.remove('pv-open'));
+  dlg.addEventListener('click', e => {
+    if (e.target === dlg || e.target.closest('.pv-x')) return close();
+    const t = e.target.closest('.pv-thumbs button'); if (t) return show(PX[cur.h].imgs[+t.dataset.k], +t.dataset.k);
+    const vb = e.target.closest('[data-pi]'); if (vb) { sel = +vb.dataset.pi; return info(); }
+    if (e.target.closest('.pv-add')) { add(cur.h, sel); close(); return; }
+    if (e.target.closest('.pv-inst')) { window.ITMbookFor && ITMbookFor([cur.h], 'product_view'); close(); }
+  });
+  grid.addEventListener('click', e => {
+    if (e.target.closest('.c-fig, .c-name, .c-view')) { const c = e.target.closest('.card'); c && open(c.dataset.h); }
+  });
+  grid.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.c-name')) { e.preventDefault(); open(e.target.closest('.card').dataset.h); }
+  });
+  $$('.card', grid).forEach(c => { const n = $('.c-name', c); if (n) { n.tabIndex = 0; n.setAttribute('role', 'button'); n.setAttribute('aria-label', `${n.textContent}: photos and details`); }
+    const f = $('.c-fig', c); if (f && PX[c.dataset.h] && PX[c.dataset.h].imgs.length > 1) f.insertAdjacentHTML('beforeend', `<span class="c-view">${PX[c.dataset.h].imgs.length} photos</span>`); });
+  window.ITMview = open;
 })();
 
 /* preview build: every outbound action is switched off */

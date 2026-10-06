@@ -1411,18 +1411,25 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .wired li span{font-size:13.5px;line-height:1.45;color:#A9B1BD}
 @media (max-width:560px){ .wired ul{grid-template-columns:1fr} .wired{padding:16px 14px 14px} }
 
-/* ---------- v80: reviews on phones = native swipe row (iOS Safari blanks the 5,000px masked marquee layer) ---------- */
-@media (max-width:760px){
-  .belt{-webkit-mask:none;mask:none;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none;padding:0 var(--gut) 6px;scroll-padding-left:var(--gut)}
-  .belt::-webkit-scrollbar{display:none}
-  .belt-run{animation:none!important;transform:none!important;gap:12px;padding:4px 0 8px}
+/* ---------- v83: reviews on phones and tablets = a plain grid, read by scrolling down (no sideways swipe, no marquee) ---------- */
+@media (max-width:1100px){
+  .belt{-webkit-mask:none;mask:none;overflow:visible;padding:0 var(--gut)}
+  .belt-run{animation:none!important;transform:none!important;width:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:0}
   .belt-run .rv[aria-hidden="true"]{display:none}
-  .rv{width:min(82vw,320px);scroll-snap-align:start}
-  .rv-hint{display:flex}
+  .rv{width:auto;min-width:0}
 }
-.rv-hint{display:none;align-items:center;gap:8px;margin:14px var(--gut) 0;font:400 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
-.rv-hint i{font-style:normal;color:var(--amber)}
+@media (max-width:900px){ .belt-run{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:560px){
+  .belt-run{grid-template-columns:1fr;gap:10px}
+  .rv{display:grid;grid-template-columns:104px minmax(0,1fr);flex-direction:row}
+  .rv-img{aspect-ratio:auto;height:100%;min-height:150px}
+  .rv-tag{left:6px;bottom:6px;font-size:8px;padding:4px 5px}
+  .rv-b{padding:12px 14px 12px}
+  .rv p{font-size:14px;margin:6px 0 10px}
+  .rv-who{padding-top:10px}
+  .rv-build{margin-top:8px;font-size:10.5px}
+}
+.rv-hint{display:none}
 .rv-img{position:relative}
 .rv-tag{position:absolute;left:10px;bottom:10px;font:400 9.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#C9CED7;background:rgba(6,8,12,.8);padding:5px 7px;border-radius:3px}
 .rv-build{margin-top:12px;font:400 11.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber);text-decoration:none}
@@ -1431,6 +1438,49 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .foot-grid-5{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
 @media (max-width:940px){ .foot-grid-5{grid-template-columns:1fr 1fr} }
 .feature-me .all-builds{display:inline-block;margin-right:10px;color:var(--amber);text-decoration:none;font:400 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+
+/* ---------- v83: product detail view (all photos + ITM's description), vertical scroll only ---------- */
+.card .c-fig,.card .c-name{cursor:pointer}
+.card .c-name:hover{color:var(--blue-hi)}
+.c-view{position:absolute;right:10px;bottom:10px;z-index:2;font:400 9.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:rgba(6,8,12,.78);padding:5px 7px;border-radius:3px;pointer-events:none}
+html.pv-open{overflow:hidden}
+.pv{padding:0;border:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;color:var(--chrome)}
+.pv::backdrop{background:rgba(3,4,6,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pv-in{position:relative;width:min(1080px,calc(100% - 48px));max-height:calc(100% - 48px);margin:24px auto;overflow-y:auto;overscroll-behavior:contain;
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:32px;padding:28px;background:linear-gradient(180deg,#141821,#0d1016);border:1px solid var(--line-2);border-radius:var(--r);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);top:50%;transform:translateY(-50%)}
+.pv-x{position:absolute;right:12px;top:10px;z-index:3;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:26px;line-height:1}
+.pv-x:hover{background:rgba(255,255,255,.16)}
+.pv-gal{display:grid;gap:10px;align-content:start;min-width:0}
+.pv-main{margin:0;border-radius:10px;overflow:hidden;background:#000;aspect-ratio:1/1}
+.pv-main img{width:100%;height:100%;object-fit:contain}
+.pv-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.pv-thumbs button{padding:0;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#000;aspect-ratio:1/1;opacity:.7;transition:opacity .2s,border-color .2s}
+.pv-thumbs button.on{border-color:var(--blue);opacity:1}
+.pv-thumbs button:hover{opacity:1}
+.pv-thumbs img{width:100%;height:100%;object-fit:cover}
+.pv-info{min-width:0;padding-top:6px}
+.pv-name{margin:8px 0 0;font:italic 800 clamp(22px,2.4vw,30px)/1.08 var(--f-disp);font-stretch:125%;text-transform:uppercase;color:#fff;padding-right:40px}
+.pv-info .rating{margin-top:10px}
+.pv-price{display:flex;align-items:baseline;gap:10px;margin:16px 0 0}
+.pv-price .now{font:700 26px/1 var(--f-mono)}.pv-price .was{font:500 14px var(--f-mono);color:var(--dim);text-decoration:line-through}
+.pv-out{font:400 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line-2);padding:5px 7px;border-radius:3px}
+.pv-info .vars{margin-top:14px}
+.pv-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.pv-how{margin:12px 0 0;font-size:13.5px;color:var(--mute)}.pv-how b{color:#fff;font-weight:600}
+.pv-desc{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.6;color:#C9CED7}
+.pv-desc h4{margin:14px 0 6px;font:400 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.pv-desc h4:first-child{margin-top:0}
+.pv-desc ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.pv-note{margin:14px 0 0;font-size:13px;color:var(--amber)}
+@media (max-width:760px){
+  .pv-in{width:100%;max-height:none;height:100%;margin:0;border-radius:0;border:0;grid-template-columns:1fr;gap:18px;padding:16px 16px calc(28px + env(safe-area-inset-bottom,0px));top:0;transform:none}
+  .pv-x{position:fixed;right:12px;top:calc(10px + env(safe-area-inset-top,0px));background:rgba(6,8,12,.75)}
+  .pv-main{aspect-ratio:4/5}
+  .pv-thumbs{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .pv-act .btn{flex:1 1 auto;justify-content:center}
+}
+@media (max-width:560px){ .c-view{right:6px;bottom:6px;font-size:8.5px;padding:4px 5px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
