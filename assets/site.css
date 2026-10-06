@@ -1543,6 +1543,10 @@ html.pv-open{overflow:hidden}
 .look-item:hover{color:#fff}
 .look-sheet .look-item{font-size:15px;min-height:44px}
 .look[hidden],.look-sheet[hidden]{display:none!important}
+/* v95: price above a full-width button on every card, so sale prices never crowd the button */
+.c-foot{flex-direction:column;align-items:stretch;gap:10px}
+.c-foot .add{width:100%;justify-content:center;display:inline-flex;align-items:center}
+.rv-tag{font-size:11px}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
