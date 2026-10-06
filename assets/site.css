@@ -1219,6 +1219,92 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .hero-h1 .hero-h{display:block}
 @media (max-width:560px) and (max-height:800px){ .hero .kick{display:flex;font-size:10.5px;margin-bottom:2px} }
 
+/* ---------- v72: layout pass from the SEO/UX audit ---------- */
+/* 1. two-up product grid on phones: shop drops from ~8 screens to ~4 */
+@media (max-width:560px){
+  .grid{grid-template-columns:1fr 1fr;gap:12px 10px}
+  .card{--ch:12px}
+  .c-fig{aspect-ratio:1/1}
+  .c-body{padding:11px 10px 12px}
+  .card .c-body::before{left:10px;width:30px}
+  .c-cat{font-size:9.5px;letter-spacing:.1em}
+  .c-name{font-size:13.5px;line-height:1.12;margin-top:6px}
+  .c-sub,.specs{display:none}
+  .rating{font-size:11.5px;margin-top:6px}
+  .vars{gap:5px;margin-top:8px}
+  .var{min-height:30px;padding:6px 8px;font-size:10.5px}
+  .c-foot{flex-direction:column;align-items:stretch;gap:8px;padding-top:10px}
+  .price .now{font-size:17px}
+  .price .was{font-size:11px}
+  .c-foot .add{width:100%;height:38px;padding:0 6px;font-size:11px;justify-content:center;display:inline-flex;align-items:center}
+  .badges{top:8px;left:8px}
+  .badge{font-size:9px;padding:5px 6px}
+}
+
+/* 2. what it costs: real catalog prices, labor quoted first */
+.costs{margin:26px 0 0;border-top:2px solid var(--sand-ink);padding-top:14px}
+.costs-h{font:400 11.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sand-mute);margin:0 0 6px}
+.costs dl{margin:0;display:grid}
+.costs dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(11,13,18,.12)}
+.costs dt{font:600 15.5px/1.3 var(--f-body);color:var(--sand-ink)}
+.costs dd{margin:0;text-align:right;display:grid;gap:2px}
+.costs dd b{font:400 17px/1 var(--f-mono);letter-spacing:.02em;color:var(--sand-ink)}
+.costs dd span{font-size:12.5px;color:var(--sand-mute)}
+.costs .labor dd b{color:#0670C9}
+@media (max-width:560px){ .book-pic,.book-side .bq{display:none} .costs{margin-top:20px} .steps{margin-top:22px} }
+
+/* 3. drop-off picker */
+.slot-days{display:grid;grid-auto-flow:column;grid-auto-columns:64px;gap:8px;overflow-x:auto;padding:4px 4px 10px;margin:0 -4px 8px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.sday{scroll-snap-align:start;display:grid;justify-items:center;gap:3px;padding:10px 0 9px;border:1px solid rgba(11,13,18,.2);border-radius:3px;
+  background:linear-gradient(180deg,#fff,#eef1f4);color:var(--sand-ink);box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(11,13,18,.08);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);transition:background .18s,border-color .18s}
+.sday span{font:400 10.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sand-mute)}
+.sday b{font:italic 800 22px/1 var(--f-disp);font-stretch:125%}
+.sday:hover{border-color:#0789E3}
+.sday.on{background:linear-gradient(180deg,#1c2028 0%,#0B0D12 100%);border-color:#0B0D12;color:#fff}
+.sday.on span{color:#FFB23F}
+.sday:disabled{opacity:.35;cursor:not-allowed}
+.slot-times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.slot{display:grid;gap:4px;justify-items:start;text-align:left;padding:12px 12px 11px;border:1px solid rgba(11,13,18,.2);border-radius:3px;
+  background:linear-gradient(180deg,#fff,#eef1f4);color:var(--sand-ink);box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(11,13,18,.08);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+.slot b{font:400 13px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.slot span{font-size:12.5px;color:var(--sand-mute)}
+.slot:hover{border-color:#0789E3}
+.slot.on{background:linear-gradient(180deg,#1c2028 0%,#0B0D12 100%);border-color:#0B0D12;color:#fff}
+.slot.on span{color:#C9CED7}
+.slot.on b::before{content:"";width:8px;height:8px;border-radius:50%;background:#FFB23F;box-shadow:0 0 8px #FFB23F,0 0 14px rgba(255,178,63,.6)}
+.slot-days.bad .sday,.slot-times.bad .slot{border-color:#C0361C}
+.sday:focus-visible,.slot:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #0789E3}
+.est{flex-basis:100%;margin:0;font-size:13.5px;color:var(--sand-mute);line-height:1.5}
+.est:empty{display:none}
+.est b{color:var(--sand-ink);font-weight:600}
+#bookBtnT{font-style:normal}
+@media (max-width:560px){ .slot{padding:11px 9px 10px} .slot b{font-size:11.5px} .slot span{font-size:11.5px} }
+
+/* 4. thumb-reach action bar on phones, after the hero */
+.mbar{display:none}
+@media (max-width:760px){
+  .mbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(7,8,11,.9);
+    -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+    border-top:1px solid rgba(74,168,238,.35);box-shadow:0 -12px 30px rgba(0,0,0,.45);
+    transform:translateY(110%);visibility:hidden;transition:transform .35s var(--ease),visibility .35s}
+  .mbar.show{transform:none;visibility:visible}
+  .mbar-msg{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;color:var(--chrome);text-decoration:none;
+    font:400 11.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:3px;
+    clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+  .mbar-msg svg{width:18px;height:18px;fill:currentColor}
+  .mbar-book{min-height:46px;justify-content:center;width:100%;font-size:12.5px}
+  /* the bar carries Book install on phones, so the header stays clean */
+  .nav-in>.nav-book,.nav-act .nav-book{display:none}
+  .foot{padding-bottom:84px}
+}
+@media (prefers-reduced-motion:reduce){ .mbar{transition:none} }
+/* fieldsets default to min-width:min-content; the scrolling date strip must not widen the form */
+.booker,.booker fieldset,.book-grid>*{min-width:0}
+.book-foot{min-width:0}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

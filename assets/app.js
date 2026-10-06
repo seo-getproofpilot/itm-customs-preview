@@ -217,23 +217,65 @@ function pick(name, label) {
   if (o && !o.classList.contains('on')) o.click();
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
-const day = $('[name=day]', form); day.min = new Date().toISOString().slice(0, 10);
+/* drop-off picker: the next 14 days x three windows. When ITM connects a scheduler
+   (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
+const SLOT_OPEN = () => true;
+const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form);
+const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+(function buildDays() {
+  const wrap = $('#slotDays'), t0 = new Date(); t0.setHours(12, 0, 0, 0);
+  for (let i = 1; i <= 14; i++) {
+    const d = new Date(t0); d.setDate(t0.getDate() + i);
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sday'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
+    b.dataset.d = fmtDay(d);
+    b.innerHTML = `<span>${d.toLocaleDateString('en-US', { weekday: 'short' })}</span><b>${d.getDate()}</b><span>${d.toLocaleDateString('en-US', { month: 'short' })}</span>`;
+    b.setAttribute('aria-label', d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }));
+    if (!SLOT_OPEN(d)) b.disabled = true;
+    wrap.appendChild(b);
+  }
+})();
+function choose(group, btn) {
+  $$('[role=radio]', group).forEach(x => { const on = x === btn; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+}
+$('#slotDays').addEventListener('click', e => { const b = e.target.closest('.sday'); if (!b || b.disabled) return;
+  choose($('#slotDays'), b); dayIn.value = b.dataset.d; slotLabel(); });
+$('#slotTimes').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b) return;
+  choose($('#slotTimes'), b); timeIn.value = b.dataset.t; slotLabel(); });
+function slotLabel() {
+  const d = dayIn.value, t = timeIn.value;
+  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t.toLowerCase()}` : d ? `Book ${d}` : 'Book my install';
+  $$('.bad', $('.slot-days').parentNode).forEach(x => x.classList.remove('bad'));
+}
+/* live parts estimate from the catalog prices above; labor is quoted by ITM */
+const FROM = { 'Rock lights': ['rock lights', 55], 'Wheel lights': ['wheel lights', 380], 'Switchback / amber': ['switchback kit', 200], 'RGBW color kit': ['RGBW kit', 200], 'Push-button switch': ['switch', 10] };
+function estimate() {
+  const w = picked('work'), supply = picked('parts')[0] === 'Supply them for me';
+  const parts = w.filter(x => FROM[x]);
+  const el = $('#est');
+  if (!w.length) { el.innerHTML = ''; return; }
+  const bits = supply && parts.length ? 'Parts: ' + parts.map(x => `${FROM[x][0]} from <b>${money(FROM[x][1])}</b>`).join(' · ') + '. ' : '';
+  el.innerHTML = `${bits}Install labor is <b>quoted before we start</b>.`;
+}
+form.addEventListener('click', e => { if (e.target.closest('.opts')) setTimeout(estimate); });
 form.addEventListener('submit', e => {
   e.preventDefault();
   const f = Object.fromEntries(new FormData(form)); const msg = $('#bookMsg');
   $$('.bad', form).forEach(x => x.classList.remove('bad'));
   const miss = ['name', 'contact'].filter(k => !f[k].trim());
-  if (!picked('work').length || miss.length) {
+  const noSlot = !f.day || !f.time;
+  if (!picked('work').length || noSlot || miss.length) {
+    if (noSlot) $$('#slotDays, #slotTimes').forEach(g => !$('.on', g) && g.classList.add('bad'));
     miss.forEach(k => $(`[name=${k}]`, form).classList.add('bad'));
     msg.className = 'fine err';
-    msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : 'Add your name and a way to reach you.';
+    msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? 'Pick a drop-off day and time.' : 'Add your name and a way to reach you.';
     return;
   }
   const body = [
     `Vehicle: ${picked('vehicle')[0] || '-'}${f.ymm ? ' / ' + f.ymm : ''}`,
     `Work: ${picked('work').join(', ')}`,
     `Lights: ${picked('parts')[0] || '-'}`,
-    `Preferred: ${f.day || 'Any day'} · ${f.time}`,
+    `Drop-off: ${f.day || 'Any day'} · ${f.time || 'Any time'}`,
     `Name: ${f.name}`, `Contact: ${f.contact}`, f.notes ? `Notes: ${f.notes}` : ''
   ].filter(Boolean).join('\n');
   void body;
@@ -383,7 +425,7 @@ function syncAdded() {
   const track = (event, params = {}) => window.dataLayer.push({ event, ...params });
   window.ITMtrack = track;
   document.addEventListener('click', e => {
-    const a = e.target.closest('a[href="#book"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
+    const a = e.target.closest('a[href="#book"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('.mbar') ? 'mobile_bar' : a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
     const add = e.target.closest('.add[data-h], [data-add], #countAdd'); if (add) track('add_to_cart', { item: add.dataset.h || add.dataset.add || '84-chip-pure-white-rocklights' });
     if (e.target.closest('#checkout')) track('begin_checkout');
     if (e.target.closest('#shopToggle')) track('menu_open');
@@ -391,7 +433,10 @@ function syncAdded() {
     if (e.target.closest('#seg button')) track('light_count_select', { count: e.target.closest('#seg button').dataset.n });
     if (e.target.closest('.acc summary')) track('faq_open', { q: e.target.closest('summary').textContent.trim() });
   });
-  document.getElementById('booker')?.addEventListener('submit', () => track('booking_submit'));
+  document.getElementById('booker')?.addEventListener('submit', () => setTimeout(() => {
+    const m = document.getElementById('bookMsg');
+    m && m.classList.contains('ok') ? track('booking_submit', { day: document.querySelector('#booker [name=day]').value, time: document.querySelector('#booker [name=time]').value }) : track('booking_error', { reason: m ? m.textContent : '' });
+  }));
   // scroll depth + time on page
   const marks = new Set();
   addEventListener('scroll', () => {
@@ -399,6 +444,26 @@ function syncAdded() {
     [25, 50, 75, 100].forEach(m => { if (d >= m && !marks.has(m)) { marks.add(m); track('scroll_depth', { percent: m }); } });
   }, { passive: true });
   [30, 60, 120, 300].forEach(sec => setTimeout(() => !document.hidden && track('engaged_time', { seconds: sec }), sec * 1000));
+})();
+
+/* ---------- mobile action bar: after the hero, hidden while the booking form or footer is on screen ---------- */
+(function () {
+  const bar = document.getElementById('mbar'), hero = document.querySelector('.hero'); if (!bar || !hero) return;
+  const hideAt = [document.getElementById('book'), document.querySelector('.foot')].filter(Boolean);
+  const vis = new Set();
+  const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); tick(); }, { threshold: 0.12 });
+  hideAt.forEach(x => io.observe(x));
+  function tick() {
+    const past = hero.getBoundingClientRect().bottom < innerHeight * 0.35;
+    const open = $('#drawer')?.classList.contains('on') || $('#shopToggle')?.getAttribute('aria-expanded') === 'true';
+    bar.classList.toggle('show', past && !vis.size && !open);
+  }
+  addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
+  document.addEventListener('click', e => {
+    if (e.target.closest('.mbar-msg')) window.ITMtrack && ITMtrack('message_click', { location: 'mobile_bar' });
+    if (e.target.closest('.sday, .slot')) window.ITMtrack && ITMtrack('slot_select', { day: dayIn.value, time: timeIn.value });
+    setTimeout(tick, 50);
+  });
 })();
 
 /* preview build: every outbound action is switched off */

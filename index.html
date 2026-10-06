@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p48">
+<link rel="stylesheet" href="assets/site.css?v=p155">
 
 
 </head>
@@ -274,11 +274,20 @@
     <div class="book-side">
       <p class="kick dark"><span class="stripe" aria-hidden="true"></span>Installs in Mesa</p>
       <h2 class="display-2">Tell us about your truck. We'll light it up.</h2>
-      <p class="body">Pick the work you want done and send it over. We'll reply to confirm a time. You can bring lights you bought from us or have us supply them.</p>
+      <p class="body">Pick the work and a drop-off time. We confirm by text or email, and you can bring lights you bought from us or have us supply them.</p>
+      <div class="costs" id="costs">
+        <p class="costs-h">What it costs</p>
+        <dl>
+          <div><dt>Rock light sets</dt><dd><b>from $55</b><span>4 lights, 84-chip</span></dd></div>
+          <div><dt>Wheel light kits</dt><dd><b>from $380</b><span>17&Prime; rings, plug and play</span></dd></div>
+          <div><dt>Switchback kits</dt><dd><b>$200&ndash;$500</b><span>4 to 16 lights</span></dd></div>
+          <div class="labor"><dt>Install labor</dt><dd><b>Quoted first</b><span>Price agreed before we start</span></dd></div>
+        </dl>
+      </div>
       <figure class="book-pic"><img src="assets/img/p-magnetic-mount-for-rocklights-2.webp" alt="ITM rock light on a magnetic mount under a truck frame" loading="lazy"><figcaption>Magnetic mount, frame rail</figcaption></figure>
       <ol class="steps">
-        <li><span>1</span><div><b>Send the request</b>Your vehicle, the work, and a day that suits you.</div></li>
-        <li><span>2</span><div><b>We confirm</b>We reply to lock in a time.</div></li>
+        <li><span>1</span><div><b>Pick your time</b>Your vehicle, the work, and a drop-off slot.</div></li>
+        <li><span>2</span><div><b>We confirm</b>A text or email locks in the slot and the quote.</div></li>
         <li><span>3</span><div><b>Roll in, roll out lit</b>Bring it in on the day and drive it home glowing.</div></li>
       </ol>
       <blockquote class="bq">
@@ -319,12 +328,17 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend><span class="q">03</span>When &amp; how to reach you</legend>
-        <div class="row2">
-          <label class="field"><span>Preferred day</span><input type="date" name="day"></label>
-          <label class="field"><span>Time of day</span>
-            <select name="time"><option>Morning</option><option>Afternoon</option><option>Flexible</option></select></label>
+        <legend><span class="q">03</span>Pick a drop-off time</legend>
+        <div class="slot-days" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
+        <div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Drop-off time">
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>Drop off early</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>Around lunch</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>After work</span></button>
         </div>
+        <input type="hidden" name="day"><input type="hidden" name="time">
+      </fieldset>
+      <fieldset>
+        <legend><span class="q">04</span>How do we reach you?</legend>
         <div class="row2">
           <label class="field"><span>Name *</span><input name="name" required autocomplete="name"></label>
           <label class="field"><span>Phone or email *</span><input name="contact" required autocomplete="email"></label>
@@ -332,7 +346,8 @@
         <label class="field"><span>Anything else?</span><textarea name="notes" rows="3" placeholder="Light count, colors, a show date, photos to follow by text..."></textarea></label>
       </fieldset>
       <div class="book-foot">
-        <button class="btn btn-blue" type="submit"><span>Request my install <i aria-hidden="true">&rarr;</i></span></button>
+        <p class="est" id="est" aria-live="polite"></p>
+        <button class="btn btn-blue" type="submit"><span><em id="bookBtnT">Book my install</em> <i aria-hidden="true">&rarr;</i></span></button>
         <p class="fine" id="bookMsg">Preview only: in the live site this goes straight to ITM&rsquo;s schedule.</p>
       </div>
     </form>
@@ -349,6 +364,7 @@
     </div>
     <div class="acc">
       <details open><summary>How many lights come in one order?</summary><p>Our 72-chip and 84-chip pure white rock lights sell in sets of four, so a quantity of 1 is 4 lights. For 20 lights, order a quantity of 5.</p></details>
+      <details><summary>How much does a rock light install cost?</summary><p>Parts start at $55 for a set of four 84-chip rock lights, $380 for a 17&Prime; wheel light kit and $200 to $500 for a switchback kit. Install labor depends on your vehicle and how many lights you want, so we quote it before any work starts. <a href="#book">Pick a drop-off time</a> and we&rsquo;ll send the quote with the confirmation.</p></details>
       <details><summary>Do I have to wire them myself?</summary><p>It depends on the kit. The pure white rock light sets are DIY: each light has about 11&Prime; of wire, and you wire them together. The switchback kits, RGBW kit and wheel lights are plug and play, with a module and connectors included.</p></details>
       <details><summary>How long until my lights ship?</summary><p>Lights are built to order. Allow 2&ndash;3 weeks for processing and shipping.</p></details>
       <details><summary>What can the switchback kit do?</summary><p>Each light has 15&nbsp;ft of wire and runs off a Bluetooth module with an inline fuse to the battery. From the app you get solid white, solid amber, wigwag and strobe modes, with speed and brightness control. A crew cab long bed or rear bumper may need a <a href="#shop" data-jump="parts">wire extension</a>.</p></details>
@@ -359,6 +375,12 @@
 </section>
 
 </main>
+
+<!-- ============ MOBILE ACTION BAR ============ -->
+<div class="mbar" id="mbar" aria-label="Quick actions">
+  <a class="mbar-msg" href="#" data-preview-off="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.9 3 3 6.7 3 11.4c0 2.5 1.1 4.7 3 6.2V21l3.1-1.7c.9.2 1.9.4 2.9.4 5.1 0 9-3.7 9-8.3S17.1 3 12 3Zm1 11-2.3-2.4L6.3 14l4.8-5.1 2.3 2.4L17.7 9 13 14Z"/></svg><span>Message us</span></a>
+  <a class="btn btn-primary mbar-book" href="#book"><span>Book an install <i aria-hidden="true">&rarr;</i></span></a>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
@@ -410,6 +432,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p48"></script>
+<script src="assets/app.js?v=p155"></script>
 </body>
 </html>
