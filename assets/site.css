@@ -1400,6 +1400,17 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 .look-sheet .look-row{font-size:14px}
 .look-x{position:absolute;right:8px;top:6px;width:36px;height:36px;border:0;background:none;color:var(--mute);font-size:24px;line-height:1}
 
+/* ---------- v79: wired-right standard + bring-your-own lights ---------- */
+.wired{margin:24px 0 0;padding:18px 18px 16px;background:linear-gradient(180deg,#0f1218,#0B0D12);color:#E8ECF2;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.wired-h{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:italic 800 17px/1.1 var(--f-disp);font-stretch:125%;text-transform:uppercase;color:#fff}
+.wired-h svg{width:18px;height:18px;fill:#FFB23F;filter:drop-shadow(0 0 6px rgba(255,178,63,.7))}
+.wired ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.wired li{display:grid;gap:3px;padding-left:12px;border-left:2px solid #0789E3}
+.wired li b{font:400 12px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.wired li span{font-size:13.5px;line-height:1.45;color:#A9B1BD}
+@media (max-width:560px){ .wired ul{grid-template-columns:1fr} .wired{padding:16px 14px 14px} }
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
