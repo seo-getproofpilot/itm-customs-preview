@@ -1548,6 +1548,37 @@ html.pv-open{overflow:hidden}
 .c-foot .add{width:100%;justify-content:center;display:inline-flex;align-items:center}
 .rv-tag{font-size:11px}
 
+/* ---------- v96: booking form with colour: dark ITM header, each step its own tinted panel + icon ---------- */
+.booker{padding:0;overflow:hidden;border:1px solid rgba(7,137,227,.22)}
+.bk-head{display:flex;align-items:center;gap:14px;padding:18px clamp(18px,3vw,30px);margin:0 0 6px;
+  background:linear-gradient(120deg,#0B0D12 0%,#0d1a2c 55%,#0857B8 140%);color:#fff;border-bottom:2px solid #0789E3}
+.bk-head b{display:block;font:italic 800 19px/1.1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.01em}
+.bk-head small{display:block;margin-top:4px;font-size:13px;color:#A9B8CC}
+.bk-dot{flex:none;width:12px;height:12px;border-radius:50%;background:#FFB23F;box-shadow:0 0 10px #FFB23F,0 0 22px rgba(255,178,63,.6)}
+.booker fieldset{margin:14px clamp(14px,2.4vw,24px) 0;padding:16px 16px 6px;border:1px solid rgba(7,137,227,.16);border-left:3px solid #0789E3;
+  background:linear-gradient(180deg,#F1F7FE 0%,#E8F1FB 100%);border-radius:4px}
+.booker fieldset:nth-of-type(2){border-left-color:#0670C9;background:linear-gradient(180deg,#F3F6FB 0%,#E9EEF6 100%)}
+.booker fieldset:nth-of-type(3){border-left-color:#FFB23F;background:linear-gradient(180deg,#FFF8EE 0%,#FDF0DC 100%);border-color:rgba(255,178,63,.3);border-left-color:#F59A26}
+.booker fieldset:nth-of-type(4){border-left-color:#0857B8;background:linear-gradient(180deg,#F1F5FB 0%,#E6EDF7 100%)}
+.booker legend{float:left;width:100%;display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:0}
+.booker legend + *{clear:both}
+.booker legend::before{content:"";flex:none;width:30px;height:30px;border-radius:6px;background:var(--blue-metal);
+  -webkit-mask:var(--ico) center/18px 18px no-repeat,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:var(--ico) center/18px 18px no-repeat,linear-gradient(#000 0 0);mask-composite:exclude;
+  box-shadow:0 3px 8px rgba(7,137,227,.3)}
+.booker fieldset:nth-of-type(1) legend{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 15V9.5l3-.8 3.2-3.2H15v3.2h5l2 2V15h-1.6a2.6 2.6 0 0 0-5.2 0H8.8a2.6 2.6 0 0 0-5.2 0H2Zm4.2 1a1.6 1.6 0 1 1 0 .1Zm11.6 0a1.6 1.6 0 1 1 0 .1Z'/%3E%3C/svg%3E")}
+.booker fieldset:nth-of-type(2) legend{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.7 6.3a4 4 0 0 0-5.3 5.3L3.6 17.4a1.4 1.4 0 0 0 0 2l1 1a1.4 1.4 0 0 0 2 0l5.8-5.8a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.1-.6-.6-2.1z'/%3E%3C/svg%3E")}
+.booker fieldset:nth-of-type(3) legend{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 2h2v2h6V2h2v2h3v17H4V4h3V2Zm-1 7v10h12V9H6Zm2 2h3v3H8v-3Z'/%3E%3C/svg%3E")}
+.booker fieldset:nth-of-type(3) legend::before{background:linear-gradient(180deg,#FFD08A,#F59A26);box-shadow:0 3px 8px rgba(245,154,38,.35)}
+.booker fieldset:nth-of-type(4) legend{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.6 2.5 9.4 6 7.7 8.2a12 12 0 0 0 8.1 8.1l2.2-1.7 3.5 2.8-1.6 3.6C11.3 21.6 2.4 12.7 3 4.1l3.6-1.6Z'/%3E%3C/svg%3E")}
+.booker .field input,.booker .field textarea,.booker .field select{background:#fff}
+.booker .cal{background:#fff}
+.booker .book-foot{margin:16px 0 0;padding:16px clamp(18px,3vw,30px) 20px;background:linear-gradient(180deg,#0f1218,#0B0D12);border-top:2px solid #0789E3}
+.booker .book-foot .fine{color:#A9B8CC}
+.booker .book-foot .fine.ok{color:#6BE38A}
+.booker .book-foot .fine.err{color:#FF8A75}
+.booker .est{color:#A9B8CC}.booker .est b{color:#fff}
+@media (max-width:560px){ .booker fieldset{margin:12px 10px 0;padding:14px 12px 4px} .bk-head{padding:16px} .bk-head b{font-size:17px} .booker legend::before{width:26px;height:26px} }
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
