@@ -9,48 +9,48 @@ const money = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: Numb
 
 /* ---------- catalog ---------- */
 const P = [
-  { h:'84-chip-pure-white-rocklights', cat:'rock', catL:'Rock lights', name:'84-Chip Pure White Rock Lights',
-    sub:'Set of 4. Our brightest pure white rock light.', specs:['84 chip','20 W','Set of 4','DIY wiring'],
+  { h:'84-chip-pure-white-rocklights', cat:'rock', catL:'Rock Lights', name:'84-Chip Pure White Rock Lights',
+    sub:'Set of 4. Our brightest pure white rock light.', specs:['84 Chip','20 W','Set of 4','DIY Wiring'],
     imgs:['p-84-chip-pure-white-rocklights-0','p-84-chip-pure-white-rocklights-3'], rating:[5.0,1],
     v:[{t:'Set of 4',id:47278903623933,p:55,ok:true}] },
-  { h:'72-chip-pure-white-rock-light', cat:'rock', catL:'Rock lights', name:'72-Chip Pure White Rock Lights',
-    sub:'Set of 4, with rubber pads and mounting hardware.', specs:['72 chip','14 W','1.2 A @ 12 V','Set of 4'],
+  { h:'72-chip-pure-white-rock-light', cat:'rock', catL:'Rock Lights', name:'72-Chip Pure White Rock Lights',
+    sub:'Set of 4, with rubber pads and mounting hardware.', specs:['72 Chip','14 W','1.2 A @ 12 V','Set of 4'],
     imgs:['p-72-chip-pure-white-rock-light-0'], rating:[4.62,16],
     v:[{t:'Set of 4',id:46018763391229,p:45,was:50,ok:false}] },
   { h:'16-count', cat:'switch', catL:'Switchbacks', name:'Switchback Rock Light Kit',
-    sub:'White and amber, plug and play, with Bluetooth app control.', specs:['White + amber','Wigwag / strobe','15 ft leads','Bluetooth'],
+    sub:'White and amber, plug and play, with Bluetooth app control.', specs:['White + Amber','Wigwag / Strobe','15 ft Leads','Bluetooth'],
     imgs:['switchback-rock-light-kit-amber-truck','switchback-rock-light-kit-white-truck'],
-    v:[{t:'4 lights',id:46543966044413,p:200,ok:false,h:'4-count'},{t:'10 lights',id:46544330555645,p:350,ok:false,h:'8-count'},{t:'16 lights',id:46544008806653,p:500,ok:true,h:'16-count'}], def:2 },
-  { h:'4pc-rgbw-rock-light-kit', cat:'rock', catL:'Rock lights', name:'RGBW Rock Light Kit',
-    sub:'Four 44-chip RGBW lights, Bluetooth harness and remote.', specs:['44 chip','RGBW','4 pc','Plug and play'],
+    v:[{t:'4 Lights',id:46543966044413,p:200,ok:false,h:'4-count'},{t:'10 lights',id:46544330555645,p:350,ok:false,h:'8-count'},{t:'16 lights',id:46544008806653,p:500,ok:true,h:'16-count'}], def:2 },
+  { h:'4pc-rgbw-rock-light-kit', cat:'rock', catL:'Rock Lights', name:'RGBW Rock Light Kit',
+    sub:'Four 44-chip RGBW lights, Bluetooth harness and remote.', specs:['44 Chip','RGBW','4 pc','Plug and Play'],
     imgs:['p-4pc-rgbw-rock-light-kit-1','p-4pc-rgbw-rock-light-kit-2'],
     v:[{t:'4 pc',id:46981680857341,p:200,ok:false}] },
-  { h:'10-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel lights', name:'10-Row Pure White Wheel Lights',
-    sub:'17″ rings with 5 rows inside and 5 outside. Module and wireless remote included.', specs:['17″','10 row','Plug and play','Wireless remote'],
+  { h:'10-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'10-Row Pure White Wheel Lights',
+    sub:'17″ rings with 5 rows inside and 5 outside. Module and wireless remote included.', specs:['17″','10 Row','Plug and Play','Wireless Remote'],
     imgs:['p-10-row-pure-white-wheel-lights-0','p-10-row-pure-white-wheel-lights-2'], rating:[5.0,1],
     v:[{t:'17″ kit',id:47012636819709,p:499,was:650,ok:true}] },
-  { h:'5-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel lights', name:'5-Row Pure White Wheel Lights',
-    sub:'17″ rings, plug and play with module and wireless remote.', specs:['17″','5 row','Plug and play'],
+  { h:'5-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'5-Row Pure White Wheel Lights',
+    sub:'17″ rings, plug and play with module and wireless remote.', specs:['17″','5 Row','Plug and Play'],
     imgs:['p-5-row-pure-white-wheel-lights-3','p-5-row-pure-white-wheel-lights-0'],
     v:[{t:'17″ kit',id:46052165517565,p:380,was:449,ok:false}] },
-  { h:'magnetic-mount-for-rocklights', cat:'parts', catL:'Mounts & wiring', name:'Magnetic Rock Light Mount',
-    sub:'Skip the drilling. Fits our 72- and 84-chip lights.', specs:['1/8″ aluminum','CNC cut','Made in USA'],
+  { h:'magnetic-mount-for-rocklights', cat:'parts', catL:'Mounts & Wiring', name:'Magnetic Rock Light Mount',
+    sub:'Skip the drilling. Fits our 72- and 84-chip lights.', specs:['1/8″ Aluminum','CNC Cut','Made in USA'],
     imgs:['p-magnetic-mount-for-rocklights-3','p-magnetic-mount-for-rocklights-0'],
     v:[{t:'1 mount',id:47351597695229,p:10,ok:false}] },
-  { h:'magnetic-t-bracket-mount', cat:'parts', catL:'Mounts & wiring', name:'Magnetic T-Bracket Mount',
-    sub:'Mounts lights on vertical surfaces like frame rails and rockers.', specs:['110 lb magnet','Per bracket'],
+  { h:'magnetic-t-bracket-mount', cat:'parts', catL:'Mounts & Wiring', name:'Magnetic T-Bracket Mount',
+    sub:'Mounts lights on vertical surfaces like frame rails and rockers.', specs:['110 lb Magnet','Per Bracket'],
     imgs:['p-magnetic-t-bracket-mount-2','p-magnetic-t-bracket-mount-0'],
     v:[{t:'1 bracket',id:46055093731581,p:4.99,ok:false}] },
-  { h:'3-pin-wire-extension', cat:'parts', catL:'Mounts & wiring', name:'3-Pin Wire Extension',
-    sub:'Plug-and-play reach for lights far from the module.', specs:['3 pin','Plug and play'],
+  { h:'3-pin-wire-extension', cat:'parts', catL:'Mounts & Wiring', name:'3-Pin Wire Extension',
+    sub:'Plug-and-play reach for lights far from the module.', specs:['3 Pin','Plug and Play'],
     imgs:['p-3-pin-wire-extension-0'],
     v:[{t:'5 ft',id:46544323510525,p:6,ok:true},{t:'10 ft',id:46544315646205,p:7.5,ok:true}] },
-  { h:'untitled-jun19_07-48', cat:'parts', catL:'Mounts & wiring', name:'Latching Push-Button Switch',
-    sub:'19 mm black stainless switch with a white LED ring.', specs:['19 mm','Latching','LED ring'],
+  { h:'untitled-jun19_07-48', cat:'parts', catL:'Mounts & Wiring', name:'Latching Push-Button Switch',
+    sub:'19 mm black stainless switch with a white LED ring.', specs:['19 mm','Latching','LED Ring'],
     imgs:['latching-push-button-switch-wiring','latching-push-button-switch-dash'],
     v:[{t:'1 switch',id:46373584568573,p:10,ok:false}] },
   { h:'itm-truck-t-shirt', cat:'merch', catL:'Merch', name:'ITM Truck Tee',
-    sub:'Screen-printed 100% cotton. Logo on the pocket, truck on the back.', specs:['100% cotton','Screen print'],
+    sub:'Screen-printed 100% cotton. Logo on the pocket, truck on the back.', specs:['100% Cotton','Screen Print'],
     imgs:['p-itm-truck-t-shirt-0','p-itm-truck-t-shirt-1'],
     v:['S','M','L','XL','2XL'].map((t,i)=>({t,id:[47169431437565,47169431470333,47169431503101,47169431535869,47169431568637][i],p:25,ok:true})), def:2 },
   { h:'6-decal', cat:'merch', catL:'Merch', name:'6″ Chrome Decal',
@@ -64,15 +64,15 @@ const TC = t => t.replace(/[A-Za-z]+/g, (w, i) => (i && /^(of|a|an|and|for|the|f
 P.forEach(p => p.v.forEach(v => { v.t = TC(v.t); }));
 /* install-first: how each kit goes on (from the product specs and FAQ) and which booking job it maps to */
 const INST = {
-  '84-chip-pure-white-rocklights': ['DIY wiring', 'Rock lights'],
-  '72-chip-pure-white-rock-light': ['DIY wiring', 'Rock lights'],
-  '16-count': ['Plug and play', 'Switchback / amber'],
-  '4pc-rgbw-rock-light-kit': ['Plug and play', 'RGBW color kit'],
-  '10-row-pure-white-wheel-lights': ['Plug and play', 'Wheel lights'],
-  '5-row-pure-white-wheel-lights': ['Plug and play', 'Wheel lights'],
-  'magnetic-mount-for-rocklights': ['No drilling', 'Rock lights'],
-  'magnetic-t-bracket-mount': ['No drilling', 'Rock lights'],
-  'untitled-jun19_07-48': ['Switch wiring', 'Push-button switch'],
+  '84-chip-pure-white-rocklights': ['DIY Wiring', 'Rock Lights'],
+  '72-chip-pure-white-rock-light': ['DIY Wiring', 'Rock Lights'],
+  '16-count': ['Plug and Play', 'Switchback / Amber'],
+  '4pc-rgbw-rock-light-kit': ['Plug and Play', 'RGBW Color Kit'],
+  '10-row-pure-white-wheel-lights': ['Plug and Play', 'Wheel Lights'],
+  '5-row-pure-white-wheel-lights': ['Plug and Play', 'Wheel Lights'],
+  'magnetic-mount-for-rocklights': ['No Drilling', 'Rock Lights'],
+  'magnetic-t-bracket-mount': ['No Drilling', 'Rock Lights'],
+  'untitled-jun19_07-48': ['Switch Wiring', 'Push-Button Switch'],
 };
 
 /* ---------- grid ---------- */
@@ -95,7 +95,7 @@ function card(p) {
       ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0]%1?2:1)} <span>(${p.rating[1]} review${p.rating[1]>1?'s':''})</span></div>` : ''}
       ${p.v.length>1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((x,i)=>`<button class="var${i===sel?' on':''}${x.ok?'':' so'}" data-i="${i}" role="radio" aria-checked="${i===sel}">${x.t}</button>`).join('')}</div>` : ''}
       <div class="c-foot"><div class="price"></div><span class="act"></span></div>
-      ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="#book" class="inst-book" data-inst="${p.h}">We install it <i aria-hidden="true">&rarr;</i></a></div>` : ''}
+      ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="#book" class="inst-book" data-inst="${p.h}">We Install It <i aria-hidden="true">&rarr;</i></a></div>` : ''}
     </div></div></div></div>`;
   el._sel = sel;
   paint(el, p);
@@ -109,11 +109,11 @@ function paint(el, p) {
   $('.price', el).innerHTML = `<span class="now">${money(v.p)}</span>${v.was?`<span class="was">${money(v.was)}</span>`:''}`;
   const b = [];
   if (v.was && v.ok) b.push('<span class="badge sale">Sale</span>');
-  if (!v.ok) b.push('<span class="badge out">Out of stock</span>');
+  if (!v.ok) b.push('<span class="badge out">Out of Stock</span>');
   $('.badges', el).innerHTML = b.join('');
   $('.act', el).innerHTML = v.ok
-    ? `<button class="add" data-h="${p.h}" data-i="${el._sel}"><span>Add to cart</span></button>`
-    : `<span class="add soldout" aria-disabled="true"><span>Out of stock</span></span>`;
+    ? `<button class="add" data-h="${p.h}" data-i="${el._sel}"><span>Add to Cart</span></button>`
+    : `<span class="add soldout" aria-disabled="true"><span>Out of Stock</span></span>`;
 }
 P.forEach(p => grid.appendChild(card(p)));
 
@@ -139,7 +139,7 @@ function add(h, i, qty = 1) {
   const line = cart.find(l => l.id === v.id);
   line ? line.q += qty : cart.push({ id: v.id, h, i, q: qty });
   save(); renderCart(); bump();
-  toast(`${qty > 1 ? qty + ' × ' : ''}${p.name}${p.v.length > 1 ? ' · ' + v.t : ''} added`);
+  toast(`${qty > 1 ? qty + ' × ' : ''}${p.name}${p.v.length > 1 ? ' · ' + v.t : ''} Added`);
 }
 function renderCart() {
   const n = cart.reduce((a, l) => a + l.q, 0);
@@ -210,7 +210,7 @@ $('#seg').addEventListener('keydown', e => {
 });
 $('#countAdd').onclick = () => add('84-chip-pure-white-rocklights', 0, curN / 4);
 $('#countBook').addEventListener('click', () => {
-  pick('vehicle', 'Truck'); pick('work', 'Rock lights');
+  pick('vehicle', 'Truck'); pick('work', 'Rock Lights');
   const n = $('#booker [name=notes]'); if (!n.value) n.value = `${curN} rock lights`;
 });
 
@@ -230,7 +230,7 @@ $$('.opts', form).forEach(g => g.addEventListener('click', e => {
   $$('.opt', g).forEach(x => x.setAttribute('aria-pressed', x.classList.contains('on')));
 }));
 function pick(name, label) {
-  const o = $$(`.opts[data-name="${name}"] .opt`, form).find(x => x.textContent.trim() === label);
+  const o = $$(`.opts[data-name="${name}"] .opt`, form).find(x => x.textContent.trim().toLowerCase() === String(label).toLowerCase());
   if (o && !o.classList.contains('on')) o.click();
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
@@ -290,13 +290,13 @@ $('#slotHours').addEventListener('click', e => { const b = e.target.closest('.st
   choose($('#slotHours'), b); timeIn.value = b.dataset.t; slotLabel(); });
 function slotLabel() {
   const d = dayIn.value, t = timeIn.value;
-  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t}` : d ? `Book ${d}` : 'Book my install';
+  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t}` : d ? `Book ${d}` : 'Book My Install';
   $$('#slotDays, #slotTimes, #slotHours').forEach(g => $('.on', g) && g.classList.remove('bad'));
 }
 /* live parts estimate from the catalog prices above; labor is quoted by ITM */
-const FROM = { 'Rock lights': ['rock lights', 55], 'Wheel lights': ['wheel lights', 380], 'Switchback / amber': ['switchback kit', 200], 'RGBW color kit': ['RGBW kit', 200], 'Push-button switch': ['switch', 10] };
+const FROM = { 'Rock Lights': ['rock lights', 55], 'Wheel Lights': ['wheel lights', 380], 'Switchback / Amber': ['switchback kit', 200], 'RGBW Color Kit': ['RGBW kit', 200], 'Push-Button Switch': ['switch', 10] };
 function estimate() {
-  const w = picked('work'), supply = picked('parts')[0] === 'Supply them for me';
+  const w = picked('work'), supply = picked('parts')[0] === 'Supply Them for Me';
   const parts = w.filter(x => FROM[x]);
   const el = $('#est');
   if (!w.length) { el.innerHTML = ''; return; }
@@ -331,20 +331,20 @@ form.addEventListener('submit', e => {
 /* ---------- reviews belt (verbatim from Judge.me, light typo fixes only) ---------- */
 const R = [
   ['Bray','72-Chip Rock Lights','build-bray-mower-rock-lights','Probably the brightest rock lights I’ve seen. I’ve been using them on my projects since August 2025. They’ve always worked and never quit. Recommend this brand!','bray-sierra-1500-and-mower'],
-  ['Paul Pena','Install · Rock + pillar lights','build-paul-pena-rock-pillar-lights','I’ve had rock lights and pillar lights installed on two separate occasions, and both times have been quality, clean and fast work. They definitely take pride in their work.','paul-pena-rock-and-pillar-lights'],
+  ['Paul Pena','Install · Rock + Pillar Lights','build-paul-pena-rock-pillar-lights','I’ve had rock lights and pillar lights installed on two separate occasions, and both times have been quality, clean and fast work. They definitely take pride in their work.','paul-pena-rock-and-pillar-lights'],
   ['cds performance','Installer · 72-Chip','build-cds-silverado-rock-lights','Man, I’m blown away by how bright they are. 16 pieces was perfect for the truck. I do lighting and sound systems for a living. Best rock light I’ve had someone bring me to install!','cds-performance-16-rock-lights'],
   ['Erick Mendoza','10-Row Wheel Lights','build-erick-ram-10-row-wheel-lights','I own the truck in the picture. These 10-row rim lights have been nothing but sick. No problems, bright, turning heads everywhere I go.','erick-10-row-wheel-lights'],
   ['Chino','Install · 5-Row Wheel Lights','build-chino-wheel-lights-install','I needed some lights installed. I came to ITM and they got it done fast and right. Great customer service and great work. 10/10.','chino-5-row-wheel-lights'],
-  ['Ricky Frazier','ITM customer','build-ricky-wheel-well-rock-lights','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.','ricky-rock-lights'],
+  ['Ricky Frazier','ITM Customer','build-ricky-wheel-well-rock-lights','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.','ricky-rock-lights'],
   ['Ethan Robbins','72-Chip Rock Lights','build-ethan-rock-lights-two-trucks','Quality of the light is very good and super bright.','ethan-rock-lights'],
   ['Troy Gross','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-5-crop','Insanely bright for the price. I would highly recommend these lights.'],
   ['j.','Magnetic T-Bracket','p-magnetic-t-bracket-mount-3','It gives the rock lights a cleaner, more proper look. Get these!'],
   ['Connor','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-2-crop','It’s super bright and surprised me so much. Worth the wait. You’ve got to be patient for it to come in!'],
 ];
 const run = $('#beltRun');
-const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[4] ? 'Photo from ' + r[0] + '’s review: ' + r[1] : r[1] + ' product photo'}" loading="lazy">${r[4] ? '' : '<span class="rv-tag">Product photo</span>'}</div><div class="rv-b">
+const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[4] ? 'Photo from ' + r[0] + '’s review: ' + r[1] : r[1] + ' product photo'}" loading="lazy">${r[4] ? '' : '<span class="rv-tag">Product Photo</span>'}</div><div class="rv-b">
   <span class="rv-stars" aria-label="5 stars">★★★★★</span><p>${r[3]}</p>
-  <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div>${r[4] ? `<a class="rv-build" href="builds/${r[4]}/">See the build <i aria-hidden="true">&rarr;</i></a>` : ''}</div></article>`;
+  <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div>${r[4] ? `<a class="rv-build" href="builds/${r[4]}/">See the Build <i aria-hidden="true">&rarr;</i></a>` : ''}</div></article>`;
 run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class="rv"/g, '<article class="rv" aria-hidden="true"');
 
 /* ---------- nav + reveals ---------- */
@@ -426,12 +426,12 @@ document.addEventListener('click', e => {
 (function () {
   const btn = $('#shopToggle'), menu = $('#shopMenu'), grid = $('#smGrid'); if (!btn) return;
   const CATS = [
-    ['all', 'All lights', 'p-84-chip-pure-white-rocklights-0', 'Every product'],
-    ['rock', 'Rock lights', 'p-72-chip-pure-white-rock-light-0', 'White + RGBW sets'],
-    ['switch', 'Switchbacks', 'switchback-rock-light-kit-amber-truck', 'White / amber kits'],
-    ['wheel', 'Wheel lights', 'ram-1500-white-wheel-lights-night', '17″ 5 and 10 row'],
-    ['parts', 'Mounts & wiring', 'p-magnetic-mount-for-rocklights-0', 'Mounts, switches, leads'],
-    ['merch', 'Merch', 'p-itm-truck-t-shirt-0', 'Tees + decals'],
+    ['all', 'All Lights', 'p-84-chip-pure-white-rocklights-0', 'Every Product'],
+    ['rock', 'Rock Lights', 'p-72-chip-pure-white-rock-light-0', 'White + RGBW Sets'],
+    ['switch', 'Switchbacks', 'switchback-rock-light-kit-amber-truck', 'White / Amber Kits'],
+    ['wheel', 'Wheel Lights', 'ram-1500-white-wheel-lights-night', '17″ 5 and 10 Row'],
+    ['parts', 'Mounts & Wiring', 'p-magnetic-mount-for-rocklights-0', 'Mounts, Switches, Leads'],
+    ['merch', 'Merch', 'p-itm-truck-t-shirt-0', 'Tees + Decals'],
   ];
   const count = c => c === 'all' ? P.length : P.filter(p => p.cat === c).length;
   grid.innerHTML = CATS.map(([c, n, img, d]) =>
@@ -461,11 +461,11 @@ function syncAdded() {
   const ids = new Set(cart.map(l => l.id));
   $$('.add[data-h]').forEach(b => {
     const v = byH[b.dataset.h].v[+b.dataset.i], on = ids.has(v.id);
-    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to cart';
+    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to Cart';
   });
   $$('[data-add]').forEach(b => {
     const on = ids.has(byH[b.dataset.add].v[0].id);
-    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to cart';
+    b.classList.toggle('in-cart', on); b.querySelector('span').textContent = on ? 'Added ✓' : 'Add to Cart';
   });
   const ca = $('#countAdd'); if (ca) ca.classList.toggle('in-cart', ids.has(byH['84-chip-pure-white-rocklights'].v[0].id));
 }
@@ -534,7 +534,7 @@ function syncAdded() {
     hs = [...new Set(hs)].filter(h => INST[h]);
     if (VEH) pick('vehicle', VEH);
     hs.forEach(h => pick('work', INST[h][1]));
-    pick('parts', 'Supply them for me');
+    pick('parts', 'Supply Them for Me');
     const n = $('#booker [name=notes]'), names = hs.map(h => byH[h].name).join(', ');
     if (names && !n.value.includes(names)) n.value = `Kits: ${names}` + (n.value ? `\n${n.value}` : '');
     typeof estimate === 'function' && estimate();
@@ -560,10 +560,10 @@ function syncAdded() {
   document.addEventListener('click', e => { if (e.target.closest('.look-x')) { $$('[data-look].look-on .look-btn').forEach(b => b.click()); } });
   $$('[data-look]').forEach(f => {
     const hs = LOOK[f.dataset.look]; if (!hs) return;
-    f.insertAdjacentHTML('beforeend', `<button type="button" class="look-btn" aria-expanded="false">Get the look <i aria-hidden="true">+</i></button>
-      <div class="look" hidden><p class="look-h">Closest ITM kits</p>${hs.map(h => { const p = byH[h], i = p.def ?? 0, v = p.v[i];
-        return `<div class="look-row"><span>${p.name}<b>${money(v.p)}</b></span>${v.ok ? `<button type="button" class="look-add" data-h="${h}" data-i="${i}">Add</button>` : '<em>Out of stock</em>'}</div>`; }).join('')}
-      <a href="#book" class="look-book" data-hs="${hs.join(',')}">Book this build <i aria-hidden="true">&rarr;</i></a></div>`);
+    f.insertAdjacentHTML('beforeend', `<button type="button" class="look-btn" aria-expanded="false">Get the Look <i aria-hidden="true">+</i></button>
+      <div class="look" hidden><p class="look-h">Closest ITM Kits</p>${hs.map(h => { const p = byH[h], i = p.def ?? 0, v = p.v[i];
+        return `<div class="look-row"><span>${p.name}<b>${money(v.p)}</b></span>${v.ok ? `<button type="button" class="look-add" data-h="${h}" data-i="${i}">Add</button>` : '<em>Out of Stock</em>'}</div>`; }).join('')}
+      <a href="#book" class="look-book" data-hs="${hs.join(',')}">Book This Build <i aria-hidden="true">&rarr;</i></a></div>`);
   });
   document.addEventListener('click', e => {
     const lb = e.target.closest('.look-btn');
@@ -583,7 +583,7 @@ function syncAdded() {
     if (!lights.length) { up.innerHTML = ''; return; }
     const ext = byH['3-pin-wire-extension'], hasExt = hs.includes('3-pin-wire-extension');
     up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft Wire Extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
-      `<a href="#book" class="up-book">We install it in Mesa <i aria-hidden="true">&rarr;</i></a>`;
+      `<a href="#book" class="up-book">We Install It in Mesa <i aria-hidden="true">&rarr;</i></a>`;
   }
   new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
   foot.addEventListener('click', e => {
@@ -629,10 +629,10 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
       .replace(/(<li>.*?<\/li>)+/g, m => `<ul>${m}</ul>`);
     $('#pvInfo').innerHTML = `<span class="c-cat">${p.catL}</span><h3 class="pv-name" id="pvName">${p.name}</h3>
       ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0] % 1 ? 2 : 1)} <span>(${p.rating[1]} review${p.rating[1] > 1 ? 's' : ''})</span></div>` : ''}
-      <div class="pv-price"><span class="now">${money(v.p)}</span>${v.was ? `<span class="was">${money(v.was)}</span>` : ''}${v.ok ? '' : '<span class="pv-out">Out of stock</span>'}</div>
+      <div class="pv-price"><span class="now">${money(v.p)}</span>${v.was ? `<span class="was">${money(v.was)}</span>` : ''}${v.ok ? '' : '<span class="pv-out">Out of Stock</span>'}</div>
       ${p.v.length > 1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((y, i) => `<button type="button" class="var${i === sel ? ' on' : ''}${y.ok ? '' : ' so'}" data-pi="${i}" role="radio" aria-checked="${i === sel}">${y.t}</button>`).join('')}</div>` : ''}
-      <div class="pv-act">${v.ok ? `<button type="button" class="btn btn-primary pv-add"><span>Add to cart</span></button>` : ''}
-        ${ins ? `<a href="#book" class="btn btn-chrome pv-inst"><span>We install it <i aria-hidden="true">&rarr;</i></span></a>` : ''}</div>
+      <div class="pv-act">${v.ok ? `<button type="button" class="btn btn-primary pv-add"><span>Add to Cart</span></button>` : ''}
+        ${ins ? `<a href="#book" class="btn btn-chrome pv-inst"><span>We Install It <i aria-hidden="true">&rarr;</i></span></a>` : ''}</div>
       ${ins ? `<p class="pv-how"><b>${ins[0]}</b> · or book the install at our Mesa shop.</p>` : ''}
       <div class="pv-desc">${desc}</div>
       ${x.note ? `<p class="pv-note">${esc(x.note.charAt(0) + x.note.slice(1).toLowerCase()).replace(/\.*$/, '')}.</p>` : ''}`;
@@ -662,7 +662,7 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.c-name')) { e.preventDefault(); open(e.target.closest('.card').dataset.h); }
   });
   $$('.card', grid).forEach(c => { const n = $('.c-name', c); if (n) { n.tabIndex = 0; n.setAttribute('role', 'button'); n.setAttribute('aria-label', `${n.textContent}: photos and details`); }
-    const f = $('.c-fig', c); if (f && PX[c.dataset.h] && PX[c.dataset.h].imgs.length > 1) f.insertAdjacentHTML('beforeend', `<span class="c-view">${PX[c.dataset.h].imgs.length} photos</span>`); });
+    const f = $('.c-fig', c); if (f && PX[c.dataset.h] && PX[c.dataset.h].imgs.length > 1) f.insertAdjacentHTML('beforeend', `<span class="c-view">${PX[c.dataset.h].imgs.length} Photos</span>`); });
   window.ITMview = open;
 })();
 
