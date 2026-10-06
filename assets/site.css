@@ -1531,6 +1531,19 @@ html.pv-open{overflow:hidden}
 @media (prefers-reduced-motion:reduce){ .hb-bloom{display:none} }
 .c-view{font-size:11px;padding:5px 7px}
 
+/* ---------- v94: every product column the same width (content was stretching some 1fr tracks) ---------- */
+.grid > *{min-width:0}
+/* get the look: just the product names, tap one to open it */
+.look{gap:6px;padding:10px 12px}
+.look-h{font-size:10px}
+.look-item{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:34px;padding:6px 0;border:0;border-top:1px solid rgba(255,255,255,.08);
+  background:none;color:#E8ECF2;text-align:left;font:600 13px/1.25 var(--f-body)}
+.look-item:first-of-type{border-top:0}
+.look-item i{font-style:normal;color:var(--amber);font:400 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.look-item:hover{color:#fff}
+.look-sheet .look-item{font-size:15px;min-height:44px}
+.look[hidden],.look-sheet[hidden]{display:none!important}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

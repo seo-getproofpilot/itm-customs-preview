@@ -561,9 +561,7 @@ function syncAdded() {
   $$('[data-look]').forEach(f => {
     const hs = LOOK[f.dataset.look]; if (!hs) return;
     f.insertAdjacentHTML('beforeend', `<button type="button" class="look-btn" aria-expanded="false">Get The Look <i aria-hidden="true">+</i></button>
-      <div class="look" hidden><p class="look-h">Closest ITM Kits</p>${hs.map(h => { const p = byH[h], i = p.def ?? 0, v = p.v[i];
-        return `<div class="look-row"><span>${p.name}<b>${money(v.p)}</b></span>${v.ok ? `<button type="button" class="look-add" data-h="${h}" data-i="${i}">Add</button>` : '<em>Out Of Stock</em>'}</div>`; }).join('')}
-      <a href="#book" class="look-book" data-hs="${hs.join(',')}">Book This Build <i aria-hidden="true">&rarr;</i></a></div>`);
+      <div class="look" hidden><p class="look-h">In This Build</p>${hs.map(h => `<button type="button" class="look-item" data-h="${h}">${byH[h].name}<i>View &rarr;</i></button>`).join('')}</div>`);
   });
   document.addEventListener('click', e => {
     const lb = e.target.closest('.look-btn');
@@ -572,8 +570,7 @@ function syncAdded() {
       pn.hidden = !open; f.classList.toggle('look-on', open); lb.setAttribute('aria-expanded', open);
       sheet(open ? pn : null); open && T('look_open', { build: f.dataset.look }); return; }
     if (!e.target.closest('.look, #lookSheet')) { $$('[data-look] .look').forEach(x => { if (!x.hidden) { x.hidden = true; x.closest('figure').classList.remove('look-on'); x.previousElementSibling.setAttribute('aria-expanded', 'false'); } }); sheet(null); }
-    const la = e.target.closest('.look-add'); if (la) { add(la.dataset.h, +la.dataset.i); T('add_to_cart', { item: la.dataset.h, from: 'look' }); return; }
-    const bk = e.target.closest('.look-book'); if (bk) bookFor(bk.dataset.hs.split(','), 'look');
+    const li = e.target.closest('.look-item'); if (li) { $$('[data-look].look-on .look-btn').forEach(b => b.click()); sheet(null); window.ITMview && ITMview(li.dataset.h); T('look_view', { item: li.dataset.h }); return; }
   });
 
   /* cart: finish the build (only what's in stock), plus have-us-install-it */
