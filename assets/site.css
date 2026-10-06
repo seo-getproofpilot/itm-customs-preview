@@ -1492,6 +1492,26 @@ html.pv-open{overflow:hidden}
   .c-inst{margin-top:6px;padding-top:4px;gap:0}
 }
 .rv-build{font-size:11px}
+.look-btn{min-height:32px}
+.feature-me .all-builds{display:inline-flex;align-items:center;min-height:34px}
+
+/* ---------- v90: tablets (561–940px): 3-up compact product grid, calendar at a sensible size, touch-size labels ---------- */
+@media (min-width:561px) and (max-width:940px){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .c-sub,.specs{display:none}
+  .c-body{padding:14px 12px 14px}
+  .c-name{font-size:15px}
+  .c-foot{flex-direction:column;align-items:stretch;gap:8px}
+  .c-foot .add{width:100%;justify-content:center;display:inline-flex;align-items:center}
+  .c-inst{flex-direction:column;align-items:flex-start;gap:2px}
+}
+@media (min-width:561px){ .cal{max-width:520px} }
+@media (max-width:1100px){
+  .c-view{font-size:11px;padding:5px 7px}
+  .inst-book{display:inline-flex;align-items:center;min-height:34px;padding:0;border-bottom:0;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:4px}
+  .rv-build{display:inline-flex;align-items:center;min-height:34px;margin-top:4px}
+  .var{min-height:34px}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
