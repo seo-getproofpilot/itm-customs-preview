@@ -1335,6 +1335,71 @@ html[data-cta="copper"] .btn-primary,html[data-cta="copper"] .add{text-shadow:0 
 @media (max-width:560px){ .cal{padding:12px 10px 10px} .slot-hours{grid-template-columns:repeat(3,minmax(0,1fr))} .stime{font-size:12px} }
 @media (max-width:560px){ .slot b{font-size:11px;letter-spacing:.03em;gap:5px} .slot.on b::before{width:6px;height:6px;flex:none} .slot{padding:11px 8px 10px} }
 
+/* ---------- v76: install-first layer ---------- */
+.shop-sub{max-width:640px;margin-top:12px;color:var(--mute)}
+/* vehicle picker */
+.veh{margin:0 0 22px;display:grid;gap:10px}
+.veh-q{margin:0;font:400 11.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.veh-opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:720px}
+.veh-opts button{display:grid;justify-items:center;gap:6px;padding:12px 8px 11px;border:1px solid var(--line-2);border-radius:3px;background:linear-gradient(180deg,#151922,#0f1218);
+  color:var(--chrome);font:400 12px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:border-color .2s,box-shadow .2s}
+.veh-opts svg{width:44px;height:22px;fill:#8d96a3;transition:fill .2s,filter .2s}
+.veh-opts button:hover{border-color:var(--blue-hi)}
+.veh-opts button.on{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue),0 0 18px rgba(7,137,227,.35)}
+.veh-opts button.on svg{fill:#fff;filter:drop-shadow(0 3px 4px rgba(255,178,63,.75))}
+.veh-tip{margin:2px 0 0;max-width:720px;font-size:14.5px;color:#C9CED7;line-height:1.55}
+.veh-tip a{color:var(--amber);text-decoration:none;font-weight:600;white-space:nowrap}
+.veh-opts button:focus-visible{outline:none;box-shadow:0 0 0 2px #07080B,0 0 0 4px #0789E3}
+.card.pick .badges::after{content:"Suggested";font:600 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px;border-radius:5px;background:var(--blue-metal);color:#fff}
+/* install row on each kit */
+.c-inst{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+.inst-tag{font:400 10.5px/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.inst-book{font:600 13px/1 var(--f-body);color:var(--chrome);text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(255,178,63,.6);padding-bottom:3px}
+.inst-book i{font-style:normal;color:var(--amber)}
+.inst-book:hover{color:#fff;border-color:var(--amber)}
+@media (max-width:560px){ .c-inst{flex-direction:column;align-items:flex-start;gap:7px;margin-top:9px;padding-top:9px} .inst-tag{font-size:9.5px} .inst-book{font-size:12px}
+  .veh-opts{gap:6px} .veh-opts button{font-size:10px;padding:10px 4px 9px;letter-spacing:.03em} .veh-opts svg{width:36px;height:18px} .veh-tip{font-size:13.5px} }
+/* get the look */
+[data-look]{position:relative}
+.look-btn{position:absolute;right:10px;top:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid rgba(255,255,255,.35);border-radius:3px;
+  background:rgba(7,8,11,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:400 10.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.look-btn i{font-style:normal;color:var(--amber);font-size:14px;line-height:.6;transition:transform .2s}
+.look-on .look-btn i{transform:rotate(45deg)}
+.look{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;padding:12px 12px 10px;border-radius:4px;background:rgba(7,8,11,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(74,168,238,.35);display:grid;gap:8px}
+.look-h{margin:0;font:400 10px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.look-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:#E8ECF2}
+.look-row span{display:grid;gap:2px;min-width:0}
+.look-row b{font:400 12.5px/1 var(--f-mono);color:var(--chrome)}
+.look-row em{font-style:normal;font-size:11.5px;color:var(--mute);white-space:nowrap}
+.look-add{flex:none;padding:7px 12px;border-radius:3px;border:0;background:linear-gradient(180deg,#fff,#d9dee5);color:#0B0D12;font:400 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.look-book{font:600 13px/1 var(--f-body);color:var(--amber);text-decoration:none;padding-top:4px}
+.look-on figcaption{opacity:0}
+/* cart add-ons */
+.dr-up{display:grid;gap:10px;margin-bottom:14px}
+.dr-up:empty{display:none}
+.up-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px dashed var(--line-2);border-radius:4px}
+.up-row div{display:grid;gap:3px;font-size:13px;color:var(--mute)}
+.up-row b{color:var(--chrome);font-weight:600;font-size:13.5px}
+.up-add{flex:none;padding:8px 12px;border-radius:3px;border:1px solid var(--line-2);background:transparent;color:var(--chrome);font:400 12px/1 var(--f-mono)}
+.up-add:hover{border-color:var(--amber);color:var(--amber)}
+.up-book{display:flex;justify-content:center;align-items:center;gap:8px;min-height:44px;border-radius:3px;border:1px solid rgba(255,178,63,.55);color:var(--amber);text-decoration:none;font:400 12.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.up-book:hover{background:rgba(255,178,63,.08)}
+.look-btn,.look{border:0}
+@media (max-width:560px){
+  .look{position:fixed;left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:90;padding:16px 16px 14px;gap:10px;
+    background:rgba(9,11,16,.97);box-shadow:0 -10px 40px rgba(0,0,0,.6),0 0 0 1px rgba(74,168,238,.3)}
+  .look-row{font-size:14px}
+  .look-on figcaption{opacity:1}
+  .look-btn{padding:6px 8px;font-size:9.5px;right:8px;top:8px}
+}
+@media (max-width:560px){ [data-look] .look{display:none!important} }
+.look-sheet{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:90;display:grid;gap:10px;padding:16px 16px 14px;border-radius:4px;
+  background:rgba(9,11,16,.97);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 -10px 40px rgba(0,0,0,.6)}
+.look-sheet[hidden]{display:none}
+.look-sheet .look-row{font-size:14px}
+.look-x{position:absolute;right:8px;top:6px;width:36px;height:36px;border:0;background:none;color:var(--mute);font-size:24px;line-height:1}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

@@ -59,6 +59,18 @@ const P = [
     v:[{t:'Chrome',id:46223875047677,p:5,ok:false}] },
 ];
 const byH = Object.fromEntries(P.map(p => [p.h, p]));
+/* install-first: how each kit goes on (from the product specs and FAQ) and which booking job it maps to */
+const INST = {
+  '84-chip-pure-white-rocklights': ['DIY wiring', 'Rock lights'],
+  '72-chip-pure-white-rock-light': ['DIY wiring', 'Rock lights'],
+  '16-count': ['Plug and play', 'Switchback / amber'],
+  '4pc-rgbw-rock-light-kit': ['Plug and play', 'RGBW color kit'],
+  '10-row-pure-white-wheel-lights': ['Plug and play', 'Wheel lights'],
+  '5-row-pure-white-wheel-lights': ['Plug and play', 'Wheel lights'],
+  'magnetic-mount-for-rocklights': ['No drilling', 'Rock lights'],
+  'magnetic-t-bracket-mount': ['No drilling', 'Rock lights'],
+  'untitled-jun19_07-48': ['Switch wiring', 'Push-button switch'],
+};
 
 /* ---------- grid ---------- */
 const grid = $('#grid');
@@ -80,6 +92,7 @@ function card(p) {
       ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0]%1?2:1)} <span>(${p.rating[1]} review${p.rating[1]>1?'s':''})</span></div>` : ''}
       ${p.v.length>1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((x,i)=>`<button class="var${i===sel?' on':''}${x.ok?'':' so'}" data-i="${i}" role="radio" aria-checked="${i===sel}">${x.t}</button>`).join('')}</div>` : ''}
       <div class="c-foot"><div class="price"></div><span class="act"></span></div>
+      ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="#book" class="inst-book" data-inst="${p.h}">We install it <i aria-hidden="true">&rarr;</i></a></div>` : ''}
     </div></div></div></div>`;
   el._sel = sel;
   paint(el, p);
@@ -163,6 +176,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') openCart(fal
 function bump() { const c = $('#cartN'); c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
 let tt;
 function toast(msg) {
+  if ($('#drawer')?.classList.contains('on')) return;
   const t = $('#toast'); t.innerHTML = `<span>${msg}</span><button type="button">View cart</button>`;
   $('button', t).onclick = () => { t.classList.remove('on'); openCart(true); };
   t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3200);
@@ -492,6 +506,104 @@ function syncAdded() {
     if (e.target.closest('.mbar-msg')) window.ITMtrack && ITMtrack('message_click', { location: 'mobile_bar' });
     if (e.target.closest('.sday, .stime')) window.ITMtrack && ITMtrack('slot_select', { day: dayIn.value, time: timeIn.value });
     setTimeout(tick, 50);
+  });
+})();
+
+/* ---------- install-first layer: book from any kit, vehicle picker, get-the-look builds, cart add-ons ---------- */
+(function () {
+  const T = (ev, p) => window.ITMtrack && ITMtrack(ev, p);
+  let VEH = '';
+  try { VEH = sessionStorage.getItem('itm_veh') || ''; } catch (e) {}
+
+  /* pre-fill the booking form for one or more kits, then the #book link scrolls there */
+  function bookFor(hs, from) {
+    hs = [...new Set(hs)].filter(h => INST[h]);
+    if (VEH) pick('vehicle', VEH);
+    hs.forEach(h => pick('work', INST[h][1]));
+    pick('parts', 'Supply them for me');
+    const n = $('#booker [name=notes]'), names = hs.map(h => byH[h].name).join(', ');
+    if (names && !n.value.includes(names)) n.value = `Kits: ${names}` + (n.value ? `\n${n.value}` : '');
+    typeof estimate === 'function' && estimate();
+    T('install_click', { from, items: hs.join(',') });
+  }
+  window.ITMbookFor = bookFor;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('.inst-book'); if (a) bookFor([a.dataset.inst], 'card');
+  });
+
+  /* vehicle picker: tailors the order and the advice, and carries into the booking form */
+  const ORDER = {
+    'Truck': ['84-chip-pure-white-rocklights', '16-count', '10-row-pure-white-wheel-lights', '72-chip-pure-white-rock-light', '5-row-pure-white-wheel-lights', '4pc-rgbw-rock-light-kit'],
+    'SUV / Jeep': ['84-chip-pure-white-rocklights', '4pc-rgbw-rock-light-kit', '72-chip-pure-white-rock-light', '16-count', '10-row-pure-white-wheel-lights'],
+    'UTV / Side-by-side': ['4pc-rgbw-rock-light-kit', '84-chip-pure-white-rocklights', '72-chip-pure-white-rock-light', 'magnetic-t-bracket-mount'],
+    'Car': ['4pc-rgbw-rock-light-kit', '84-chip-pure-white-rocklights', '72-chip-pure-white-rock-light', '10-row-pure-white-wheel-lights'],
+  };
+  const TIP = {
+    'Truck': 'For a truck we&rsquo;d start with a rock light set and a switchback kit. Wheel rings are 17&Prime; and sit behind the wheel, so we check the fit at drop-off.',
+    'SUV / Jeep': 'For a Jeep or SUV we&rsquo;d start with rock lights or the RGBW color kit. Wheel rings are 17&Prime;, so we check the fit at drop-off.',
+    'UTV / Side-by-side': 'For a side-by-side we&rsquo;d start with the RGBW color kit or pure white rock lights. T-bracket mounts hold on the frame without drilling.',
+    'Car': 'For a car we&rsquo;d start with the RGBW color kit or pure white rock lights. On a lowered car we check clearance at drop-off.',
+  };
+  const base = $$('.card', grid).map(c => c.dataset.h);
+  function setVeh(v, user) {
+    VEH = v; try { sessionStorage.setItem('itm_veh', v); } catch (e) {}
+    $$('#veh [data-veh]').forEach(b => { const on = b.dataset.veh === v; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    const want = ORDER[v] || [], order = [...want, ...base.filter(h => !want.includes(h))];
+    order.forEach(h => { const c = $(`.card[data-h="${h}"]`, grid); c && grid.appendChild(c); });
+    $$('.card', grid).forEach(c => { c.classList.toggle('pick', want.slice(0, 3).includes(c.dataset.h)); });
+    const tip = $('#vehTip'); tip.innerHTML = TIP[v] + ` <a href="#book" class="veh-book">Book a ${v === 'UTV / Side-by-side' ? 'UTV' : v === 'SUV / Jeep' ? 'Jeep or SUV' : v.toLowerCase()} install &rarr;</a>`; tip.hidden = false;
+    if (user) { pick('vehicle', v); T('vehicle_select', { vehicle: v }); }
+  }
+  $('#veh').addEventListener('click', e => {
+    const b = e.target.closest('[data-veh]'); if (b) setVeh(b.dataset.veh, true);
+    if (e.target.closest('.veh-book')) bookFor((ORDER[VEH] || []).slice(0, 1), 'vehicle');
+  });
+  if (VEH && ORDER[VEH]) setVeh(VEH, false);
+
+  /* get the look: each build lists the closest ITM kits */
+  const LOOK = {
+    'm-a': ['16-count'],
+    'm-b': ['84-chip-pure-white-rocklights'],
+    'm-c': ['4pc-rgbw-rock-light-kit'],
+    'm-d': ['10-row-pure-white-wheel-lights', '84-chip-pure-white-rocklights'],
+    'm-e': ['84-chip-pure-white-rocklights'],
+  };
+  /* phones: the open panel shows as a bottom sheet at page level (animated photo frames can't pin a fixed panel) */
+  document.body.insertAdjacentHTML('beforeend', '<div class="look-sheet" id="lookSheet" hidden></div>');
+  const phone = matchMedia('(max-width:560px)');
+  function sheet(pn) { const sh = $('#lookSheet'); if (pn && phone.matches) { sh.innerHTML = '<button type="button" class="look-x" aria-label="Close">&times;</button>' + pn.innerHTML; sh.hidden = false; } else { sh.hidden = true; sh.innerHTML = ''; } }
+  document.addEventListener('click', e => { if (e.target.closest('.look-x')) { $$('[data-look].look-on .look-btn').forEach(b => b.click()); } });
+  $$('[data-look]').forEach(f => {
+    const hs = LOOK[f.dataset.look]; if (!hs) return;
+    f.insertAdjacentHTML('beforeend', `<button type="button" class="look-btn" aria-expanded="false">Get the look <i aria-hidden="true">+</i></button>
+      <div class="look" hidden><p class="look-h">Closest ITM kits</p>${hs.map(h => { const p = byH[h], i = p.def ?? 0, v = p.v[i];
+        return `<div class="look-row"><span>${p.name}<b>${money(v.p)}</b></span>${v.ok ? `<button type="button" class="look-add" data-h="${h}" data-i="${i}">Add</button>` : '<em>Out of stock</em>'}</div>`; }).join('')}
+      <a href="#book" class="look-book" data-hs="${hs.join(',')}">Book this build <i aria-hidden="true">&rarr;</i></a></div>`);
+  });
+  document.addEventListener('click', e => {
+    const lb = e.target.closest('.look-btn');
+    if (lb) { const f = lb.closest('figure'), pn = $('.look', f), open = pn.hidden;
+      $$('.look').forEach(x => { x.hidden = true; x.closest('figure').classList.remove('look-on'); x.previousElementSibling.setAttribute('aria-expanded', 'false'); });
+      pn.hidden = !open; f.classList.toggle('look-on', open); lb.setAttribute('aria-expanded', open);
+      sheet(open ? pn : null); open && T('look_open', { build: f.dataset.look }); return; }
+    if (!e.target.closest('.look, #lookSheet')) { $$('[data-look] .look').forEach(x => { if (!x.hidden) { x.hidden = true; x.closest('figure').classList.remove('look-on'); x.previousElementSibling.setAttribute('aria-expanded', 'false'); } }); sheet(null); }
+    const la = e.target.closest('.look-add'); if (la) { add(la.dataset.h, +la.dataset.i); T('add_to_cart', { item: la.dataset.h, from: 'look' }); return; }
+    const bk = e.target.closest('.look-book'); if (bk) bookFor(bk.dataset.hs.split(','), 'look');
+  });
+
+  /* cart: finish the build (only what's in stock), plus have-us-install-it */
+  const foot = $('.dr-foot'); foot.insertAdjacentHTML('afterbegin', '<div class="dr-up" id="drUp"></div>');
+  function upsell() {
+    const up = $('#drUp'), hs = cart.map(l => l.h), lights = hs.filter(h => INST[h] && !/mount|untitled/.test(h));
+    if (!lights.length) { up.innerHTML = ''; return; }
+    const ext = byH['3-pin-wire-extension'], hasExt = hs.includes('3-pin-wire-extension');
+    up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
+      `<a href="#book" class="up-book">We install it in Mesa <i aria-hidden="true">&rarr;</i></a>`;
+  }
+  new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
+  foot.addEventListener('click', e => {
+    const a = e.target.closest('.up-add'); if (a) { add(a.dataset.h, +a.dataset.i); T('add_to_cart', { item: a.dataset.h, from: 'cart_upsell' }); }
+    if (e.target.closest('.up-book')) { bookFor(cart.map(l => l.h), 'cart'); openCart(false); }
   });
 })();
 
