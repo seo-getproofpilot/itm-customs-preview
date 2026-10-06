@@ -1529,6 +1529,7 @@ html.pv-open{overflow:hidden}
 .hero.lit .hb-bloom i{animation:ltOn .42s var(--d) steps(1,end) forwards}
 @keyframes bloomOut{to{opacity:0}}
 @media (prefers-reduced-motion:reduce){ .hb-bloom{display:none} }
+.c-view{font-size:11px;padding:5px 7px}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
