@@ -70,7 +70,7 @@ function card(p) {
   el.innerHTML = `<div class="card-frame"><div class="card-chrome"><div class="card-in">
     <figure class="c-fig">
       <div class="badges"></div>
-      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i ? p.name + ' installed on a vehicle' : 'ITM Customs ' + p.name + ' – ' + p.catL.toLowerCase()}" loading="lazy">`).join('')}
+      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i ? p.name + (p.cat === 'merch' ? ' – second view' : ' installed on a vehicle') : 'ITM Customs ' + p.name + ' – ' + p.catL.toLowerCase()}" loading="lazy">`).join('')}
     </figure>
     <div class="c-body">
       <span class="c-cat">${p.catL}</span>
