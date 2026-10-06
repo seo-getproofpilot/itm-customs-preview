@@ -245,7 +245,35 @@ const HOURS = {
   ahead: 60,
 };
 const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
-const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form);
+/* live availability from the shop's Google Calendar (booking/Code.gs, set in <meta name="itm-booking-api">).
+   Without an endpoint the demo runs on sample availability so the behaviour is visible. */
+const BOOK_API = (document.querySelector('meta[name="itm-booking-api"]')?.content || '').trim();
+const isoOf = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const ALL_SLOTS = [...HOURS.Morning, ...HOURS.Midday, ...HOURS.Afternoon];
+const AV = {}, AV_DONE = new Set();
+let AV_FAIL = false;
+function sampleDay(d) {               // demo data only: a day off now and then, a few times already booked
+  if (!SLOT_OPEN(d)) return { open: false, reason: 'closed', times: [] };
+  const n = d.getDate() + d.getMonth() * 31;
+  if (n % 11 === 3) return { open: false, reason: 'off', times: [] };
+  const times = ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0);
+  return { open: true, reason: '', times };
+}
+const calStatus = t => { const el = $('#calStatus'); if (el) el.textContent = t; };
+async function loadMonth(y, m, done) {
+  const key = `${y}-${m}`; if (AV_DONE.has(key)) return; AV_DONE.add(key);
+  const from = new Date(y, m, 1, 12), to = new Date(y, m + 1, 0, 12);
+  if (!BOOK_API) { for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) AV[isoOf(d)] = sampleDay(d); return done(); }
+  calStatus('Checking open times…');
+  try {
+    const r = await fetch(`${BOOK_API}?action=availability&from=${isoOf(from)}&to=${isoOf(to)}`);
+    const j = await r.json(); if (!j.ok) throw new Error('availability');
+    Object.assign(AV, j.days); calStatus('');
+  } catch (e) { AV_DONE.delete(key); AV_FAIL = true; calStatus('Live times didn’t load. Pick a day and time and we’ll confirm it.'); }
+  done();
+}
+const dayInfo = d => AV[isoOf(d)] || (AV_FAIL ? { open: SLOT_OPEN(d), times: ALL_SLOTS } : null);
+const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form), dateIn = $('[name=date]', form);
 const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 const dkey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 const cal = (() => {
@@ -259,34 +287,42 @@ const cal = (() => {
     const y = view.getFullYear(), m = view.getMonth(), days = new Date(y, m + 1, 0).getDate();
     let h = '<span class="cal-pad"></span>'.repeat(new Date(y, m, 1).getDay());
     for (let i = 1; i <= days; i++) {
-      const d = new Date(y, m, i, 12), ok = d >= min && d <= max && SLOT_OPEN(d), on = picked && dkey(picked) === dkey(d);
-      const why = d < min || d > max ? '' : ok ? '' : ', closed';
-      h += `<button type="button" class="sday${on ? ' on' : ''}" role="radio" aria-checked="${!!on}" data-k="${dkey(d)}"${ok ? '' : ' disabled'} aria-label="${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}${why}">${i}</button>`;
+      const d = new Date(y, m, i, 12), inRange = d >= min && d <= max, info = inRange ? dayInfo(d) : null;
+      const ok = !!(info && info.open), on = picked && dkey(picked) === dkey(d);
+      const why = !inRange ? '' : !info ? ', loading' : ok ? '' : info.reason === 'full' ? ', fully booked' : info.reason === 'off' ? ', shop closed' : ', closed';
+      const cls = inRange && info && !ok ? (info.reason === 'full' ? ' full' : info.reason === 'off' ? ' off' : '') : '';
+      h += `<button type="button" class="sday${on ? ' on' : ''}${cls}" role="radio" aria-checked="${!!on}" data-k="${dkey(d)}"${ok ? '' : ' disabled'} aria-label="${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}${why}">${i}</button>`;
     }
     grid.innerHTML = h;
     $('.cal-nav[data-m="-1"]').disabled = y === min.getFullYear() && m <= min.getMonth();
     $('.cal-nav[data-m="1"]').disabled = y === max.getFullYear() && m >= max.getMonth();
+    loadMonth(y, m, render);
   }
   $$('.cal-nav').forEach(b => b.onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + +b.dataset.m, 1); render(); });
   grid.addEventListener('click', e => {
     const b = e.target.closest('.sday'); if (!b || b.disabled) return;
     const [y, m, d] = b.dataset.k.split('-').map(Number); picked = new Date(y, m, d, 12);
-    dayIn.value = fmtDay(picked); render(); slotLabel();
+    dayIn.value = fmtDay(picked); dateIn.value = isoOf(picked); render(); refreshTimes(); slotLabel();
   });
   render();
-  return { render };
+  return { render, reload: () => { const k = picked ? `${picked.getFullYear()}-${picked.getMonth()}` : ''; AV_DONE.delete(k); render(); } };
 })();
 function choose(group, btn) {
   $$('[role=radio]', group).forEach(x => { const on = x === btn; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
 }
 $('#slotTimes').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b) return;
   choose($('#slotTimes'), b);
-  const hrs = $('#slotHours');
-  hrs.innerHTML = HOURS[b.dataset.t].map(t => `<button type="button" class="stime${timeIn.value === t ? ' on' : ''}" role="radio" aria-checked="${timeIn.value === t}" data-t="${t}">${t}</button>`).join('');
+  refreshTimes(); slotLabel(); });
+/* the exact times for the chosen window; times already booked on the calendar show as taken */
+function refreshTimes() {
+  const win = $('#slotTimes .slot.on'), hrs = $('#slotHours'); if (!win) return;
+  const free = (dateIn.value && AV[dateIn.value] && AV[dateIn.value].times) || (dateIn.value ? null : ALL_SLOTS) || ALL_SLOTS;
+  hrs.innerHTML = HOURS[win.dataset.t].map(t => { const ok = free.includes(t);
+    return `<button type="button" class="stime${timeIn.value === t ? ' on' : ''}${ok ? '' : ' taken'}" role="radio" aria-checked="${timeIn.value === t}" data-t="${t}"${ok ? '' : ' disabled aria-label="' + t + ', booked"'}>${t}</button>`; }).join('');
   hrs.hidden = false;
-  if (!HOURS[b.dataset.t].includes(timeIn.value)) timeIn.value = '';
-  slotLabel(); });
-$('#slotHours').addEventListener('click', e => { const b = e.target.closest('.stime'); if (!b) return;
+  if (!HOURS[win.dataset.t].includes(timeIn.value) || !free.includes(timeIn.value)) { if (timeIn.value) $$('.stime.on', hrs).forEach(x => x.classList.remove('on')); timeIn.value = ''; }
+}
+$('#slotHours').addEventListener('click', e => { const b = e.target.closest('.stime'); if (!b || b.disabled) return;
   choose($('#slotHours'), b); timeIn.value = b.dataset.t; slotLabel(); });
 function slotLabel() {
   const d = dayIn.value, t = timeIn.value;
@@ -317,6 +353,7 @@ form.addEventListener('submit', e => {
     msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? (!f.day ? 'Pick a drop-off day on the calendar.' : 'Pick a drop-off time.') : 'Add your name and a way to reach you.';
     return;
   }
+  if (BOOK_API) { bookLive(f, msg); return; }
   const body = [
     `Vehicle: ${picked('vehicle')[0] || '-'}${f.ymm ? ' / ' + f.ymm : ''}`,
     `Work: ${picked('work').join(', ')}`,
@@ -327,6 +364,34 @@ form.addEventListener('submit', e => {
   void body;
   msg.className = 'fine ok'; msg.textContent = 'Preview only. On the live site this request lands on ITM\'s schedule.';
 });
+
+/* book straight onto the shop's Google Calendar */
+async function bookLive(f, msg) {
+  const btn = $('button[type=submit]', form), label = $('#bookBtnT');
+  btn.disabled = true; const was = label.textContent; label.textContent = 'Booking…';
+  msg.className = 'fine pending'; msg.textContent = 'Saving your drop-off to the shop calendar…';
+  try {
+    const r = await fetch(BOOK_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'),
+        parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '' }) });
+    const j = await r.json();
+    if (j.ok) {
+      msg.className = 'fine ok';
+      msg.textContent = `You’re booked for ${j.when || f.day + ' at ' + f.time}. ` + (/@/.test(f.contact) ? 'A confirmation is on its way to your email.' : 'We’ll text you to confirm.');
+      label.textContent = 'Booked ✓';
+      window.ITMtrack && ITMtrack('booking_submit', { day: f.date, time: f.time, live: true });
+      AV_DONE.clear(); Object.keys(AV).forEach(k => delete AV[k]); cal.render();
+      return;
+    }
+    msg.className = 'fine err'; msg.textContent = j.error || 'That didn’t go through. Please try again.';
+    if (j.taken) { timeIn.value = ''; cal.reload(); setTimeout(refreshTimes, 900); }
+    window.ITMtrack && ITMtrack('booking_error', { reason: j.error || 'unknown' });
+  } catch (e) {
+    msg.className = 'fine err'; msg.textContent = 'Couldn’t reach the shop calendar. Please try again, or tap Message Us.';
+    window.ITMtrack && ITMtrack('booking_error', { reason: 'network' });
+  }
+  btn.disabled = false; if (label.textContent === 'Booking…') label.textContent = was;
+}
 
 /* ---------- reviews belt (verbatim from Judge.me, light typo fixes only) ---------- */
 const R = [
@@ -493,6 +558,7 @@ function syncAdded() {
   });
   document.getElementById('booker')?.addEventListener('submit', () => setTimeout(() => {
     const m = document.getElementById('bookMsg');
+    if (m && m.classList.contains('pending')) return;
     m && m.classList.contains('ok') ? track('booking_submit', { day: document.querySelector('#booker [name=day]').value, time: document.querySelector('#booker [name=time]').value }) : track('booking_error', { reason: m ? m.textContent : '' });
   }));
   // scroll depth + time on page

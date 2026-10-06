@@ -9,6 +9,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="Rock lights, wheel lights and switchback kits from Mesa, AZ. Shop plug-and-play kits or book an install at the ITM Customs shop. 4.7★ from 33 reviews.">
 <meta name="theme-color" content="#08090C">
+<meta name="itm-booking-api" content="">
 <script>document.documentElement.classList.add('js');(function(){var q=new URLSearchParams(location.search),c=q.get('cta');if(c)document.documentElement.dataset.cta=c;if(q.has('nointro'))try{sessionStorage.setItem('itm_intro','1')}catch(e){}})();</script>
 <script>/* big screens: scale the whole site to the display (16" Mac and smaller untouched) */(function(){var d=document.documentElement;function f(){var W=innerWidth/(parseFloat(d.style.zoom)||1),H=innerHeight/(parseFloat(d.style.zoom)||1);W=screen&&W>0?W:1440;var z=W>=1800?Math.max(1,Math.min(W/1440,H/900,2.4)):1;d.style.zoom=z>1.02?z.toFixed(3):'';d.style.setProperty('--z',z);var lw=W/z;if(z>1.02)d.style.setProperty('--wrap',Math.round(Math.min(1880,Math.max(1320,lw*.86)))+'px');else d.style.removeProperty('--wrap');d.classList.toggle('xwide',z>1.02&&lw>1700)}f();addEventListener('resize',f)})();</script>
 <link rel="canonical" href="https://itmcustoms.com/">
@@ -25,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=pc912be5f">
+<link rel="stylesheet" href="assets/site.css?v=pc85c8cde">
 
 
 </head>
@@ -357,8 +358,10 @@
           <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>2 &ndash; 4:30 PM</span></button>
         </div>
         <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
-        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Book up to two months out.</p>
-        <input type="hidden" name="day"><input type="hidden" name="time">
+        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p>
+        <input type="hidden" name="day"><input type="hidden" name="date"><input type="hidden" name="time">
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="cal-status" id="calStatus" aria-live="polite"></p>
       </fieldset>
       <fieldset>
         <legend>How Do We Reach You?</legend>
@@ -464,6 +467,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=pc912be5f"></script>
+<script src="assets/app.js?v=pc85c8cde"></script>
 </body>
 </html>
