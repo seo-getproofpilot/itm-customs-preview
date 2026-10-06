@@ -1482,6 +1482,17 @@ html.pv-open{overflow:hidden}
 }
 @media (max-width:560px){ .c-view{right:6px;bottom:6px;font-size:8.5px;padding:4px 5px} }
 
+/* ---------- v89: phone floor restored: nothing under 11px, links tall enough to tap ---------- */
+@media (max-width:560px){
+  .c-cat,.inst-tag,.c-view,.badge,.card.pick .badges::after,.rv-tag,.look-btn,.var{font-size:11px}
+  .c-view{padding:5px 6px}
+  .rv-tag{font-size:10px;letter-spacing:.06em}
+  .inst-book{display:inline-flex;align-items:center;min-height:34px;padding:0;border-bottom:0;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:4px}
+  .rv-build{display:inline-flex;align-items:center;min-height:34px;margin-top:4px}
+  .c-inst{margin-top:6px;padding-top:4px;gap:0}
+}
+.rv-build{font-size:11px}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

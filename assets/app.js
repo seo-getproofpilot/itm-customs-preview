@@ -516,8 +516,7 @@ function syncAdded() {
 /* ---------- install-first layer: book from any kit, vehicle picker, get-the-look builds, cart add-ons ---------- */
 (function () {
   const T = (ev, p) => window.ITMtrack && ITMtrack(ev, p);
-  let VEH = '';
-  try { VEH = sessionStorage.getItem('itm_veh') || ''; } catch (e) {}
+  const VEH = '';
 
   /* pre-fill the booking form for one or more kits, then the #book link scrolls there */
   function bookFor(hs, from) {
@@ -534,35 +533,6 @@ function syncAdded() {
   document.addEventListener('click', e => {
     const a = e.target.closest('.inst-book'); if (a) bookFor([a.dataset.inst], 'card');
   });
-
-  /* vehicle picker: tailors the order and the advice, and carries into the booking form */
-  const ORDER = {
-    'Truck': ['84-chip-pure-white-rocklights', '16-count', '10-row-pure-white-wheel-lights', '72-chip-pure-white-rock-light', '5-row-pure-white-wheel-lights', '4pc-rgbw-rock-light-kit'],
-    'SUV / Jeep': ['84-chip-pure-white-rocklights', '4pc-rgbw-rock-light-kit', '72-chip-pure-white-rock-light', '16-count', '10-row-pure-white-wheel-lights'],
-    'UTV / Side-by-side': ['4pc-rgbw-rock-light-kit', '84-chip-pure-white-rocklights', '72-chip-pure-white-rock-light', 'magnetic-t-bracket-mount'],
-    'Car': ['4pc-rgbw-rock-light-kit', '84-chip-pure-white-rocklights', '72-chip-pure-white-rock-light', '10-row-pure-white-wheel-lights'],
-  };
-  const TIP = {
-    'Truck': 'For a truck we&rsquo;d start with a rock light set and a switchback kit. Wheel rings are 17&Prime; and sit behind the wheel, so we check the fit at drop-off.',
-    'SUV / Jeep': 'For a Jeep or SUV we&rsquo;d start with rock lights or the RGBW color kit. Wheel rings are 17&Prime;, so we check the fit at drop-off.',
-    'UTV / Side-by-side': 'For a side-by-side we&rsquo;d start with the RGBW color kit or pure white rock lights. T-bracket mounts hold on the frame without drilling.',
-    'Car': 'For a car we&rsquo;d start with the RGBW color kit or pure white rock lights. On a lowered car we check clearance at drop-off.',
-  };
-  const base = $$('.card', grid).map(c => c.dataset.h);
-  function setVeh(v, user) {
-    VEH = v; try { sessionStorage.setItem('itm_veh', v); } catch (e) {}
-    $$('#veh [data-veh]').forEach(b => { const on = b.dataset.veh === v; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
-    const want = ORDER[v] || [], order = [...want, ...base.filter(h => !want.includes(h))];
-    order.forEach(h => { const c = $(`.card[data-h="${h}"]`, grid); c && grid.appendChild(c); });
-    $$('.card', grid).forEach(c => { c.classList.toggle('pick', want.slice(0, 3).includes(c.dataset.h)); });
-    const tip = $('#vehTip'); tip.innerHTML = TIP[v] + ` <a href="#book" class="veh-book">Book a ${v === 'UTV / Side-by-side' ? 'UTV' : v === 'SUV / Jeep' ? 'Jeep or SUV' : v.toLowerCase()} install &rarr;</a>`; tip.hidden = false;
-    if (user) { pick('vehicle', v); T('vehicle_select', { vehicle: v }); }
-  }
-  $('#veh').addEventListener('click', e => {
-    const b = e.target.closest('[data-veh]'); if (b) setVeh(b.dataset.veh, true);
-    if (e.target.closest('.veh-book')) bookFor((ORDER[VEH] || []).slice(0, 1), 'vehicle');
-  });
-  if (VEH && ORDER[VEH]) setVeh(VEH, false);
 
   /* get the look: each build lists the closest ITM kits */
   const LOOK = {
