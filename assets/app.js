@@ -19,7 +19,7 @@ const P = [
     v:[{t:'Set of 4',id:46018763391229,p:45,was:50,ok:false}] },
   { h:'16-count', cat:'switch', catL:'Switchbacks', name:'Switchback Rock Light Kit',
     sub:'White and amber, plug and play, with Bluetooth app control.', specs:['White + amber','Wigwag / strobe','15 ft leads','Bluetooth'],
-    imgs:['p-16-count-1-crop','p-16-count-0-crop'],
+    imgs:['switchback-rock-light-kit-amber-truck','switchback-rock-light-kit-white-truck'],
     v:[{t:'4 lights',id:46543966044413,p:200,ok:false,h:'4-count'},{t:'10 lights',id:46544330555645,p:350,ok:false,h:'8-count'},{t:'16 lights',id:46544008806653,p:500,ok:true,h:'16-count'}], def:2 },
   { h:'4pc-rgbw-rock-light-kit', cat:'rock', catL:'Rock lights', name:'RGBW Rock Light Kit',
     sub:'Four 44-chip RGBW lights, Bluetooth harness and remote.', specs:['44 chip','RGBW','4 pc','Plug and play'],
@@ -47,7 +47,7 @@ const P = [
     v:[{t:'5 ft',id:46544323510525,p:6,ok:true},{t:'10 ft',id:46544315646205,p:7.5,ok:true}] },
   { h:'untitled-jun19_07-48', cat:'parts', catL:'Mounts & wiring', name:'Latching Push-Button Switch',
     sub:'19 mm black stainless switch with a white LED ring.', specs:['19 mm','Latching','LED ring'],
-    imgs:['p-untitled-jun19_07-48-1','p-untitled-jun19_07-48-0'],
+    imgs:['latching-push-button-switch-wiring','latching-push-button-switch-dash'],
     v:[{t:'1 switch',id:46373584568573,p:10,ok:false}] },
   { h:'itm-truck-t-shirt', cat:'merch', catL:'Merch', name:'ITM Truck Tee',
     sub:'Screen-printed 100% cotton. Logo on the pocket, truck on the back.', specs:['100% cotton','Screen print'],
@@ -70,7 +70,7 @@ function card(p) {
   el.innerHTML = `<div class="card-frame"><div class="card-chrome"><div class="card-in">
     <figure class="c-fig">
       <div class="badges"></div>
-      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i? '' : p.name}" loading="lazy">`).join('')}
+      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i ? p.name + ' installed on a vehicle' : 'ITM Customs ' + p.name + ' – ' + p.catL.toLowerCase()}" loading="lazy">`).join('')}
     </figure>
     <div class="c-body">
       <span class="c-cat">${p.catL}</span>
@@ -245,7 +245,7 @@ const R = [
   ['Bray','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-6-crop','Probably the brightest rock lights I’ve seen. I’ve been using them on my projects since August 2025. They’ve always worked and never quit. Recommend this brand!'],
   ['cds performance','Installer · 72-Chip','p-72-chip-pure-white-rock-light-1','Man, I’m blown away by how bright they are. 16 pieces was perfect for the truck. I do lighting and sound systems for a living. Best rock light I’ve had someone bring me to install!'],
   ['Erick Mendoza','10-Row Wheel Lights','p-10-row-pure-white-wheel-lights-0','I own the truck in the picture. These 10-row rim lights have been nothing but sick. No problems, bright, turning heads everywhere I go.'],
-  ['Ricky Frazier','ITM customer','r-1740674998','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.'],
+  ['Ricky Frazier','ITM customer','itm-customs-chrome-decals','I’ve had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing.'],
   ['Chino','Install · 5-Row Wheel Lights','p-5-row-pure-white-wheel-lights-1','I needed some lights installed. I came to ITM and they got it done fast and right. Great customer service and great work. 10/10.'],
   ['Troy Gross','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-5-crop','Insanely bright for the price. I would highly recommend these lights.'],
   ['j.','Magnetic T-Bracket','p-magnetic-t-bracket-mount-3','It gives the rock lights a cleaner, more proper look. Get these!'],
@@ -253,7 +253,7 @@ const R = [
   ['Jaime','Magnetic T-Bracket','p-magnetic-t-bracket-mount-4','The magnet is very strong. Highly recommend!'],
 ];
 const run = $('#beltRun');
-const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="" loading="lazy"></div><div class="rv-b">
+const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[1]} reviewed by ${r[0]}" loading="lazy"></div><div class="rv-b">
   <span class="rv-stars" aria-label="5 stars">★★★★★</span><p>${r[3]}</p>
   <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div></div></article>`;
 run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class="rv"/g, '<article class="rv" aria-hidden="true"');
@@ -328,14 +328,14 @@ document.addEventListener('click', e => {
   const CATS = [
     ['all', 'All lights', 'p-84-chip-pure-white-rocklights-0', 'Every product'],
     ['rock', 'Rock lights', 'p-72-chip-pure-white-rock-light-0', 'White + RGBW sets'],
-    ['switch', 'Switchbacks', 'p-16-count-1-crop', 'White / amber kits'],
+    ['switch', 'Switchbacks', 'switchback-rock-light-kit-amber-truck', 'White / amber kits'],
     ['wheel', 'Wheel lights', 'p-5-row-pure-white-wheel-lights-1', '17″ 5 and 10 row'],
     ['parts', 'Mounts & wiring', 'p-magnetic-mount-for-rocklights-0', 'Mounts, switches, leads'],
     ['merch', 'Merch', 'p-itm-truck-t-shirt-0', 'Tees + decals'],
   ];
   const count = c => c === 'all' ? P.length : P.filter(p => p.cat === c).length;
   grid.innerHTML = CATS.map(([c, n, img, d]) =>
-    `<button class="sm-item" data-cat="${c}"><span class="sm-fig"><img src="${IMG(img)}" alt="" loading="lazy"></span>
+    `<button class="sm-item" data-cat="${c}"><span class="sm-fig"><img src="${IMG(img)}" alt="${n} from ITM Customs" loading="lazy"></span>
       <span class="sm-txt"><b>${n}</b><i>${d}</i></span></button>`).join('');
   const set = on => { menu.hidden = !on; btn.setAttribute('aria-expanded', on); btn.classList.toggle('on', on); };
   btn.addEventListener('click', e => { e.stopPropagation(); set(menu.hidden); });
@@ -375,6 +375,30 @@ function syncAdded() {
   const _paint = paint;
   paint = function (el, p) { _paint(el, p); syncAdded(); };
   syncAdded();
+})();
+
+/* ---------- measurement: GA4-ready events (window.dataLayer) for bookings, cart, navigation, engagement ---------- */
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  const track = (event, params = {}) => window.dataLayer.push({ event, ...params });
+  window.ITMtrack = track;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href="#book"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
+    const add = e.target.closest('.add[data-h], [data-add], #countAdd'); if (add) track('add_to_cart', { item: add.dataset.h || add.dataset.add || '84-chip-pure-white-rocklights' });
+    if (e.target.closest('#checkout')) track('begin_checkout');
+    if (e.target.closest('#shopToggle')) track('menu_open');
+    const cat = e.target.closest('.sm-item, .lane, .chip'); if (cat) track('category_select', { category: cat.dataset.cat || cat.dataset.filter });
+    if (e.target.closest('#seg button')) track('light_count_select', { count: e.target.closest('#seg button').dataset.n });
+    if (e.target.closest('.acc summary')) track('faq_open', { q: e.target.closest('summary').textContent.trim() });
+  });
+  document.getElementById('booker')?.addEventListener('submit', () => track('booking_submit'));
+  // scroll depth + time on page
+  const marks = new Set();
+  addEventListener('scroll', () => {
+    const d = Math.round((scrollY + innerHeight) / document.documentElement.scrollHeight * 100);
+    [25, 50, 75, 100].forEach(m => { if (d >= m && !marks.has(m)) { marks.add(m); track('scroll_depth', { percent: m }); } });
+  }, { passive: true });
+  [30, 60, 120, 300].forEach(sec => setTimeout(() => !document.hidden && track('engaged_time', { seconds: sec }), sec * 1000));
 })();
 
 /* preview build: every outbound action is switched off */
