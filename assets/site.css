@@ -1793,6 +1793,14 @@ html.pv-open{overflow:hidden}
 .booker legend::before{grid-column:1;grid-row:1}
 .booker legend::after{grid-column:3;grid-row:1;margin:0}
 .booker legend em{grid-column:2/4;grid-row:2;margin:6px 0 0}
+/* v102: phone booking QC — taller tap targets, weekday labels at the 11px floor */
+.booker .opts.small .opt{min-height:42px}
+.cal-dow span{font-size:11px}
+@media (max-width:560px){
+  .cal-dow,.cal-grid{gap:3px}
+  .cal-grid .sday{aspect-ratio:auto;min-height:42px}
+  .cal-nav{width:42px;height:42px}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

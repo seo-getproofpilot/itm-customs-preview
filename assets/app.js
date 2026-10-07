@@ -387,7 +387,8 @@ function showBooked(f, when) {
     <div class="bk-done-act"><a class="btn btn-primary" href="${gcal}" target="_blank" rel="noopener"><span>Add To My Calendar</span></a>
       <button type="button" class="btn btn-chrome bk-again"><span>Book Another Install</span></button></div>`;
   form.classList.add('done'); $('.bk-head', form).after(box);
-  box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  const navH = (document.getElementById('nav') || {}).offsetHeight || 64;
+  scrollTo({ top: box.getBoundingClientRect().top + scrollY - navH - 12, behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
   $('.bk-again', box).onclick = () => { box.remove(); form.classList.remove('done'); form.reset(); $$('.on', form).forEach(x => { x.classList.remove('on'); x.setAttribute('aria-checked', 'false'); x.setAttribute('aria-pressed', 'false'); });
     dayIn.value = dateIn.value = timeIn.value = ''; $('#slotHours').hidden = true; $('#bookBtnT').textContent = 'Book My Install'; $('#est').innerHTML = ''; cal.render(); };
 }
