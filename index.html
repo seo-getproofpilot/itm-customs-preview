@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p4a888bd6">
+<link rel="stylesheet" href="assets/site.css?v=p168b1227">
 
 
 </head>
@@ -278,6 +278,8 @@
       <p class="kick dark"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
       <h2 class="display-2">Tell Us About Your Truck. We'll Light It Up.</h2>
       <p class="body">Pick the work and a drop-off time. We confirm by text or email, and you can bring lights you bought from us or have us supply them.</p>
+    </div>
+    <div class="book-info">
       <div class="costs" id="costs">
         <p class="costs-h">What It Costs</p>
         <dl>
@@ -287,7 +289,6 @@
           <div class="labor"><dt>Install Labor</dt><dd><b>Quoted First</b><span>Price agreed before we start</span></dd></div>
         </dl>
       </div>
-      <figure class="book-pic"><img src="assets/img/p-magnetic-mount-for-rocklights-2.webp" alt="ITM rock light on a magnetic mount under a truck frame" loading="lazy"><figcaption>Magnetic Mount, Frame Rail</figcaption></figure>
       <div class="wired" id="wired">
         <p class="wired-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Wired Right, Every Install</p>
         <ul>
@@ -343,7 +344,8 @@
       </fieldset>
       <fieldset>
         <legend>Pick A Drop-Off Time</legend>
-        <div class="cal" id="cal">
+        <div class="pick-grid">
+        <div class="pick-cal"><div class="cal" id="cal">
           <div class="cal-head">
             <button type="button" class="cal-nav" data-m="-1" aria-label="Previous month">&lsaquo;</button>
             <b id="calMonth" aria-live="polite"></b>
@@ -351,14 +353,15 @@
           </div>
           <div class="cal-dow" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
           <div class="cal-grid" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
-        </div>
-        <div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Part of the day">
+        </div></div>
+        <div class="pick-times"><div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Part of the day">
           <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>9 &ndash; 11:30 AM</span></button>
           <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>12 &ndash; 1:30 PM</span></button>
           <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>2 &ndash; 4:30 PM</span></button>
         </div>
         <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
-        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p>
+        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p></div>
+        </div>
         <input type="hidden" name="day"><input type="hidden" name="date"><input type="hidden" name="time">
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <p class="cal-status" id="calStatus" aria-live="polite"></p>
@@ -467,6 +470,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p4a888bd6"></script>
+<script src="assets/app.js?v=p168b1227"></script>
 </body>
 </html>
