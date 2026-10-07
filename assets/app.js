@@ -756,6 +756,20 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
   window.ITMview = open;
 })();
 
+/* booking steps light their LED strip when they're complete */
+(function () {
+  const f = document.getElementById('booker'); if (!f) return;
+  const fs = [...f.querySelectorAll('fieldset')];
+  const check = () => {
+    const v = n => (f.querySelector(`[name=${n}]`) || {}).value || '';
+    const on = n => !!f.querySelector(`.opts[data-name="${n}"] .opt.on`);
+    const st = [on('vehicle') || v('ymm').trim().length > 2, on('work'), !!(v('date') && v('time')), !!(v('name').trim() && v('contact').trim())];
+    fs.forEach((x, i) => x.classList.toggle('done', !!st[i]));
+  };
+  ['click', 'input', 'change'].forEach(ev => f.addEventListener(ev, () => setTimeout(check, 30)));
+  check();
+})();
+
 /* preview build: every outbound action is switched off */
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-preview-off], #checkout'); if (!a) return;

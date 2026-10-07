@@ -1617,6 +1617,115 @@ html.pv-open{overflow:hidden}
 .bk-done-act{display:flex;flex-wrap:wrap;gap:12px}
 @media (max-width:560px){ .bk-done{margin:12px 10px 18px} .bk-done-act .btn{flex:1 1 100%;justify-content:center} }
 
+/* =====================================================================================
+   v100: booking form redesign. Parts from ITM's own world: switch-plate buttons with an
+   LED ring (his latching push-button switch), machined chamfered panels with an LED strip
+   that lights when a step is done, hazard-stripe closed days, LED-chip times.
+   ===================================================================================== */
+.booker{--cut:12px;border:0;background:#fff;
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));border-radius:0;
+  box-shadow:none;filter:drop-shadow(0 0 1px rgba(7,137,227,.55)) drop-shadow(0 28px 40px rgba(10,40,80,.28))}
+/* header LED strip that idles in amber */
+.bk-head{position:relative}
+.bk-head::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;
+  background:radial-gradient(circle,#FFB23F 1px,transparent 1.6px) 0 50%/7px 3px repeat-x;filter:drop-shadow(0 0 3px #FFB23F);opacity:.85;animation:ledChase 1.4s linear infinite}
+
+/* step panels: machined plate, blue-metal frame, chamfered corners, LED strip on top */
+.booker fieldset,.booker fieldset:nth-of-type(n){--c:10px;position:relative;border:1.5px solid transparent;border-radius:0;padding:20px 18px 8px;
+  background:linear-gradient(180deg,#F5F9FE,#E9F1FA) padding-box,linear-gradient(135deg,#9cc8ef,#0789E3 45%,#0857B8) border-box;
+  clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c))}
+.booker fieldset:nth-of-type(3){background:linear-gradient(180deg,#FFF9F0,#FDF0DD) padding-box,linear-gradient(135deg,#FFD08A,#F59A26 50%,#C46A0C) border-box}
+.booker fieldset::after{content:"";position:absolute;left:calc(var(--c) + 8px);right:18px;top:0;height:3px;
+  background:radial-gradient(circle,rgba(11,13,18,.22) 1.1px,transparent 1.7px) 0 50%/8px 3px repeat-x;transition:filter .3s}
+.booker fieldset.done::after{background:radial-gradient(circle,#FFB23F 1.2px,transparent 1.8px) 0 50%/8px 3px repeat-x;filter:drop-shadow(0 0 3px #FFB23F)}
+.booker legend::after{content:"";margin-left:auto;align-self:center;flex:none;width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle,#c9ced6 0 30%,#9aa3ae 34% 60%,#6e7682 64%);box-shadow:inset 0 1px 2px rgba(0,0,0,.35);transition:all .3s}
+.booker fieldset.done legend::after{background:radial-gradient(circle,#fff7dc 0 22%,#FFB23F 28% 58%,#C46A0C 64%);box-shadow:0 0 8px #FFB23F,0 0 18px rgba(255,178,63,.55)}
+/* step badges become chamfered machined tiles */
+.booker legend::before{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+
+/* switch-plate option buttons with an LED ring */
+.booker .opt{--c:7px;position:relative;transform:none;border:0;border-radius:0;padding:12px 16px 12px 36px;min-height:42px;
+  background:linear-gradient(180deg,#ffffff 0%,#eef1f5 48%,#d9dfe6 100%);color:#0B0D12;
+  font:400 12.5px/1 var(--f-mono);letter-spacing:.04em;font-style:normal;
+  clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c));
+  box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 rgba(11,13,18,.14),inset 0 0 0 1px rgba(11,13,18,.12);transition:background .2s,color .2s,transform .12s}
+.booker .opt::before,.booker .opt.on::before{content:"";position:absolute;left:13px;top:50%;width:13px;height:13px;margin-top:-6.5px;border-radius:50%;
+  background:radial-gradient(circle,#4a505a 0 30%,#262a31 34% 54%,#a7afba 58% 72%,#6b727d 76%);box-shadow:inset 0 1px 1px rgba(0,0,0,.45);transition:all .25s}
+.booker .opt:hover{background:linear-gradient(180deg,#ffffff 0%,#f3f6fa 48%,#e2e8ef 100%);box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 rgba(11,13,18,.14),inset 0 0 0 1px #0789E3}
+.booker .opt:active{transform:translateY(1px)}
+.booker .opt.on{background:linear-gradient(180deg,#2a303a 0%,#161a21 55%,#0B0D12 100%);color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 0 #FFB23F,inset 0 0 0 1px #0B0D12}
+.booker .opt.on::before{background:radial-gradient(circle,#fff8e0 0 22%,#FFB23F 28% 56%,#F08A1C 60% 72%,#7a4300 76%);box-shadow:0 0 8px #FFB23F,0 0 16px rgba(255,178,63,.65)}
+.booker .opts-label{font-size:11px}
+
+/* inputs: chamfered, machined edge, blue focus line */
+.booker .field input,.booker .field textarea{border-radius:0;border:1.5px solid rgba(11,13,18,.16);background:#fff;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.booker .field input:focus,.booker .field textarea:focus{border-color:#0789E3;box-shadow:inset 0 -3px 0 #0789E3}
+
+/* calendar: chamfered keys, hazard-stripe closed days, lit selection */
+.booker .cal{border:1.5px solid rgba(11,13,18,.1);background:linear-gradient(180deg,#fff,#f7f9fb)}
+.cal-nav{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+  background:linear-gradient(180deg,#fff,#e5e9ef);border:0;box-shadow:inset 0 0 0 1px rgba(11,13,18,.16),inset 0 -2px 0 rgba(11,13,18,.1)}
+.cal-grid .sday{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+  background:linear-gradient(180deg,#ffffff,#eef1f5);box-shadow:inset 0 0 0 1px rgba(11,13,18,.1),inset 0 -2px 0 rgba(11,13,18,.08)}
+.cal-grid .sday:hover:not(:disabled){box-shadow:inset 0 0 0 1.5px #0789E3,inset 0 -2px 0 #0789E3}
+.cal-grid .sday.on{background:linear-gradient(180deg,#2a303a,#0B0D12);color:#FFB23F;text-shadow:0 0 8px rgba(255,178,63,.7);
+  box-shadow:inset 0 -3px 0 #FFB23F,0 0 0 1px #0B0D12}
+.cal-grid .sday.off{background:repeating-linear-gradient(135deg,rgba(255,178,63,.42) 0 4px,rgba(11,13,18,.08) 4px 8px);color:rgba(11,13,18,.32);text-decoration:none;box-shadow:none}
+.cal-grid .sday.full{background:#f1f3f6;color:rgba(11,13,18,.3);box-shadow:none}
+
+/* morning / midday / afternoon: plates with a sun-position icon */
+.booker .slot{--c:8px;position:relative;padding:13px 12px 12px 48px;border:0;border-radius:0;
+  background:linear-gradient(180deg,#ffffff,#eef1f5 55%,#dde3ea);box-shadow:inset 0 0 0 1px rgba(11,13,18,.13),inset 0 -2px 0 rgba(11,13,18,.12);
+  clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c))}
+.booker .slot::before{content:"";position:absolute;left:13px;top:50%;width:24px;height:24px;margin-top:-12px;background:#5d6672;transition:background .2s,filter .2s;
+  -webkit-mask:var(--sun) center/contain no-repeat;mask:var(--sun) center/contain no-repeat}
+.booker .slot[data-t="Morning"]{--sun:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 18h20v2H2zM6 16a6 6 0 0 1 12 0h-2.2a3.8 3.8 0 0 0-7.6 0zM11 3h2v4h-2zM3.6 8.2 5 6.8l2.6 2.6-1.4 1.4zM16.4 9.4 19 6.8l1.4 1.4-2.6 2.6z'/%3E%3C/svg%3E")}
+.booker .slot[data-t="Midday"]{--sun:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='4.6'/%3E%3Cpath d='M11 1h2v4h-2zM11 19h2v4h-2zM1 11h4v2H1zM19 11h4v2h-4zM4.2 5.6l1.4-1.4 2.8 2.8L7 8.4zM15.6 17l1.4-1.4 2.8 2.8-1.4 1.4zM4.2 18.4l2.8-2.8 1.4 1.4-2.8 2.8zM15.6 7l2.8-2.8 1.4 1.4L17 8.4z'/%3E%3C/svg%3E")}
+.booker .slot[data-t="Afternoon"]{--sun:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 18h20v2H2zM6 16a6 6 0 0 1 12 0h-2.2a3.8 3.8 0 0 0-7.6 0zM11 9V4.8l-1.6 1.6L8 5l4-4 4 4-1.4 1.4L13 4.8V9z' transform='rotate(180 12 6)'/%3E%3C/svg%3E")}
+.booker .slot.on{background:linear-gradient(180deg,#2a303a,#0B0D12);box-shadow:inset 0 -3px 0 #FFB23F}
+.booker .slot.on::before{background:#FFB23F;filter:drop-shadow(0 0 5px rgba(255,178,63,.8))}
+.booker .slot.on b::before{display:none}
+.booker .slot b{font-size:12.5px}
+
+/* exact times: LED chips in a light bar */
+.booker .stime{--c:6px;position:relative;border:0;border-radius:0;min-height:44px;background:linear-gradient(180deg,#fff,#e9edf2);
+  box-shadow:inset 0 0 0 1px rgba(11,13,18,.14),inset 0 -2px 0 rgba(11,13,18,.1);
+  clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c))}
+.booker .stime::after{content:"";position:absolute;right:8px;top:8px;width:5px;height:5px;border-radius:50%;background:#aab2bd}
+.booker .stime:hover:not(:disabled){box-shadow:inset 0 0 0 1.5px #0789E3,inset 0 -2px 0 #0789E3}
+.booker .stime.on{background:linear-gradient(180deg,#2a303a,#0B0D12);color:#FFB23F;text-shadow:0 0 8px rgba(255,178,63,.7);box-shadow:inset 0 -3px 0 #FFB23F}
+.booker .stime.on::after{background:#FFB23F;box-shadow:0 0 6px #FFB23F}
+.booker .stime.taken{background:#f1f3f6;box-shadow:inset 0 0 0 1px rgba(11,13,18,.06)}
+.booker .stime.taken::after{display:none}
+
+/* the book button: full-width chrome with an amber LED chase around it */
+.bk-submit{width:100%;min-height:60px;font-size:16px;overflow:visible}
+.bk-submit::after{content:"";position:absolute;inset:-3px;border-radius:8px;padding:2.5px;pointer-events:none;
+  background:conic-gradient(from var(--a),transparent 0 60%,rgba(255,178,63,.3) 72%,#FFB23F 84%,#fff2cf 86%,transparent 94%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  filter:drop-shadow(0 0 4px #FFB23F);animation:chase 2.4s linear infinite}
+.bk-submit:hover::after{animation-duration:.9s}
+.bk-submit[disabled]::after{animation:none;opacity:.3}
+@media (prefers-reduced-motion:reduce){.bk-submit::after,.bk-head::after{animation:none}}
+
+/* confirmation card matches */
+.bk-done-top{border-left:0;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);border-radius:0;box-shadow:inset 0 -3px 0 #FFB23F}
+.bk-done-rows{border-radius:0;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.bk-done-next li::before{border-radius:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+@media (max-width:560px){ .booker .opt{padding:11px 13px 11px 32px;font-size:11.5px} .booker .opt::before{left:11px;width:12px;height:12px;margin-top:-6px} .booker .slot{padding-left:42px} .booker .slot::before{left:11px;width:21px;height:21px;margin-top:-10.5px} }
+.booker .opts.small .opt{padding:10px 14px 10px 34px;font-size:12px}
+.booker .slot[data-t="Afternoon"]{--sun:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 18h20v2H2zM6 16a6 6 0 0 1 12 0h-2.2a3.8 3.8 0 0 0-7.6 0zM11 2h2v4.2l1.6-1.6L16 6l-4 4-4-4 1.4-1.4L11 6.2z'/%3E%3C/svg%3E")}
+@media (max-width:560px){
+  .booker .opts.small .opt{padding:10px 12px 10px 30px;font-size:11px}
+  .booker .slot{padding:34px 8px 10px 10px}
+  .booker .slot::before{left:10px;top:9px;margin-top:0;width:20px;height:20px}
+  .booker .slot b{font-size:11.5px}
+  .bk-submit{font-size:13px;min-height:56px;padding:0 16px}
+}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
