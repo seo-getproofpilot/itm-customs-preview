@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p1a32e47a">
+<link rel="stylesheet" href="assets/site.css?v=p96de9836">
 
 
 </head>
@@ -334,11 +334,85 @@
           <button type="button" class="opt">Wiring Fix / Troubleshoot</button>
           <button type="button" class="opt">Something Else</button>
         </div>
+        <div class="wds">
+        <div class="wd" data-for="Rock Lights" hidden>
+          <p class="wd-h">Rock Lights <small>Sold in sets of 4</small></p>
+          <div class="opts small" data-name="d-rock" data-single>
+            <span class="opts-label">Which Lights?</span>
+            <button type="button" class="opt">84-Chip Pure White</button>
+            <button type="button" class="opt">72-Chip Pure White</button>
+            <button type="button" class="opt">Not Sure Yet</button>
+          </div>
+          <div class="opts small" data-name="d-rock-n" data-single>
+            <span class="opts-label">How Many?</span>
+            <button type="button" class="opt">8</button>
+            <button type="button" class="opt">12</button>
+            <button type="button" class="opt">16</button>
+            <button type="button" class="opt">20</button>
+            <button type="button" class="opt">24</button>
+            <button type="button" class="opt">28</button>
+            <button type="button" class="opt">Not Sure</button>
+          </div>
+        </div>
+        <div class="wd" data-for="Wheel Lights" hidden>
+          <p class="wd-h">Wheel Lights <small>We check brake clearance at drop-off</small></p>
+          <div class="opts small" data-name="d-wheel" data-single>
+            <span class="opts-label">Which Rings?</span>
+            <button type="button" class="opt">10-Row Pure White</button>
+            <button type="button" class="opt">5-Row Pure White</button>
+            <button type="button" class="opt">Not Sure Yet</button>
+          </div>
+          <div class="opts small" data-name="d-wheel-size" data-single>
+            <span class="opts-label">Wheel Size</span>
+            <button type="button" class="opt">17″</button>
+            <button type="button" class="opt">18″</button>
+            <button type="button" class="opt">20″</button>
+            <button type="button" class="opt">22″ And Up</button>
+            <button type="button" class="opt">Not Sure</button>
+          </div>
+        </div>
+        <div class="wd" data-for="Switchback / Amber" hidden>
+          <p class="wd-h">Switchback / Amber <small>White + amber, app controlled</small></p>
+          <div class="opts small" data-name="d-sb" data-single>
+            <span class="opts-label">Kit Size</span>
+            <button type="button" class="opt">4 Lights</button>
+            <button type="button" class="opt">10 Lights</button>
+            <button type="button" class="opt">16 Lights</button>
+            <button type="button" class="opt">Not Sure</button>
+          </div>
+        </div>
+        <div class="wd" data-for="Pillar Lights" hidden>
+          <p class="wd-h">Pillar Lights</p>
+          <div class="opts small" data-name="d-pillar" data-single>
+            <span class="opts-label">Color</span>
+            <button type="button" class="opt">White</button>
+            <button type="button" class="opt">Amber</button>
+            <button type="button" class="opt">White + Amber</button>
+          </div>
+        </div>
+        <div class="wd" data-for="Push-Button Switch" hidden>
+          <p class="wd-h">Push-Button Switch</p>
+          <div class="opts small" data-name="d-sw" data-single>
+            <span class="opts-label">How Many Switches?</span>
+            <button type="button" class="opt">1</button>
+            <button type="button" class="opt">2</button>
+            <button type="button" class="opt">3 Or More</button>
+          </div>
+        </div>
+        <div class="wd" data-for="Wiring Fix / Troubleshoot" hidden>
+          <p class="wd-h">Wiring Fix / Troubleshoot</p>
+          <label class="field"><span>What’s Going On?</span><input name="d-wire" placeholder="e.g. two rock lights out on the driver side" autocomplete="off"></label>
+        </div>
+        <div class="wd" data-for="Something Else" hidden>
+          <p class="wd-h">Something Else</p>
+          <label class="field"><span>Tell Us What You Have In Mind</span><input name="d-other" placeholder="e.g. chase lights on the bed rails" autocomplete="off"></label>
+        </div>
+        </div>
         <div class="opts small" data-name="parts" data-single>
           <span class="opts-label">Lights:</span>
           <button type="button" class="opt">I Have ITM Lights</button>
           <button type="button" class="opt">Bringing My Own</button>
-          <button type="button" class="opt">Supply Them For Me</button>
+          <button type="button" class="opt">ITM Supplies Them</button>
           <button type="button" class="opt">Not Sure Yet</button>
         </div>
       </fieldset>
@@ -470,6 +544,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p1a32e47a"></script>
+<script src="assets/app.js?v=p96de9836"></script>
 </body>
 </html>

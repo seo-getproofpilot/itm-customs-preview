@@ -210,8 +210,8 @@ $('#seg').addEventListener('keydown', e => {
 });
 $('#countAdd').onclick = () => add('84-chip-pure-white-rocklights', 0, curN / 4);
 $('#countBook').addEventListener('click', () => {
-  pick('vehicle', 'Truck'); pick('work', 'Rock Lights');
-  const n = $('#booker [name=notes]'); if (!n.value) n.value = `${curN} rock lights`;
+  pick('vehicle', 'Truck'); pick('work', 'Rock Lights'); pick('d-rock', '84-Chip Pure White'); pick('d-rock-n', String(curN)); pick('parts', 'ITM Supplies Them');
+  typeof estimate === 'function' && estimate();
 });
 
 /* ---------- RGBW switcher ---------- */
@@ -331,16 +331,48 @@ function slotLabel() {
   $$('#slotDays, #slotTimes, #slotHours').forEach(g => $('.on', g) && g.classList.remove('bad'));
 }
 /* live parts estimate from the catalog prices above; labor is quoted by ITM */
-const FROM = { 'Rock Lights': ['rock lights', 55], 'Wheel Lights': ['wheel lights', 380], 'Switchback / Amber': ['switchback kit', 200], 'RGBW Color Kit': ['RGBW kit', 200], 'Push-Button Switch': ['switch', 10] };
+/* the follow-up questions for each job, and the lines they produce for the calendar + emails */
+const D = n => picked(n)[0] || '';
+function details() {
+  const w = picked('work'), out = [], f = Object.fromEntries(new FormData(form));
+  const line = (job, bits) => out.push(job + (bits.filter(Boolean).length ? ': ' + bits.filter(Boolean).join(' · ') : ''));
+  w.forEach(job => {
+    if (job === 'Rock Lights') line(job, [D('d-rock'), D('d-rock-n') && D('d-rock-n') !== 'Not Sure' ? D('d-rock-n') + ' lights' : D('d-rock-n') ? 'count not sure' : '']);
+    else if (job === 'Wheel Lights') line(job, [D('d-wheel'), D('d-wheel-size') ? D('d-wheel-size') + ' wheels' : '']);
+    else if (job === 'Switchback / Amber') line(job, [D('d-sb') ? D('d-sb') + ' kit' : '']);
+    else if (job === 'Pillar Lights') line(job, [D('d-pillar')]);
+    else if (job === 'Push-Button Switch') line(job, [D('d-sw') ? D('d-sw') + (D('d-sw') === '1' ? ' switch' : ' switches') : '']);
+    else if (job === 'Wiring Fix / Troubleshoot') line(job, [(f['d-wire'] || '').trim()]);
+    else if (job === 'Something Else') line(job, [(f['d-other'] || '').trim()]);
+    else line(job, []);
+  });
+  return out;
+}
+/* live parts estimate from the store's prices; labor is quoted by ITM */
+function partsEstimate() {
+  const w = picked('work'), items = [];
+  if (w.includes('Rock Lights')) {
+    const per = /^72/.test(D('d-rock')) ? 45 : 55, name = /^72/.test(D('d-rock')) ? '72-chip' : '84-chip', n = parseInt(D('d-rock-n'), 10);
+    items.push(n ? [`${name} ×${n}`, per * (n / 4)] : [`${name} rock lights, set of 4`, per, 'from']);
+  }
+  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 499] : ['wheel lights', 380, 'from']);
+  if (w.includes('Switchback / Amber')) { const k = { '4 Lights': 200, '10 Lights': 350, '16 Lights': 500 }[D('d-sb')]; items.push(k ? [`switchback ${D('d-sb').toLowerCase()}`, k] : ['switchback kit', 200, 'from']); }
+  if (w.includes('RGBW Color Kit')) items.push(['RGBW kit', 200]);
+  if (w.includes('Push-Button Switch')) { const n = parseInt(D('d-sw'), 10) || 1; items.push([`switch ×${n}`, 10 * n]); }
+  return items;
+}
 function estimate() {
-  const w = picked('work'), supply = picked('parts')[0] === 'Supply Them For Me';
-  const parts = w.filter(x => FROM[x]);
-  const el = $('#est');
+  const w = picked('work'), supply = picked('parts')[0] === 'ITM Supplies Them', el = $('#est');
+  $$('.wd', form).forEach(x => { x.hidden = !w.includes(x.dataset.for); });
   if (!w.length) { el.innerHTML = ''; return; }
-  const bits = supply && parts.length ? 'Parts: ' + parts.map(x => `${FROM[x][0]} from <b>${money(FROM[x][1])}</b>`).join(' · ') + '. ' : '';
+  const items = supply ? partsEstimate() : [];
+  const total = items.reduce((a, i) => a + i[1], 0), from = items.some(i => i[2]);
+  const bits = items.length ? 'Parts: ' + items.map(i => `${i[0]} <b>${i[2] ? 'from ' : ''}${money(i[1])}</b>`).join(' · ') +
+    (items.length > 1 ? ` = <b>${from ? 'from ' : ''}${money(total)}</b>` : '') + '. ' : '';
   el.innerHTML = `${bits}Install labor is <b>quoted before we start</b>.`;
 }
 form.addEventListener('click', e => { if (e.target.closest('.opts')) setTimeout(estimate); });
+form.addEventListener('input', e => { if (/^d-/.test(e.target.name || '')) setTimeout(estimate); });
 form.addEventListener('submit', e => {
   e.preventDefault();
   const f = Object.fromEntries(new FormData(form)); const msg = $('#bookMsg');
@@ -380,8 +412,8 @@ function showBooked(f, when) {
   const box = document.createElement('div'); box.className = 'bk-done'; box.setAttribute('role', 'status');
   box.innerHTML = `<div class="bk-done-top"><span class="bk-done-light" aria-hidden="true"></span><div><small>You’re Booked</small>
       <b>${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</b><span>Drop-off at ${f.time} · ITM Customs, Mesa</span></div></div>
-    <dl class="bk-done-rows"><div><dt>Work</dt><dd>${picked('work').join(', ')}</dd></div>${veh ? `<div><dt>Vehicle</dt><dd>${veh.replace(/</g, '&lt;')}</dd></div>` : ''}
-      <div><dt>Lights</dt><dd>${picked('parts')[0] || 'Not Sure Yet'}</dd></div><div><dt>Contact</dt><dd>${String(f.contact).replace(/</g, '&lt;')}</dd></div></dl>
+    <dl class="bk-done-rows"><div class="wide"><dt>Work</dt><dd>${details().map(l => l.replace(/</g, '&lt;')).join('<br>')}</dd></div>${veh ? `<div><dt>Vehicle</dt><dd>${veh.replace(/</g, '&lt;')}</dd></div>` : ''}
+      <div><dt>Lights</dt><dd>${picked('parts')[0] || 'Not Sure Yet'}</dd></div><div><dt>Contact</dt><dd>${String(f.contact).replace(/</g, '&lt;')}</dd></div>${(f.notes || '').trim() ? `<div class="wide"><dt>Notes</dt><dd>${f.notes.trim().replace(/</g, '&lt;')}</dd></div>` : ''}</dl>
     <ol class="bk-done-next"><li><b>We Confirm</b>Your quote comes by ${/@/.test(f.contact) ? 'email' : 'text'} before any work starts.</li>
       <li><b>Roll In</b>Bring it to the shop at your time.</li><li><b>Roll Out Lit</b>Every light tested with you at pickup.</li></ol>
     <div class="bk-done-act"><a class="btn btn-primary" href="${gcal}" target="_blank" rel="noopener"><span>Add To My Calendar</span></a>
@@ -401,7 +433,7 @@ async function bookLive(f, msg) {
   msg.className = 'fine pending'; msg.textContent = 'Saving your drop-off to the shop calendar…';
   try {
     const r = await fetch(BOOK_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'),
+      body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'), details: details(),
         parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '' }) });
     const j = await r.json();
     if (j.ok) {
@@ -627,10 +659,11 @@ function syncAdded() {
   function bookFor(hs, from) {
     hs = [...new Set(hs)].filter(h => INST[h]);
     if (VEH) pick('vehicle', VEH);
-    hs.forEach(h => pick('work', INST[h][1]));
-    pick('parts', 'Supply Them For Me');
-    const n = $('#booker [name=notes]'), names = hs.map(h => byH[h].name).join(', ');
-    if (names && !n.value.includes(names)) n.value = `Kits: ${names}` + (n.value ? `\n${n.value}` : '');
+    const KD = { '84-chip-pure-white-rocklights': ['d-rock', '84-Chip Pure White'], '72-chip-pure-white-rock-light': ['d-rock', '72-Chip Pure White'],
+      '10-row-pure-white-wheel-lights': ['d-wheel', '10-Row Pure White'], '5-row-pure-white-wheel-lights': ['d-wheel', '5-Row Pure White'],
+      '16-count': ['d-sb', '16 Lights'], 'untitled-jun19_07-48': ['d-sw', '1'] };
+    hs.forEach(h => { pick('work', INST[h][1]); if (KD[h]) pick(KD[h][0], KD[h][1]); });
+    pick('parts', 'ITM Supplies Them');
     typeof estimate === 'function' && estimate();
     T('install_click', { from, items: hs.join(',') });
   }

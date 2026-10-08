@@ -1802,6 +1802,18 @@ html.pv-open{overflow:hidden}
   .cal-nav{width:42px;height:42px}
 }
 
+/* ---------- v103: follow-up questions per job ---------- */
+.wds{display:grid;gap:10px;margin:4px 0 6px}
+.wds:not(:has(.wd:not([hidden]))){display:none}
+.wd{padding:12px 14px 4px;border-left:3px solid #0789E3;background:linear-gradient(90deg,rgba(7,137,227,.06),transparent 70%)}
+.wd-h{margin:0 0 6px;font:italic 800 14px/1.2 var(--f-disp);font-stretch:125%;text-transform:uppercase;color:var(--sand-ink)}
+.wd-h small{margin-left:8px;font:500 12px/1 var(--f-body);font-style:normal;text-transform:none;color:var(--sand-mute)}
+.wd .opts.small{margin:0 0 8px}
+.wd .opts .opts-label{margin-top:2px}
+.wd .field{margin-bottom:10px}
+.bk-done-rows .wide{grid-column:1/-1}
+.bk-done-rows .wide dd{line-height:1.6}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
