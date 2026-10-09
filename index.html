@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p96de9836">
+<link rel="stylesheet" href="assets/site.css?v=p3b7fd919">
 
 
 </head>
@@ -277,7 +277,7 @@
     <div class="book-side">
       <p class="kick dark"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
       <h2 class="display-2">Tell Us About Your Truck. We'll Light It Up.</h2>
-      <p class="body">Pick the work and a drop-off time. We confirm by text or email, and you can bring lights you bought from us or have us supply them.</p>
+      <p class="body">Pick the work and a drop-off time. We text you to confirm, and you can bring lights you bought from us or have us supply them.</p>
     </div>
     <div class="book-info">
       <div class="costs" id="costs">
@@ -292,9 +292,9 @@
       <div class="wired" id="wired">
         <p class="wired-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Wired Right, Every Install</p>
         <ul>
-          <li><b>Fused And Relayed</b><span>Every circuit protected, so a short never cooks your wiring.</span></li>
-          <li><b>Loomed And Sealed</b><span>Wire wrapped and connections heat-sealed for Arizona summers and wash days.</span></li>
-          <li><b>A Switch You Can Find</b><span>Mounted where you can reach it in the dark, or run from the app.</span></li>
+          <li><b>Fused, Every Circuit</b><span>Every circuit protected, so a short never cooks your wiring.</span></li>
+          <li><b>Heat-Sealed Connections</b><span>Sealed against Arizona summers and wash days.</span></li>
+          <li><b>Your Lights Or Ours</b><span>Bring a kit you bought from us or your own, or we supply them.</span></li>
           <li><b>Tested Before You Leave</b><span>Every light checked with you at pickup.</span></li>
         </ul>
       </div>
@@ -310,7 +310,7 @@
     </div>
 
     <form class="booker" id="booker" novalidate>
-      <div class="bk-head"><span class="bk-dot" aria-hidden="true"></span><div><b>Book An Install</b><small>Takes about a minute. We confirm your slot and quote by text or email.</small></div></div>
+      <div class="bk-head"><span class="bk-dot" aria-hidden="true"></span><div><b>Book An Install</b><small>Takes about a minute. We text you to confirm your slot and quote.</small></div></div>
       <fieldset>
         <legend>What Are We Lighting?</legend>
         <div class="opts" data-name="vehicle" data-single>
@@ -434,7 +434,7 @@
           <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>2 &ndash; 4:30 PM</span></button>
         </div>
         <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
-        <p class="slot-note" id="slotNote">Drop-offs Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p></div>
+        <p class="slot-note" id="slotNote">Drop-offs by appointment, Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p></div>
         </div>
         <input type="hidden" name="day"><input type="hidden" name="date"><input type="hidden" name="time">
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -444,14 +444,14 @@
         <legend>How Do We Reach You?</legend>
         <div class="row2">
           <label class="field"><span>Name *</span><input name="name" required autocomplete="name"></label>
-          <label class="field"><span>Phone Or Email *</span><input name="contact" required autocomplete="email"></label>
+          <label class="field"><span>Number To Text, Or Email *</span><input name="contact" required autocomplete="tel"></label>
         </div>
         <label class="field"><span>Anything Else?</span><textarea name="notes" rows="3" placeholder="Light count, colors, a show date, photos to follow by text..."></textarea></label>
       </fieldset>
       <div class="book-foot">
         <p class="est" id="est" aria-live="polite"></p>
         <button class="btn btn-primary bk-submit" type="submit"><span><em id="bookBtnT">Book My Install</em> <i aria-hidden="true">&rarr;</i></span></button>
-        <p class="fine" id="bookMsg">We confirm your slot and install quote by text or email.</p>
+        <p class="fine" id="bookMsg">We text you to confirm your slot and install quote, or email if you left one.</p>
       </div>
     </form>
   </div>
@@ -544,6 +544,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p96de9836"></script>
+<script src="assets/app.js?v=p3b7fd919"></script>
 </body>
 </html>

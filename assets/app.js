@@ -235,7 +235,7 @@ function pick(name, label) {
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
 /* drop-off picker: a month calendar (tomorrow to 60 days out) + a window + an exact time.
-   HOURS is the shop's drop-off schedule; confirm with ITM. When ITM connects a scheduler
+   HOURS is the shop's drop-off schedule, confirmed by Isaac on call 1 (Mon–Sat 9–4:30). When ITM connects a scheduler
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
 const HOURS = {
   days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
