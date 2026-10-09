@@ -1818,15 +1818,22 @@ html.pv-open{overflow:hidden}
    v104: the booking form lives on its own page (book/). The homepage section is the
    summary: what it costs, Wired Right, the three steps, and one button to book.
    ===================================================================================== */
-.book-home{grid-template-columns:.9fr 1.1fr;grid-template-areas:"head info";grid-template-rows:auto}
-.book-home .book-side{position:sticky;top:110px}
-.book-home .book-info{position:static}
-.book-cta{display:grid;gap:10px;justify-items:start;margin-top:26px}
-.book-cta small{font-size:13px;line-height:1.45;color:var(--sand-mute);max-width:34ch}
+.book-compact{padding:clamp(56px,calc(7vh / var(--z,1)),84px) 0 clamp(84px,calc(11vh / var(--z,1)),120px)}
+.book-home{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"steps steps" "head wired";gap:clamp(26px,calc(3.2vw / var(--z,1)),48px) clamp(30px,calc(4vw / var(--z,1)),64px);align-items:start}
+.book-home .steps{grid-area:steps;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:0;padding-bottom:clamp(22px,calc(3vh / var(--z,1)),32px);border-bottom:1px solid rgba(11,13,18,.12)}
+.book-home .steps li{font-size:14px;line-height:1.45;grid-template-columns:40px 1fr;gap:12px}
+.book-home .steps li>span{width:40px;height:44px}
+.book-home .steps b{font-size:15.5px}
+.book-home .book-side{grid-area:head;position:static}
+.book-home .book-side .body{font-size:15px;margin-top:10px}
+.book-home .wired{grid-area:wired}
+.book-home .wired ul{gap:12px 22px}
+.book-cta{display:grid;gap:8px;justify-items:start;margin-top:20px}
+.book-cta small{font-size:13px;line-height:1.45;color:var(--sand-mute);max-width:36ch}
 @media (max-width:940px), (max-width:1100px) and (orientation:portrait){
-  .book-home{grid-template-columns:1fr;grid-template-areas:"head" "info"}
-  .book-home .book-side{position:static}
+  .book-home{grid-template-columns:1fr;grid-template-areas:"steps" "head" "wired"}
 }
+@media (max-width:700px){ .book-home .steps{grid-template-columns:1fr;gap:14px} }
 @media (max-width:560px){ .book-cta .btn{width:100%;justify-content:center} .book-cta{justify-items:stretch} }
 /* book/: the form page. Clear the fixed nav; on phones the form comes first, the costs follow it */
 .book-page .book{padding-top:calc(120px + 24px)}
@@ -1834,6 +1841,16 @@ html.pv-open{overflow:hidden}
 @media (max-width:940px){ .book-page .book{padding-top:110px} }
 /* book/: no hero under the nav, so app.js keeps it in the solid (scrolled) state; its Book button would just reload the page */
 .on-book .nav-book{display:none}
+/* phones: the booking summary fits one screen. Wired Right shows as a 2x2 of titles only */
+@media (max-width:560px){
+  .book-compact{padding:48px 0 76px}
+  .book-home{gap:22px}
+  .book-home .steps{gap:12px;padding-bottom:18px}
+  .book-home .steps li{font-size:13.5px}
+  .book-home .wired ul{grid-template-columns:1fr 1fr;gap:10px 14px}
+  .book-home .wired li span{display:none}
+  .book-home .book-side .body{font-size:14.5px}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
