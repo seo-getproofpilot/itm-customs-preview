@@ -1814,6 +1814,27 @@ html.pv-open{overflow:hidden}
 .bk-done-rows .wide{grid-column:1/-1}
 .bk-done-rows .wide dd{line-height:1.6}
 
+/* =====================================================================================
+   v104: the booking form lives on its own page (book/). The homepage section is the
+   summary: what it costs, Wired Right, the three steps, and one button to book.
+   ===================================================================================== */
+.book-home{grid-template-columns:.9fr 1.1fr;grid-template-areas:"head info";grid-template-rows:auto}
+.book-home .book-side{position:sticky;top:110px}
+.book-home .book-info{position:static}
+.book-cta{display:grid;gap:10px;justify-items:start;margin-top:26px}
+.book-cta small{font-size:13px;line-height:1.45;color:var(--sand-mute);max-width:34ch}
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
+  .book-home{grid-template-columns:1fr;grid-template-areas:"head" "info"}
+  .book-home .book-side{position:static}
+}
+@media (max-width:560px){ .book-cta .btn{width:100%;justify-content:center} .book-cta{justify-items:stretch} }
+/* book/: the form page. Clear the fixed nav; on phones the form comes first, the costs follow it */
+.book-page .book{padding-top:calc(120px + 24px)}
+.book-page .book-side h1{margin:0}
+@media (max-width:940px){ .book-page .book{padding-top:110px} }
+/* book/: no hero under the nav, so app.js keeps it in the solid (scrolled) state; its Book button would just reload the page */
+.on-book .nav-book{display:none}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

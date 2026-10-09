@@ -6,6 +6,11 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const IMG = n => `assets/img/${n}.webp`;
 const STORE = 'https://itmcustoms.com';
 const money = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 });
+/* the install booking lives on its own page (book/); homepage buttons carry their picks there as URL params */
+const ON_BOOK = !!document.getElementById('booker');
+const goBook = (p = {}) => { const u = new URL('book/', document.baseURI);
+  Object.entries(p).forEach(([k, v]) => [].concat(v).forEach(x => u.searchParams.append(k, x)));
+  if (Object.keys(p).length) u.searchParams.set('book', '1'); location.href = u.href; };
 
 /* ---------- catalog ---------- */
 const P = [
@@ -95,7 +100,7 @@ function card(p) {
       ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0]%1?2:1)} <span>(${p.rating[1]} review${p.rating[1]>1?'s':''})</span></div>` : ''}
       ${p.v.length>1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((x,i)=>`<button class="var${i===sel?' on':''}${x.ok?'':' so'}" data-i="${i}" role="radio" aria-checked="${i===sel}">${x.t}</button>`).join('')}</div>` : ''}
       <div class="c-foot"><div class="price"></div><span class="act"></span></div>
-      ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="#book" class="inst-book" data-inst="${p.h}">We Install It <i aria-hidden="true">&rarr;</i></a></div>` : ''}
+      ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="book/" class="inst-book" data-inst="${p.h}">We Install It <i aria-hidden="true">&rarr;</i></a></div>` : ''}
     </div></div></div></div>`;
   el._sel = sel;
   paint(el, p);
@@ -115,7 +120,7 @@ function paint(el, p) {
     ? `<button class="add" data-h="${p.h}" data-i="${el._sel}"><span>Add To Cart</span></button>`
     : `<span class="add soldout" aria-disabled="true"><span>Out Of Stock</span></span>`;
 }
-P.forEach(p => grid.appendChild(card(p)));
+if (grid) P.forEach(p => grid.appendChild(card(p)));
 
 /* filters (chips, lanes, footer + FAQ jump links) */
 function filter(cat) {
@@ -203,16 +208,13 @@ function setCount(n) {
   }
 }
 $$('#seg button').forEach(b => b.onclick = () => setCount(+b.dataset.n));
-$('#seg').addEventListener('keydown', e => {
+$('#seg')?.addEventListener('keydown', e => {
   const ks = Object.keys(COUNT).map(Number), i = ks.indexOf(curN);
   const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
   if (d) { e.preventDefault(); const n = ks[(i + d + ks.length) % ks.length]; setCount(n); $(`#seg [data-n="${n}"]`).focus(); }
 });
-$('#countAdd').onclick = () => add('84-chip-pure-white-rocklights', 0, curN / 4);
-$('#countBook').addEventListener('click', () => {
-  pick('vehicle', 'Truck'); pick('work', 'Rock Lights'); pick('d-rock', '84-Chip Pure White'); pick('d-rock-n', String(curN)); pick('parts', 'ITM Supplies Them');
-  typeof estimate === 'function' && estimate();
-});
+if ($('#countAdd')) $('#countAdd').onclick = () => add('84-chip-pure-white-rocklights', 0, curN / 4);
+$('#countBook')?.addEventListener('click', e => { e.preventDefault(); goBook({ count: curN }); });
 
 /* ---------- RGBW switcher ---------- */
 $$('.swatches button').forEach(b => b.onclick = () => {
@@ -220,238 +222,6 @@ $$('.swatches button').forEach(b => b.onclick = () => {
   const img = $('#rgbwImg'); img.style.opacity = 0;
   setTimeout(() => { img.src = IMG(`p-4pc-rgbw-rock-light-kit-${b.dataset.i}`); img.alt = `Side-by-side lit ${b.getAttribute('aria-label').toLowerCase()} by the RGBW rock light kit`; img.onload = () => img.style.opacity = 1; }, 180);
 });
-
-/* ---------- booking ---------- */
-const form = $('#booker');
-$$('.opts', form).forEach(g => g.addEventListener('click', e => {
-  const o = e.target.closest('.opt'); if (!o) return;
-  if (g.hasAttribute('data-single')) $$('.opt', g).forEach(x => x !== o && x.classList.remove('on'));
-  o.classList.toggle('on');
-  $$('.opt', g).forEach(x => x.setAttribute('aria-pressed', x.classList.contains('on')));
-}));
-function pick(name, label) {
-  const o = $$(`.opts[data-name="${name}"] .opt`, form).find(x => x.textContent.trim().toLowerCase() === String(label).toLowerCase());
-  if (o && !o.classList.contains('on')) o.click();
-}
-const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
-/* drop-off picker: a month calendar (tomorrow to 60 days out) + a window + an exact time.
-   HOURS is the shop's drop-off schedule, confirmed by Isaac on call 1 (Mon–Sat 9–4:30). When ITM connects a scheduler
-   (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
-const HOURS = {
-  days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
-  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-  Midday:    ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM'],
-  Afternoon: ['2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'],
-  ahead: 60,
-};
-const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
-/* live availability from the shop's Google Calendar (booking/Code.gs, set in <meta name="itm-booking-api">).
-   Without an endpoint the demo runs on sample availability so the behaviour is visible. */
-const BOOK_API = (document.querySelector('meta[name="itm-booking-api"]')?.content || '').trim();
-const isoOf = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-const ALL_SLOTS = [...HOURS.Morning, ...HOURS.Midday, ...HOURS.Afternoon];
-const AV = {}, AV_DONE = new Set();
-let AV_FAIL = false;
-function sampleDay(d) {               // demo data only: a day off now and then, a few times already booked
-  if (!SLOT_OPEN(d)) return { open: false, reason: 'closed', times: [] };
-  const n = d.getDate() + d.getMonth() * 31;
-  if (n % 11 === 3) return { open: false, reason: 'off', times: [] };
-  let mine = []; try { mine = JSON.parse(sessionStorage.getItem('itm_demo_booked') || '[]'); } catch (e) {}
-  const times = ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0 && !mine.includes(isoOf(d) + ' ' + t));
-  return { open: times.length > 0, reason: times.length ? '' : 'full', times };
-}
-const calStatus = t => { const el = $('#calStatus'); if (el) el.textContent = t; };
-async function loadMonth(y, m, done) {
-  const key = `${y}-${m}`; if (AV_DONE.has(key)) return; AV_DONE.add(key);
-  const from = new Date(y, m, 1, 12), to = new Date(y, m + 1, 0, 12);
-  if (!BOOK_API) { for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) AV[isoOf(d)] = sampleDay(d); return done(); }
-  calStatus('Checking open times…');
-  try {
-    const r = await fetch(`${BOOK_API}?action=availability&from=${isoOf(from)}&to=${isoOf(to)}`);
-    const j = await r.json(); if (!j.ok) throw new Error('availability');
-    Object.assign(AV, j.days); calStatus('');
-  } catch (e) { AV_DONE.delete(key); AV_FAIL = true; calStatus('Live times didn’t load. Pick a day and time and we’ll confirm it.'); }
-  done();
-}
-const dayInfo = d => AV[isoOf(d)] || (AV_FAIL ? { open: SLOT_OPEN(d), times: ALL_SLOTS } : null);
-const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form), dateIn = $('[name=date]', form);
-const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-const dkey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-const cal = (() => {
-  const t0 = new Date(); t0.setHours(12, 0, 0, 0);
-  const min = new Date(t0); min.setDate(t0.getDate() + 1);
-  const max = new Date(t0); max.setDate(t0.getDate() + HOURS.ahead);
-  let view = new Date(min.getFullYear(), min.getMonth(), 1), picked = null;
-  const grid = $('#slotDays');
-  function render() {
-    $('#calMonth').textContent = view.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    const y = view.getFullYear(), m = view.getMonth(), days = new Date(y, m + 1, 0).getDate();
-    let h = '<span class="cal-pad"></span>'.repeat(new Date(y, m, 1).getDay());
-    for (let i = 1; i <= days; i++) {
-      const d = new Date(y, m, i, 12), inRange = d >= min && d <= max, info = inRange ? dayInfo(d) : null;
-      const ok = !!(info && info.open), on = picked && dkey(picked) === dkey(d);
-      const why = !inRange ? '' : !info ? ', loading' : ok ? '' : info.reason === 'full' ? ', fully booked' : info.reason === 'off' ? ', shop closed' : ', closed';
-      const cls = inRange && info && !ok ? (info.reason === 'full' ? ' full' : info.reason === 'off' ? ' off' : '') : '';
-      h += `<button type="button" class="sday${on ? ' on' : ''}${cls}" role="radio" aria-checked="${!!on}" data-k="${dkey(d)}"${ok ? '' : ' disabled'} aria-label="${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}${why}">${i}</button>`;
-    }
-    grid.innerHTML = h;
-    $('.cal-nav[data-m="-1"]').disabled = y === min.getFullYear() && m <= min.getMonth();
-    $('.cal-nav[data-m="1"]').disabled = y === max.getFullYear() && m >= max.getMonth();
-    loadMonth(y, m, render);
-  }
-  $$('.cal-nav').forEach(b => b.onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + +b.dataset.m, 1); render(); });
-  grid.addEventListener('click', e => {
-    const b = e.target.closest('.sday'); if (!b || b.disabled) return;
-    const [y, m, d] = b.dataset.k.split('-').map(Number); picked = new Date(y, m, d, 12);
-    dayIn.value = fmtDay(picked); dateIn.value = isoOf(picked); render(); refreshTimes(); slotLabel();
-  });
-  render();
-  return { render, reload: () => { const k = picked ? `${picked.getFullYear()}-${picked.getMonth()}` : ''; AV_DONE.delete(k); render(); } };
-})();
-function choose(group, btn) {
-  $$('[role=radio]', group).forEach(x => { const on = x === btn; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
-}
-$('#slotTimes').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b) return;
-  choose($('#slotTimes'), b);
-  refreshTimes(); slotLabel(); });
-/* the exact times for the chosen window; times already booked on the calendar show as taken */
-function refreshTimes() {
-  const win = $('#slotTimes .slot.on'), hrs = $('#slotHours'); if (!win) return;
-  const free = (dateIn.value && AV[dateIn.value] && AV[dateIn.value].times) || (dateIn.value ? null : ALL_SLOTS) || ALL_SLOTS;
-  hrs.innerHTML = HOURS[win.dataset.t].map(t => { const ok = free.includes(t);
-    return `<button type="button" class="stime${timeIn.value === t ? ' on' : ''}${ok ? '' : ' taken'}" role="radio" aria-checked="${timeIn.value === t}" data-t="${t}"${ok ? '' : ' disabled aria-label="' + t + ', booked"'}>${t}</button>`; }).join('');
-  hrs.hidden = false;
-  if (!HOURS[win.dataset.t].includes(timeIn.value) || !free.includes(timeIn.value)) { if (timeIn.value) $$('.stime.on', hrs).forEach(x => x.classList.remove('on')); timeIn.value = ''; }
-}
-$('#slotHours').addEventListener('click', e => { const b = e.target.closest('.stime'); if (!b || b.disabled) return;
-  choose($('#slotHours'), b); timeIn.value = b.dataset.t; slotLabel(); });
-function slotLabel() {
-  const d = dayIn.value, t = timeIn.value;
-  $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t}` : d ? `Book ${d}` : 'Book My Install';
-  $$('#slotDays, #slotTimes, #slotHours').forEach(g => $('.on', g) && g.classList.remove('bad'));
-}
-/* live parts estimate from the catalog prices above; labor is quoted by ITM */
-/* the follow-up questions for each job, and the lines they produce for the calendar + emails */
-const D = n => picked(n)[0] || '';
-function details() {
-  const w = picked('work'), out = [], f = Object.fromEntries(new FormData(form));
-  const line = (job, bits) => out.push(job + (bits.filter(Boolean).length ? ': ' + bits.filter(Boolean).join(' · ') : ''));
-  w.forEach(job => {
-    if (job === 'Rock Lights') line(job, [D('d-rock'), D('d-rock-n') && D('d-rock-n') !== 'Not Sure' ? D('d-rock-n') + ' lights' : D('d-rock-n') ? 'count not sure' : '']);
-    else if (job === 'Wheel Lights') line(job, [D('d-wheel'), D('d-wheel-size') ? D('d-wheel-size') + ' wheels' : '']);
-    else if (job === 'Switchback / Amber') line(job, [D('d-sb') ? D('d-sb') + ' kit' : '']);
-    else if (job === 'Pillar Lights') line(job, [D('d-pillar')]);
-    else if (job === 'Push-Button Switch') line(job, [D('d-sw') ? D('d-sw') + (D('d-sw') === '1' ? ' switch' : ' switches') : '']);
-    else if (job === 'Wiring Fix / Troubleshoot') line(job, [(f['d-wire'] || '').trim()]);
-    else if (job === 'Something Else') line(job, [(f['d-other'] || '').trim()]);
-    else line(job, []);
-  });
-  return out;
-}
-/* live parts estimate from the store's prices; labor is quoted by ITM */
-function partsEstimate() {
-  const w = picked('work'), items = [];
-  if (w.includes('Rock Lights')) {
-    const per = /^72/.test(D('d-rock')) ? 45 : 55, name = /^72/.test(D('d-rock')) ? '72-chip' : '84-chip', n = parseInt(D('d-rock-n'), 10);
-    items.push(n ? [`${name} ×${n}`, per * (n / 4)] : [`${name} rock lights, set of 4`, per, 'from']);
-  }
-  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 499] : ['wheel lights', 380, 'from']);
-  if (w.includes('Switchback / Amber')) { const k = { '4 Lights': 200, '10 Lights': 350, '16 Lights': 500 }[D('d-sb')]; items.push(k ? [`switchback ${D('d-sb').toLowerCase()}`, k] : ['switchback kit', 200, 'from']); }
-  if (w.includes('RGBW Color Kit')) items.push(['RGBW kit', 200]);
-  if (w.includes('Push-Button Switch')) { const n = parseInt(D('d-sw'), 10) || 1; items.push([`switch ×${n}`, 10 * n]); }
-  return items;
-}
-function estimate() {
-  const w = picked('work'), supply = picked('parts')[0] === 'ITM Supplies Them', el = $('#est');
-  $$('.wd', form).forEach(x => { x.hidden = !w.includes(x.dataset.for); });
-  if (!w.length) { el.innerHTML = ''; return; }
-  const items = supply ? partsEstimate() : [];
-  const total = items.reduce((a, i) => a + i[1], 0), from = items.some(i => i[2]);
-  const bits = items.length ? 'Parts: ' + items.map(i => `${i[0]} <b>${i[2] ? 'from ' : ''}${money(i[1])}</b>`).join(' · ') +
-    (items.length > 1 ? ` = <b>${from ? 'from ' : ''}${money(total)}</b>` : '') + '. ' : '';
-  el.innerHTML = `${bits}Install labor is <b>quoted before we start</b>.`;
-}
-form.addEventListener('click', e => { if (e.target.closest('.opts')) setTimeout(estimate); });
-form.addEventListener('input', e => { if (/^d-/.test(e.target.name || '')) setTimeout(estimate); });
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const f = Object.fromEntries(new FormData(form)); const msg = $('#bookMsg');
-  $$('.bad', form).forEach(x => x.classList.remove('bad'));
-  const miss = ['name', 'contact'].filter(k => !f[k].trim());
-  const noSlot = !f.day || !f.time;
-  if (!picked('work').length || noSlot || miss.length) {
-    if (noSlot) $$('#slotDays, #slotTimes, #slotHours').forEach(g => !$('.on', g) && g.classList.add('bad'));
-    miss.forEach(k => $(`[name=${k}]`, form).classList.add('bad'));
-    msg.className = 'fine err';
-    msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? (!f.day ? 'Pick a drop-off day on the calendar.' : 'Pick a drop-off time.') : 'Add your name and a way to reach you.';
-    return;
-  }
-  (BOOK_API ? bookLive : bookDemo)(f, msg);
-});
-/* demo: the same flow without a calendar connected (the slot is held for this browser session) */
-function bookDemo(f, msg) {
-  const btn = $('button[type=submit]', form), label = $('#bookBtnT');
-  btn.disabled = true; label.textContent = 'Booking…'; msg.className = 'fine pending'; msg.textContent = 'Saving your drop-off to the shop calendar…';
-  setTimeout(() => {
-    try { const k = 'itm_demo_booked', v = JSON.parse(sessionStorage.getItem(k) || '[]'); v.push(f.date + ' ' + f.time); sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
-    AV_DONE.clear(); Object.keys(AV).forEach(k => delete AV[k]);
-    window.ITMtrack && ITMtrack('booking_submit', { day: f.date, time: f.time, live: false });
-    btn.disabled = false; msg.className = 'fine'; msg.textContent = '';
-    showBooked(f, `${f.day} at ${f.time}`);
-  }, 900);
-}
-/* the confirmation card that replaces the form */
-function showBooked(f, when) {
-  const d = new Date(f.date + 'T12:00:00'), [h, mi, ap] = f.time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
-  const H = (+h % 12) + (ap === 'PM' ? 12 : 0), pad = n => String(n).padStart(2, '0');
-  const st = `${f.date.replace(/-/g, '')}T${pad(H)}${mi}00`;
-  const end = +mi + 30 >= 60 ? `${f.date.replace(/-/g, '')}T${pad(H + 1)}0000` : `${f.date.replace(/-/g, '')}T${pad(H)}${pad(+mi + 30)}00`;
-  const gcal = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('ITM Customs install drop-off') +
-    `&dates=${st}/${end}&ctz=America/Phoenix&location=` + encodeURIComponent('ITM Customs, Mesa, AZ') + '&details=' + encodeURIComponent('Work: ' + picked('work').join(', '));
-  const veh = [picked('vehicle')[0], f.ymm].filter(Boolean).join(' · ');
-  const box = document.createElement('div'); box.className = 'bk-done'; box.setAttribute('role', 'status');
-  box.innerHTML = `<div class="bk-done-top"><span class="bk-done-light" aria-hidden="true"></span><div><small>You’re Booked</small>
-      <b>${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</b><span>Drop-off at ${f.time} · ITM Customs, Mesa</span></div></div>
-    <dl class="bk-done-rows"><div class="wide"><dt>Work</dt><dd>${details().map(l => l.replace(/</g, '&lt;')).join('<br>')}</dd></div>${veh ? `<div><dt>Vehicle</dt><dd>${veh.replace(/</g, '&lt;')}</dd></div>` : ''}
-      <div><dt>Lights</dt><dd>${picked('parts')[0] || 'Not Sure Yet'}</dd></div><div><dt>Contact</dt><dd>${String(f.contact).replace(/</g, '&lt;')}</dd></div>${(f.notes || '').trim() ? `<div class="wide"><dt>Notes</dt><dd>${f.notes.trim().replace(/</g, '&lt;')}</dd></div>` : ''}</dl>
-    <ol class="bk-done-next"><li><b>We Confirm</b>Your quote comes by ${/@/.test(f.contact) ? 'email' : 'text'} before any work starts.</li>
-      <li><b>Roll In</b>Bring it to the shop at your time.</li><li><b>Roll Out Lit</b>Every light tested with you at pickup.</li></ol>
-    <div class="bk-done-act"><a class="btn btn-primary" href="${gcal}" target="_blank" rel="noopener"><span>Add To My Calendar</span></a>
-      <button type="button" class="btn btn-chrome bk-again"><span>Book Another Install</span></button></div>`;
-  form.classList.add('done'); $('.bk-head', form).after(box);
-  const navH = (document.getElementById('nav') || {}).offsetHeight || 64;
-  scrollTo({ top: box.getBoundingClientRect().top + scrollY - navH - 12, behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
-  $('.bk-again', box).onclick = () => { box.remove(); form.classList.remove('done'); form.reset(); $$('.on', form).forEach(x => { x.classList.remove('on'); x.setAttribute('aria-checked', 'false'); x.setAttribute('aria-pressed', 'false'); });
-    dayIn.value = dateIn.value = timeIn.value = ''; $('#slotHours').hidden = true; $('#bookBtnT').textContent = 'Book My Install'; $('#est').innerHTML = ''; cal.render(); };
-}
-
-
-/* book straight onto the shop's Google Calendar */
-async function bookLive(f, msg) {
-  const btn = $('button[type=submit]', form), label = $('#bookBtnT');
-  btn.disabled = true; const was = label.textContent; label.textContent = 'Booking…';
-  msg.className = 'fine pending'; msg.textContent = 'Saving your drop-off to the shop calendar…';
-  try {
-    const r = await fetch(BOOK_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'), details: details(),
-        parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '' }) });
-    const j = await r.json();
-    if (j.ok) {
-      msg.className = 'fine'; msg.textContent = ''; label.textContent = 'Book My Install';
-      showBooked(f, j.when || f.day + ' at ' + f.time);
-      window.ITMtrack && ITMtrack('booking_submit', { day: f.date, time: f.time, live: true });
-      AV_DONE.clear(); Object.keys(AV).forEach(k => delete AV[k]); cal.render();
-      return;
-    }
-    msg.className = 'fine err'; msg.textContent = j.error || 'That didn’t go through. Please try again.';
-    if (j.taken) { timeIn.value = ''; cal.reload(); setTimeout(refreshTimes, 900); }
-    window.ITMtrack && ITMtrack('booking_error', { reason: j.error || 'unknown' });
-  } catch (e) {
-    msg.className = 'fine err'; msg.textContent = 'Couldn’t reach the shop calendar. Please try again, or tap Message Us.';
-    window.ITMtrack && ITMtrack('booking_error', { reason: 'network' });
-  }
-  btn.disabled = false; if (label.textContent === 'Booking…') label.textContent = was;
-}
 
 /* ---------- reviews belt (verbatim from Judge.me, light typo fixes only) ---------- */
 const R = [
@@ -466,7 +236,7 @@ const R = [
   ['j.','Magnetic T-Bracket','p-magnetic-t-bracket-mount-3','It gives the rock lights a cleaner, more proper look. Get these!'],
   ['Connor','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-2-crop','It’s super bright and surprised me so much. Worth the wait. You’ve got to be patient for it to come in!'],
 ];
-const run = $('#beltRun');
+const run = $('#beltRun') || document.createElement('div');
 const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}" alt="${r[4] ? 'Photo from ' + r[0] + '’s review: ' + r[1] : r[1] + ' product photo'}" loading="lazy">${r[4] ? '' : '<span class="rv-tag">Product Photo</span>'}</div><div class="rv-b">
   <span class="rv-stars" aria-label="5 stars">★★★★★</span><p>${r[3]}</p>
   <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div>${r[4] ? `<a class="rv-build" href="builds/${r[4]}/">See The Build <i aria-hidden="true">&rarr;</i></a>` : ''}</div></article>`;
@@ -474,7 +244,7 @@ run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class=
 
 /* ---------- nav + reveals ---------- */
 const nav = $('#nav');
-const onScroll = () => nav.classList.toggle('scrolled', scrollY > 30);
+const onScroll = () => nav.classList.toggle('scrolled', scrollY > 30 || !document.querySelector('.hero'));  // pages without the hero keep the solid nav
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
 $$('.sec-head, .rev-head, .count-copy, .count-art, .feat, .booker, .book-side, .mosaic figure, .faq-grid > div, .lane').forEach(el => el.classList.add('rv-in'));
 if ('IntersectionObserver' in window) {
@@ -520,7 +290,7 @@ window.ITMreveal = () => $$('.rv-in').forEach(el => el.classList.add('in'));
 (function () {
   const hero = $('.hero'), intro = $('#intro');
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const lightUp = d => setTimeout(() => hero.classList.add('lit'), d);
+  const lightUp = d => hero && setTimeout(() => hero.classList.add('lit'), d);
   const seen = document.documentElement.classList.contains('intro-seen');
   if (!intro || seen || reduce) { intro && intro.remove(); lightUp(350); return; }
   let done = false;
@@ -608,7 +378,7 @@ function syncAdded() {
   const track = (event, params = {}) => window.dataLayer.push({ event, ...params });
   window.ITMtrack = track;
   document.addEventListener('click', e => {
-    const a = e.target.closest('a[href="#book"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('.mbar') ? 'mobile_bar' : a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
+    const a = e.target.closest('a[href="book/"], a[href="#booker"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('.mbar') ? 'mobile_bar' : a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
     const add = e.target.closest('.add[data-h], [data-add], #countAdd'); if (add) track('add_to_cart', { item: add.dataset.h || add.dataset.add || '84-chip-pure-white-rocklights' });
     if (e.target.closest('#checkout')) track('begin_checkout');
     if (e.target.closest('#shopToggle')) track('menu_open');
@@ -655,9 +425,10 @@ function syncAdded() {
   const T = (ev, p) => window.ITMtrack && ITMtrack(ev, p);
   const VEH = '';
 
-  /* pre-fill the booking form for one or more kits, then the #book link scrolls there */
+  /* pre-fill the booking form for one or more kits (on the homepage: open book/ with the kits in the URL) */
   function bookFor(hs, from) {
     hs = [...new Set(hs)].filter(h => INST[h]);
+    if (!ON_BOOK) { T('install_click', { from, items: hs.join(',') }); goBook(hs.length ? { kit: hs } : {}); return; }
     if (VEH) pick('vehicle', VEH);
     const KD = { '84-chip-pure-white-rocklights': ['d-rock', '84-Chip Pure White'], '72-chip-pure-white-rock-light': ['d-rock', '72-Chip Pure White'],
       '10-row-pure-white-wheel-lights': ['d-wheel', '10-Row Pure White'], '5-row-pure-white-wheel-lights': ['d-wheel', '5-Row Pure White'],
@@ -666,10 +437,11 @@ function syncAdded() {
     pick('parts', 'ITM Supplies Them');
     typeof estimate === 'function' && estimate();
     T('install_click', { from, items: hs.join(',') });
+    if (from !== 'subpage') $('#booker').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   }
   window.ITMbookFor = bookFor;
   document.addEventListener('click', e => {
-    const a = e.target.closest('.inst-book'); if (a) bookFor([a.dataset.inst], 'card');
+    const a = e.target.closest('.inst-book'); if (a) { e.preventDefault(); bookFor([a.dataset.inst], 'card'); }
   });
 
   /* get the look: each build lists the closest ITM kits */
@@ -707,12 +479,12 @@ function syncAdded() {
     if (!lights.length) { up.innerHTML = ''; return; }
     const ext = byH['3-pin-wire-extension'], hasExt = hs.includes('3-pin-wire-extension');
     up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft Wire Extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
-      `<a href="#book" class="up-book">We Install It In Mesa <i aria-hidden="true">&rarr;</i></a>`;
+      `<a href="book/" class="up-book">We Install It In Mesa <i aria-hidden="true">&rarr;</i></a>`;
   }
   new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
   foot.addEventListener('click', e => {
     const a = e.target.closest('.up-add'); if (a) { add(a.dataset.h, +a.dataset.i); T('add_to_cart', { item: a.dataset.h, from: 'cart_upsell' }); }
-    if (e.target.closest('.up-book')) { bookFor(cart.map(l => l.h), 'cart'); openCart(false); }
+    if (e.target.closest('.up-book')) { e.preventDefault(); openCart(false); bookFor(cart.map(l => l.h), 'cart'); }
   });
 })();
 
@@ -722,14 +494,6 @@ function syncAdded() {
   if (q.has('add') && byH[q.get('add')]) {
     const p = byH[q.get('add')], i = p.def ?? 0;
     if (p.v[i].ok) setTimeout(() => { add(p.h, i); openCart(true); }, 400);
-  }
-  if (q.has('book')) {
-    if (q.get('veh')) pick('vehicle', q.get('veh'));
-    q.getAll('work').forEach(w => pick('work', w));
-    const kits = q.getAll('kit').filter(h => byH[h]);
-    if (kits.length && window.ITMbookFor) window.ITMbookFor(kits, 'subpage');
-    if (location.hash === '#book') setTimeout(() => document.getElementById('book').scrollIntoView(), 700);
-    window.ITMtrack && ITMtrack('book_deeplink', { work: q.getAll('work').join(','), kit: kits.join(',') });
   }
 })();
 
@@ -756,7 +520,7 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
       <div class="pv-price"><span class="now">${money(v.p)}</span>${v.was ? `<span class="was">${money(v.was)}</span>` : ''}${v.ok ? '' : '<span class="pv-out">Out Of Stock</span>'}</div>
       ${p.v.length > 1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((y, i) => `<button type="button" class="var${i === sel ? ' on' : ''}${y.ok ? '' : ' so'}" data-pi="${i}" role="radio" aria-checked="${i === sel}">${y.t}</button>`).join('')}</div>` : ''}
       <div class="pv-act">${v.ok ? `<button type="button" class="btn btn-primary pv-add"><span>Add To Cart</span></button>` : ''}
-        ${ins ? `<a href="#book" class="btn btn-chrome pv-inst"><span>We Install It <i aria-hidden="true">&rarr;</i></span></a>` : ''}</div>
+        ${ins ? `<a href="book/" class="btn btn-chrome pv-inst"><span>We Install It <i aria-hidden="true">&rarr;</i></span></a>` : ''}</div>
       ${ins ? `<p class="pv-how"><b>${ins[0]}</b> · or book the install at our Mesa shop.</p>` : ''}
       <div class="pv-desc">${desc}</div>
       ${x.note ? `<p class="pv-note">${esc(x.note.charAt(0) + x.note.slice(1).toLowerCase()).replace(/\.*$/, '')}.</p>` : ''}`;
@@ -777,15 +541,15 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
     const t = e.target.closest('.pv-thumbs button'); if (t) return show(PX[cur.h].imgs[+t.dataset.k], +t.dataset.k);
     const vb = e.target.closest('[data-pi]'); if (vb) { sel = +vb.dataset.pi; return info(); }
     if (e.target.closest('.pv-add')) { add(cur.h, sel); close(); return; }
-    if (e.target.closest('.pv-inst')) { window.ITMbookFor && ITMbookFor([cur.h], 'product_view'); close(); }
+    if (e.target.closest('.pv-inst')) { e.preventDefault(); close(); window.ITMbookFor && ITMbookFor([cur.h], 'product_view'); }
   });
-  grid.addEventListener('click', e => {
+  if (grid) grid.addEventListener('click', e => {
     if (e.target.closest('.c-fig, .c-name, .c-view')) { const c = e.target.closest('.card'); c && open(c.dataset.h); }
   });
-  grid.addEventListener('keydown', e => {
+  if (grid) grid.addEventListener('keydown', e => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.c-name')) { e.preventDefault(); open(e.target.closest('.card').dataset.h); }
   });
-  $$('.card', grid).forEach(c => { const n = $('.c-name', c); if (n) { n.tabIndex = 0; n.setAttribute('role', 'button'); n.setAttribute('aria-label', `${n.textContent}: photos and details`); }
+  if (grid) $$('.card', grid).forEach(c => { const n = $('.c-name', c); if (n) { n.tabIndex = 0; n.setAttribute('role', 'button'); n.setAttribute('aria-label', `${n.textContent}: photos and details`); }
     const f = $('.c-fig', c); if (f && PX[c.dataset.h] && PX[c.dataset.h].imgs.length > 1) f.insertAdjacentHTML('beforeend', `<span class="c-view">${PX[c.dataset.h].imgs.length} Photos</span>`); });
   window.ITMview = open;
 })();
