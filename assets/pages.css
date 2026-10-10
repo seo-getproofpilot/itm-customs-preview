@@ -103,3 +103,13 @@ body.sub{padding-top:0}
 .foot-grid-5{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
 @media (max-width:940px){ .foot-grid-5{grid-template-columns:1fr 1fr} }
 .sub .foot{padding-top:56px}
+
+/* v107 QC: nothing under 11px, every tap target 34px or more on phones */
+.bhero-pic figcaption,.bmore figcaption,.facts dt,.kit-how,.bcard-tag,.acost dt{font-size:11px}
+@media (max-width:480px){ .bcard-tag{font-size:11px} }
+@media (max-width:560px){
+  .pnav-links a{display:inline-flex;align-items:center;min-height:36px;font-size:12px}
+  .pnav-links{gap:0 16px}
+  .kit-inst{display:inline-flex;align-items:center;min-height:36px;padding-bottom:0;border-bottom:0;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:4px}
+  .crumbs a{display:inline-flex;align-items:center;min-height:34px}
+}

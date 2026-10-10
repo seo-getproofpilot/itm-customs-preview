@@ -121,12 +121,34 @@ function paint(el, p) {
     : `<span class="add soldout" aria-disabled="true"><span>Out Of Stock</span></span>`;
 }
 if (grid) P.forEach(p => grid.appendChild(card(p)));
+/* phones: the shop shows three short cards and a See More button, so nobody scrolls through the whole lineup to reach the rest of the page */
+const SHOP_PHONE = matchMedia('(max-width:560px)');
+let shopOpen = false;
+function clipShop() {
+  if (!grid) return;
+  const vis = $$('.card:not(.hide)', grid), more = $('#seeMore'), n = vis.length - 3;
+  vis.forEach((c, i) => c.classList.toggle('clip', SHOP_PHONE.matches && !shopOpen && i >= 3));
+  $$('.card.hide', grid).forEach(c => c.classList.remove('clip'));
+  if (!more) return;
+  more.hidden = !SHOP_PHONE.matches || n <= 0;
+  $('b', more).textContent = shopOpen ? 'Show Less' : 'See More';
+  $('span', more).textContent = shopOpen ? '' : `${n} more`;
+  more.setAttribute('aria-expanded', shopOpen);
+}
+$('#seeMore')?.addEventListener('click', () => {
+  shopOpen = !shopOpen; clipShop();
+  if (!shopOpen) $('#shop').scrollIntoView({ block: 'start' });
+  window.ITMtrack && ITMtrack('shop_see_more', { open: shopOpen });
+});
+SHOP_PHONE.addEventListener('change', clipShop);
+clipShop();
 
 /* filters (chips, lanes, footer + FAQ jump links) */
 function filter(cat) {
   $$('.chip').forEach(c => { const on = c.dataset.filter === cat; c.classList.toggle('on', on); c.setAttribute('aria-selected', on); });
   $$('.card', grid).forEach(c => c.classList.toggle('hide', cat !== 'all' && c.dataset.cat !== cat));
   $$('.card:not(.hide)', grid).forEach(c => c.classList.add('in'));
+  shopOpen = false; clipShop();
 }
 $$('.chip').forEach(c => c.onclick = () => filter(c.dataset.filter));
 $$('.lane, [data-jump]').forEach(l => l.addEventListener('click', e => {
@@ -241,6 +263,22 @@ const rv = r => `<article class="rv"><div class="rv-img"><img src="${IMG(r[2])}"
   <span class="rv-stars" aria-label="5 stars">★★★★★</span><p>${r[3]}</p>
   <div class="rv-who"><b>${r[0]}</b><span>${r[1]}</span></div>${r[4] ? `<a class="rv-build" href="builds/${r[4]}/">See The Build <i aria-hidden="true">&rarr;</i></a>` : ''}</div></article>`;
 run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class="rv"/g, '<article class="rv" aria-hidden="true"');
+/* phones: three reviews, then See More (the belt becomes a stacked list there) */
+(function () {
+  const btn = document.getElementById('revMore'); if (!btn) return;
+  let open = false;
+  const live = () => $$('.rv:not([aria-hidden="true"])', run);
+  function clip() {
+    const all = live(), n = all.length - 3;
+    all.forEach((r, i) => r.classList.toggle('clip', SHOP_PHONE.matches && !open && i >= 3));
+    btn.hidden = !SHOP_PHONE.matches || n <= 0;
+    $('b', btn).textContent = open ? 'Show Less' : 'See More Reviews';
+    $('span', btn).textContent = open ? '' : `${n} more`;
+    btn.setAttribute('aria-expanded', open);
+  }
+  btn.addEventListener('click', () => { open = !open; clip(); if (!open) $('#reviews').scrollIntoView({ block: 'start' }); });
+  SHOP_PHONE.addEventListener('change', clip); clip();
+})();
 
 /* ---------- nav + reveals ---------- */
 const nav = $('#nav');

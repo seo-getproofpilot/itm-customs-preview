@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p2d8ae958">
+<link rel="stylesheet" href="assets/site.css?v=p88545f86">
 
 
 </head>
@@ -154,6 +154,7 @@
       <button class="chip" data-filter="merch" role="tab" aria-selected="false">Merch</button>
     </div>
     <div class="grid" id="grid" aria-live="polite"></div>
+    <button type="button" class="see-more" id="seeMore" aria-controls="grid" aria-expanded="false" hidden><b>See More</b><span></span></button>
   </div>
 </section>
 
@@ -245,6 +246,7 @@
   <div class="belt" id="belt" tabindex="0" aria-label="Customer reviews">
     <div class="belt-run" id="beltRun"></div>
   </div>
+  <div class="wrap"><button type="button" class="see-more" id="revMore" aria-controls="beltRun" aria-expanded="false" hidden><b>See More Reviews</b><span></span></button></div>
 </section>
 
 <!-- ============ GALLERY ============ -->
@@ -386,6 +388,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p2d8ae958"></script>
+<script src="assets/app.js?v=p88545f86"></script>
 </body>
 </html>
