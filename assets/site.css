@@ -1913,6 +1913,25 @@ html.pv-open{overflow:hidden}
 }
 @media (max-width:560px){ .belt-run .rv.clip{display:none} }
 
+/* =====================================================================================
+   v108: every button lights amber on hover and while pressed (Chris, 2026-10-14).
+   Sold-out and disabled buttons stay as they are.
+   ===================================================================================== */
+:root{--amber-glow:linear-gradient(180deg,#FFD38A 0%,#FFB23F 46%,#F08A1C 100%)}
+:is(.btn,.add,.chip,.see-more,.var,.opt,.slot,.stime,.look-btn,.up-add,.cal-nav,.seg button):not(:disabled):not(.so):not(.soldout):is(:hover,:active,:focus-visible){
+  background:var(--amber-glow)!important;border-color:#F08A1C!important;color:#140C02!important;filter:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -3px 0 rgba(120,60,0,.25),0 0 0 1px rgba(255,210,130,.9),0 0 26px rgba(255,178,63,.55),0 12px 28px -12px rgba(240,138,28,.8)!important}
+:is(.btn,.add,.chip,.see-more,.var,.opt,.slot,.stime,.look-btn,.up-add):not(:disabled):is(:hover,:active,:focus-visible) :is(span,b,i,em,small){color:#140C02!important;-webkit-text-fill-color:#140C02}
+.btn:active,.add:active,.opt:active{transform:translateY(1px)}
+.btn-led:is(:hover,:focus-visible)::after{opacity:0}
+/* the swatches are color dots: keep their color, ring them amber instead */
+.swatches button:is(:hover,:active,:focus-visible){box-shadow:0 0 0 3px #FFB23F,0 0 18px -2px #FFB23F}
+
+/* v108: the product photo viewer shows each photo whole, at its own shape, with no black bars */
+.pv-main{aspect-ratio:auto;background:none;border-radius:10px;display:flex;justify-content:center}
+.pv-main img{width:auto;max-width:100%;height:auto;max-height:min(70vh,640px);object-fit:contain;border-radius:10px;display:block}
+.pv-thumbs button{background:none}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
