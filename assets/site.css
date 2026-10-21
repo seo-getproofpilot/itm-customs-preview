@@ -1969,6 +1969,18 @@ html.pv-open{overflow:hidden}
   .count-copy>.fine{order:8}
 }
 
+/* v114: desktop QC. Hero kicker breaks between its two halves, never mid-phrase */
+@media (min-width:900px){.kick-t>span{white-space:nowrap}}
+/* the install tile that fills a short last row in the shop: framed like a product card, photo over a dark copy panel */
+.shop-fill{--ch:18px;filter:drop-shadow(0 14px 22px rgba(0,0,0,.55))}
+.shop-fill .card-in{position:relative}
+.shop-fill img{flex:1 1 0;min-height:200px;width:100%;object-fit:cover;object-position:50% 72%;display:block;border-bottom:2px solid #0b0d12;box-shadow:0 1px 0 rgba(74,168,238,.35)}
+.shop-fill .sf-copy{position:relative;padding:26px 32px 32px;display:grid;gap:12px;justify-items:start}
+.shop-fill .sf-copy::before{content:"";position:absolute;left:16px;top:-1px;width:44px;height:3px;background:var(--blue-metal);transform:skewX(-28deg);box-shadow:0 0 10px rgba(7,137,227,.7)}
+.shop-fill h3{margin:0;font:italic 800 clamp(26px,calc(2.4vw / var(--z,1)),34px)/1.04 var(--f-disp);text-transform:uppercase;color:#F4F7FF}
+.shop-fill p{margin:0;max-width:56ch;font-size:16px;line-height:1.6;color:#B8C0CC}
+.shop-fill[hidden]{display:none}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

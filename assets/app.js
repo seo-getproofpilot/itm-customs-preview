@@ -134,14 +134,23 @@ $('#seeMore')?.addEventListener('click', () => {
   window.ITMtrack && ITMtrack('shop_see_more', { open: shopOpen });
 });
 SHOP_PHONE.addEventListener('change', clipShop);
-clipShop();
+/* wider screens: when the lineup leaves a gap in the last row, an install tile fills it instead of empty space */
+const fill = $('#shopFill');
+function fillShop() {
+  if (!grid || !fill) return;
+  const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length, n = $$('.card:not(.hide)', grid).length, gap = (cols - n % cols) % cols;
+  fill.hidden = SHOP_PHONE.matches || cols < 2 || !gap;
+  if (!fill.hidden) { fill.style.gridColumn = `span ${gap}`; grid.appendChild(fill); }
+}
+addEventListener('resize', fillShop);
+clipShop(); fillShop();
 
 /* filters (chips, lanes, footer + FAQ jump links) */
 function filter(cat) {
   $$('.chip').forEach(c => { const on = c.dataset.filter === cat; c.classList.toggle('on', on); c.setAttribute('aria-selected', on); });
   $$('.card', grid).forEach(c => c.classList.toggle('hide', cat !== 'all' && c.dataset.cat !== cat));
   $$('.card:not(.hide)', grid).forEach(c => c.classList.add('in'));
-  shopOpen = false; clipShop();
+  shopOpen = false; clipShop(); fillShop();
 }
 $$('.chip').forEach(c => c.onclick = () => filter(c.dataset.filter));
 $$('.lane, [data-jump]').forEach(l => l.addEventListener('click', e => {

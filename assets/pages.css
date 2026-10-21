@@ -113,3 +113,6 @@ body.sub{padding-top:0}
   .kit-inst{display:inline-flex;align-items:center;min-height:36px;padding-bottom:0;border-bottom:0;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:4px}
   .crumbs a{display:inline-flex;align-items:center;min-height:34px}
 }
+
+/* v114: the five city cards sit in one row on desktop instead of leaving Phoenix alone */
+@media (min-width:1100px){.areas{grid-template-columns:repeat(5,minmax(0,1fr))}}
