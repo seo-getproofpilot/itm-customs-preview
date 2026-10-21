@@ -137,7 +137,7 @@ function partsEstimate() {
     if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit ×${n}`, KIT219[n]] : ['219-chip kit', 240, 'from']);
     else {
       const per = /^72/.test(r) ? 45 : 55, name = /^72/.test(r) ? '72-chip' : '84-chip';
-      items.push(n && n % 4 === 0 ? [`${name} ×${n}`, per * (n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
+      items.push(n ? [`${name} ×${n} (${Math.ceil(n / 4)} packs)`, per * Math.ceil(n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
     }
   }
   if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 500] : ['wheel lights', 380, 'from']);
