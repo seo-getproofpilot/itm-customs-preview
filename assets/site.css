@@ -1931,6 +1931,7 @@ html.pv-open{overflow:hidden}
 .pv-main{aspect-ratio:auto;background:none;border-radius:10px;display:flex;justify-content:center}
 .pv-main img{width:auto;max-width:100%;height:auto;max-height:min(70vh,640px);object-fit:contain;border-radius:10px;display:block}
 .pv-thumbs button{background:none}
+.cart-n{font-size:11px}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

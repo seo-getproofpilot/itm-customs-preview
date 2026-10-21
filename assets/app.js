@@ -15,69 +15,62 @@ const goBook = (p = {}) => { const u = new URL('book/', document.baseURI);
 /* ---------- catalog ---------- */
 const P = [
   { h:'84-chip-pure-white-rocklights', cat:'rock', catL:'Rock Lights', name:'84-Chip Pure White Rock Lights',
-    sub:'Set of 4. Our brightest pure white rock light.', specs:['84 Chip','20 W','Set Of 4','DIY Wiring'],
+    sub:'Pack of 4. Our brightest DIY pure white rock light.', specs:['84 LED Chip','20 W','Pack Of 4','DIY Wiring'],
     imgs:['p-84-chip-pure-white-rocklights-1','p-84-chip-pure-white-rocklights-3'], rating:[5.0,1],
-    v:[{t:'Set Of 4',id:47278903623933,p:55,ok:true}] },
+    v:[{t:'Pack Of 4',id:47278903623933,p:55,ok:true}] },
   { h:'72-chip-pure-white-rock-light', cat:'rock', catL:'Rock Lights', name:'72-Chip Pure White Rock Lights',
-    sub:'Set of 4, with rubber pads and mounting hardware.', specs:['72 Chip','14 W','1.2 A @ 12 V','Set Of 4'],
+    sub:'Pack of 4, with rubber pads and mounting hardware.', specs:['72 LED Chip','14 W','Pack Of 4','DIY Wiring'],
     imgs:['p-72-chip-pure-white-rock-light-1','p-72-chip-pure-white-rock-light-0'], rating:[4.62,16],
-    v:[{t:'Set Of 4',id:46018763391229,p:45,was:50,ok:false}] },
-  { h:'16-count', cat:'switch', catL:'Switchbacks', name:'Switchback Rock Light Kit',
-    sub:'White and amber, plug and play, with Bluetooth app control.', specs:['White + Amber','Wigwag / Strobe','15 ft Leads','Bluetooth'],
+    v:[{t:'Pack Of 4',id:46018763391229,p:45,ok:true}] },
+  { h:'219-chip-pure-white-rock-light-kit', cat:'rock', catL:'Rock Lights', name:'219-Chip Pure White Rock Light Kit',
+    sub:'Our 219 LED chip pure white rock light, in kits of 4 to 24 lights.', specs:['219 LED Chip','Pure White','4 To 24 Lights'],
+    imgs:['p-219-chip-pure-white-rock-light-kit'],
+    v:[[4,240],[8,400],[12,520],[16,700],[20,800],[24,920]].map(([n,p])=>({t:`${n} Lights`,p,ok:true})), def:3 },
+  { h:'16-count', cat:'switch', catL:'Switchbacks', name:'112-Chip Switchback Rock Light Kit',
+    sub:'White and amber. Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['112 LED Chip','White + Amber','Bluetooth App','Waterproof'],
     imgs:['switchback-rock-light-kit-amber-truck','switchback-rock-light-kit-white-truck'],
-    v:[{t:'4 Lights',id:46543966044413,p:200,ok:false,h:'4-count'},{t:'10 lights',id:46544330555645,p:350,ok:false,h:'8-count'},{t:'16 lights',id:46544008806653,p:500,ok:true,h:'16-count'}], def:2 },
-  { h:'4pc-rgbw-rock-light-kit', cat:'rock', catL:'Rock Lights', name:'RGBW Rock Light Kit',
-    sub:'Four 44-chip RGBW lights, Bluetooth harness and remote.', specs:['44 Chip','RGBW','4 pc','Plug And Play'],
+    v:[[4,200],[8,380],[12,500],[16,600],[20,700]].map(([n,p])=>({t:`${n} Lights`,p,ok:true})), def:3 },
+  { h:'4pc-rgbw-rock-light-kit', cat:'rgbw', catL:'RGBW', name:'RGBW Rock Light Kit',
+    sub:'44 LED chip RGBW lights. Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['44 LED Chip','RGBW','Bluetooth App','Waterproof'],
     imgs:['p-4pc-rgbw-rock-light-kit-1','p-4pc-rgbw-rock-light-kit-2'],
-    v:[{t:'4 pc',id:46981680857341,p:200,ok:false}] },
+    v:[[4,205],[8,385],[12,505],[16,605],[20,705]].map(([n,p])=>({t:`${n} Lights`,p,ok:true})), def:0 },
   { h:'10-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'10-Row Pure White Wheel Lights',
-    sub:'17″ rings with 5 rows inside and 5 outside. Module and wireless remote included.', specs:['17″','10 Row','Plug And Play','Wireless Remote'],
+    sub:'Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['17″','10 Row','Bluetooth App','Waterproof'],
     imgs:['p-10-row-pure-white-wheel-lights-0','p-10-row-pure-white-wheel-lights-2'], rating:[5.0,1],
-    v:[{t:'17″ kit',id:47012636819709,p:499,was:650,ok:true}] },
+    v:[{t:'17″ kit',id:47012636819709,p:500,ok:true}] },
   { h:'5-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'5-Row Pure White Wheel Lights',
-    sub:'17″ rings, plug and play with module and wireless remote.', specs:['17″','5 Row','Plug And Play'],
+    sub:'Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['17″','5 Row','Bluetooth App','Waterproof'],
     imgs:['p-5-row-pure-white-wheel-lights-3','p-5-row-pure-white-wheel-lights-0'],
-    v:[{t:'17″ kit',id:46052165517565,p:380,was:449,ok:false}] },
-  { h:'magnetic-mount-for-rocklights', cat:'parts', catL:'Mounts & Wiring', name:'Magnetic Rock Light Mount',
+    v:[{t:'17″ kit',id:46052165517565,p:380,ok:true}] },
+  { h:'magnetic-mount-for-rocklights', cat:'acc', catL:'Accessories', name:'Magnetic Rock Light Mount',
     sub:'Skip the drilling. Fits our 72- and 84-chip lights.', specs:['1/8″ Aluminum','CNC Cut','Made In USA'],
     imgs:['p-magnetic-mount-for-rocklights-3','p-magnetic-mount-for-rocklights-0'],
-    v:[{t:'1 mount',id:47351597695229,p:10,ok:false}] },
-  { h:'magnetic-t-bracket-mount', cat:'parts', catL:'Mounts & Wiring', name:'Magnetic T-Bracket Mount',
-    sub:'Mounts lights on vertical surfaces like frame rails and rockers.', specs:['110 lb Magnet','Per Bracket'],
-    imgs:['p-magnetic-t-bracket-mount-2','p-magnetic-t-bracket-mount-0'],
-    v:[{t:'1 bracket',id:46055093731581,p:4.99,ok:false}] },
-  { h:'3-pin-wire-extension', cat:'parts', catL:'Mounts & Wiring', name:'3-Pin Wire Extension',
-    sub:'Plug-and-play reach for lights far from the module.', specs:['3 Pin','Plug And Play'],
-    imgs:['p-3-pin-wire-extension-0'],
-    v:[{t:'5 ft',id:46544323510525,p:6,ok:true},{t:'10 ft',id:46544315646205,p:7.5,ok:true}] },
-  { h:'untitled-jun19_07-48', cat:'parts', catL:'Mounts & Wiring', name:'Latching Push-Button Switch',
-    sub:'19 mm black stainless switch with a white LED ring.', specs:['19 mm','Latching','LED Ring'],
-    imgs:['latching-push-button-switch-wiring','latching-push-button-switch-dash'],
-    v:[{t:'1 switch',id:46373584568573,p:10,ok:false}] },
-  { h:'itm-truck-t-shirt', cat:'merch', catL:'Merch', name:'ITM Truck Tee',
+    v:[{t:'1 mount',id:47351597695229,p:10,ok:true}] },
+  { h:'itm-truck-t-shirt', cat:'acc', catL:'Accessories', name:'ITM Truck Tee',
     sub:'Screen-printed 100% cotton. Logo on the pocket, truck on the back.', specs:['100% Cotton','Screen Print'],
     imgs:['p-itm-truck-t-shirt-0','p-itm-truck-t-shirt-1'],
-    v:['S','M','L','XL','2XL'].map((t,i)=>({t,id:[47169431437565,47169431470333,47169431503101,47169431535869,47169431568637][i],p:25,ok:true})), def:2 },
-  { h:'6-decal', cat:'merch', catL:'Merch', name:'6″ Chrome Decal',
-    sub:'Weatherproof vinyl for the back glass.', specs:['6″','Chrome','Vinyl'],
+    v:['S','M','L','XL','2XL'].map((t,i)=>({t,id:[47169431437565,47169431470333,47169431503101,47169431535869,47169431568637][i],p:20,ok:true})), def:2 },
+  { h:'6-decal', cat:'acc', catL:'Accessories', name:'6.5″ ITM Decal',
+    sub:'Weatherproof vinyl for the back glass, in five colors.', specs:['6.5″','5 Colors','Vinyl'],
     imgs:['p-6-decal-0'],
-    v:[{t:'Chrome',id:46223875047677,p:5,ok:false}] },
+    v:['White','Chrome','Blue','Red','Black'].map(t=>({t,p:5,ok:true})), def:1 },
 ];
 const byH = Object.fromEntries(P.map(p => [p.h, p]));
 /* option labels in title case everywhere they show (cards, cart, toasts): "16 Lights", "17″ Kit"; units and small words stay lowercase */
 const TC = t => t.replace(/[A-Za-z]+/g, (w, i) => (i && /^(ft|w|mm|pc)$/i.test(w)) ? w.toLowerCase() : /^[a-z]/.test(w) ? w[0].toUpperCase() + w.slice(1) : w);
 P.forEach(p => p.v.forEach(v => { v.t = TC(v.t); }));
+/* variants not yet created in Shopify get a local key, so each stays its own cart line until it has a real variant id */
+P.forEach(p => p.v.forEach((v, i) => { if (!v.id) v.id = `${p.h}#${i}`; }));
 /* install-first: how each kit goes on (from the product specs and FAQ) and which booking job it maps to */
 const INST = {
   '84-chip-pure-white-rocklights': ['DIY Wiring', 'Rock Lights'],
   '72-chip-pure-white-rock-light': ['DIY Wiring', 'Rock Lights'],
+  '219-chip-pure-white-rock-light-kit': ['Sold By Count', 'Rock Lights'],
   '16-count': ['Plug And Play', 'Switchback / Amber'],
   '4pc-rgbw-rock-light-kit': ['Plug And Play', 'RGBW Color Kit'],
   '10-row-pure-white-wheel-lights': ['Plug And Play', 'Wheel Lights'],
   '5-row-pure-white-wheel-lights': ['Plug And Play', 'Wheel Lights'],
   'magnetic-mount-for-rocklights': ['No Drilling', 'Rock Lights'],
-  'magnetic-t-bracket-mount': ['No Drilling', 'Rock Lights'],
-  'untitled-jun19_07-48': ['Switch Wiring', 'Push-Button Switch'],
 };
 
 /* ---------- grid ---------- */
@@ -90,7 +83,7 @@ function card(p) {
   el.innerHTML = `<div class="card-frame"><div class="card-chrome"><div class="card-in">
     <figure class="c-fig">
       <div class="badges"></div>
-      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i ? p.name + (p.cat === 'merch' ? ' – second view' : ' installed on a vehicle') : 'ITM Customs ' + p.name + ' – ' + p.catL.toLowerCase()}" loading="lazy">`).join('')}
+      ${p.imgs.map((n,i)=>`<img src="${IMG(n)}" alt="${i ? p.name + (/t-shirt|decal/.test(p.h) ? ' – second view' : ' installed on a vehicle') : 'ITM Customs ' + p.name + ' – ' + p.catL.toLowerCase()}" loading="lazy">`).join('')}
     </figure>
     <div class="c-body">
       <span class="c-cat">${p.catL}</span>
@@ -160,6 +153,7 @@ $$('.lane, [data-jump]').forEach(l => l.addEventListener('click', e => {
 const KEY = 'itm_cart_v1';
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
+cart = cart.filter(l => byH[l.h] && byH[l.h].v[l.i]);  // drop lines for products that are no longer sold
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} };
 function add(h, i, qty = 1) {
   const p = byH[h], v = p.v[i];
@@ -255,7 +249,6 @@ const R = [
   ['Ricky Frazier','ITM Customer','build-ricky-wheel-well-rock-lights','I have had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing!','ricky-rock-lights'],
   ['Ethan Robbins','72-Chip Rock Lights','build-ethan-rock-lights-two-trucks','Quality of the light is very good and super bright.','ethan-rock-lights'],
   ['Troy Gross','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-5-crop','Insanely bright for the price. I would highly recommend these lights.'],
-  ['j.','Magnetic T-Bracket','p-magnetic-t-bracket-mount-3','It gives the rock lights a cleaner, more proper look. Get these!'],
   ['Connor','72-Chip Rock Lights','p-72-chip-pure-white-rock-light-2-crop','It’s super bright and surprised me so much. Worth the wait. You’ve got to be patient for it to come in!'],
 ];
 const run = $('#beltRun') || document.createElement('div');
@@ -360,11 +353,11 @@ document.addEventListener('click', e => {
   const btn = $('#shopToggle'), menu = $('#shopMenu'), grid = $('#smGrid'); if (!btn) return;
   const CATS = [
     ['all', 'All Lights', 'p-84-chip-pure-white-rocklights-1', 'Every Product'],
-    ['rock', 'Rock Lights', 'p-72-chip-pure-white-rock-light-1', 'White + RGBW Sets'],
+    ['rock', 'Rock Lights', 'p-72-chip-pure-white-rock-light-1', 'Pure White 72, 84 + 219'],
     ['switch', 'Switchbacks', 'switchback-rock-light-kit-amber-truck', 'White / Amber Kits'],
+    ['rgbw', 'RGBW', 'p-4pc-rgbw-rock-light-kit-1', 'Color Kits, 4 To 20'],
     ['wheel', 'Wheel Lights', 'ram-1500-white-wheel-lights-night', '17″ 5 And 10 Row'],
-    ['parts', 'Mounts & Wiring', 'p-magnetic-mount-for-rocklights-0', 'Mounts, Switches, Leads'],
-    ['merch', 'Merch', 'p-itm-truck-t-shirt-0', 'Tees + Decals'],
+    ['acc', 'Accessories', 'p-magnetic-mount-for-rocklights-0', 'Mounts, Tees + Decals'],
   ];
   const count = c => c === 'all' ? P.length : P.filter(p => p.cat === c).length;
   grid.innerHTML = CATS.map(([c, n, img, d]) =>
@@ -470,7 +463,7 @@ function syncAdded() {
     if (VEH) pick('vehicle', VEH);
     const KD = { '84-chip-pure-white-rocklights': ['d-rock', '84-Chip Pure White'], '72-chip-pure-white-rock-light': ['d-rock', '72-Chip Pure White'],
       '10-row-pure-white-wheel-lights': ['d-wheel', '10-Row Pure White'], '5-row-pure-white-wheel-lights': ['d-wheel', '5-Row Pure White'],
-      '16-count': ['d-sb', '16 Lights'], 'untitled-jun19_07-48': ['d-sw', '1'] };
+      '16-count': ['d-sb', '16 Lights'], '219-chip-pure-white-rock-light-kit': ['d-rock', '219-Chip Pure White'] };
     hs.forEach(h => { pick('work', INST[h][1]); if (KD[h]) pick(KD[h][0], KD[h][1]); });
     pick('parts', 'ITM Supplies Them');
     typeof estimate === 'function' && estimate();
@@ -515,9 +508,7 @@ function syncAdded() {
   function upsell() {
     const up = $('#drUp'), hs = cart.map(l => l.h), lights = hs.filter(h => INST[h] && !/mount|untitled/.test(h));
     if (!lights.length) { up.innerHTML = ''; return; }
-    const ext = byH['3-pin-wire-extension'], hasExt = hs.includes('3-pin-wire-extension');
-    up.innerHTML = (!hasExt && lights.some(h => /16-count|rgbw|wheel/.test(h)) ? `<div class="up-row"><div><b>Add a 5 ft Wire Extension</b><span>For lights far from the module, like a long bed or rear bumper.</span></div><button type="button" class="up-add" data-h="3-pin-wire-extension" data-i="0">+ ${money(ext.v[0].p)}</button></div>` : '') +
-      `<a href="book/" class="up-book">We Install It In Mesa <i aria-hidden="true">&rarr;</i></a>`;
+    up.innerHTML = `<a href="book/" class="up-book">We Install It In Mesa <i aria-hidden="true">&rarr;</i></a>`;
   }
   new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
   foot.addEventListener('click', e => {
@@ -536,7 +527,7 @@ function syncAdded() {
 })();
 
 /* ---------- product detail view: every store photo + ITM's own description (from itmcustoms.com) ---------- */
-const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-rocklights-1", "p-84-chip-pure-white-rocklights-0", "p-84-chip-pure-white-rocklights-2", "p-84-chip-pure-white-rocklights-3", "p-84-chip-pure-white-rocklights-4", "p-84-chip-pure-white-rocklights-5"], "note": "Please allow 2–3 weeks for processing.", "lines": ["Set of 4 lights (8 lights shown on the truck)", "1 quantity = 4 lights. Example: for 20 lights, order a quantity of 5 (5 sets × 4 lights = 20 lights).", "Comes with 4 rubber mounting pads and the bolts, washers and nuts you need.", "These rock lights are DIY. Each light has about 11″ of wire attached, and you wire them together yourself.", "20 W light. Please wire accordingly.", "Extremely bright!"]}, "72-chip-pure-white-rock-light": {"imgs": ["p-72-chip-pure-white-rock-light-1", "p-72-chip-pure-white-rock-light-0", "p-72-chip-pure-white-rock-light-2", "p-72-chip-pure-white-rock-light-3", "p-72-chip-pure-white-rock-light-4", "p-72-chip-pure-white-rock-light-5", "p-72-chip-pure-white-rock-light-6"], "note": "Please allow 2–3 weeks for processing.", "lines": ["Set of 4 lights", "1 quantity = 4 lights. Example: for 20 lights, order a quantity of 5 (5 sets × 4 lights = 20 lights).", "Comes with 4 rubber mounting pads and the bolts, washers and nuts you need.", "These rock lights are DIY. Each light has about 11″ of wire attached, and you wire them together yourself.", "14 W, 1.2 A @ 12 V", "Extremely bright!"]}, "16-count": {"imgs": ["p-16-count-0", "p-16-count-1", "p-16-count-2", "p-8-count-0", "p-4-count-0", "p-4-count-1"], "note": "Please allow 2–3 weeks for processing and shipping.", "lines": ["Included:", "15 ft of wire on each light", "Plug-and-play connectors with a Bluetooth module and an inline fuse to the battery", "Mounting hardware (nuts and bolts)", "Remote control", "App features:", "Solid white / solid amber", "Wigwag and strobe modes", "Speed and brightness control", "Note: wire extensions may be needed for your setup (for example, a crew cab long bed or rear bumper)."]}, "4pc-rgbw-rock-light-kit": {"imgs": ["p-4pc-rgbw-rock-light-kit-0", "p-4pc-rgbw-rock-light-kit-1", "p-4pc-rgbw-rock-light-kit-2", "p-4pc-rgbw-rock-light-kit-3", "p-4pc-rgbw-rock-light-kit-4"], "note": "Please allow 2–3 weeks for processing and shipping.", "lines": ["Included:", "4 pc 44-chip RGBW rock lights with connectors", "Plug-and-play Bluetooth module harness (with the splitters you need)", "Remote"]}, "10-row-pure-white-wheel-lights": {"imgs": ["p-10-row-pure-white-wheel-lights-0", "p-10-row-pure-white-wheel-lights-1", "p-10-row-pure-white-wheel-lights-2"], "note": "Please allow 2–3 weeks for production and shipping.", "lines": ["17″ 10-row pure white wheel lights (5 rows inside, 5 outside)", "A plug-and-play kit with module and wireless controller."]}, "5-row-pure-white-wheel-lights": {"imgs": ["p-5-row-pure-white-wheel-lights-0", "p-5-row-pure-white-wheel-lights-1", "p-5-row-pure-white-wheel-lights-2", "p-5-row-pure-white-wheel-lights-3"], "note": "Please allow 2–3 weeks for production and shipping.", "lines": ["17″ 5-row pure white wheel lights", "A plug-and-play kit with module and wireless controller."]}, "magnetic-mount-for-rocklights": {"imgs": ["p-magnetic-mount-for-rocklights-0", "p-magnetic-mount-for-rocklights-1", "p-magnetic-mount-for-rocklights-2", "p-magnetic-mount-for-rocklights-3"], "note": "", "lines": ["Custom magnetic mounts built to work with our 72- and 84-chip rock lights.", "Details:", "Material: 1/8″ thick aluminum, CNC cut and made in the USA.", "Powerful magnet: skip drilling into your frame, and they stay on over any terrain.", "Universal fit: installs on any vehicle. Bumpers, frame rails, rocker panels: these mounts stick to anything metal.", "What’s included: one mount with magnet. No light included."]}, "magnetic-t-bracket-mount": {"imgs": ["p-magnetic-t-bracket-mount-0", "p-magnetic-t-bracket-mount-1", "p-magnetic-t-bracket-mount-2", "p-magnetic-t-bracket-mount-3", "p-magnetic-t-bracket-mount-4"], "note": "", "lines": ["A great way to mount rock lights on vertical surfaces, whether that’s the frame, the rocker panels or anywhere else.", "110 lb-rated magnet that stays on even over bumpy terrain.", "Price is for one bracket. No light included.", "Wire can go in either side, and the other side is zip-tied so the light stays secure. We recommend wrapping the rock light wire after passing it through the bracket so it won’t slip out."]}, "3-pin-wire-extension": {"imgs": ["p-3-pin-wire-extension-0"], "note": "", "lines": ["A plug-and-play fix for rock lights mounted too far from your module to reach.", "Available in 5 ft and 10 ft."]}, "untitled-jun19_07-48": {"imgs": ["latching-push-button-switch-wiring", "latching-push-button-switch-dash", "p-untitled-jun19_07-48-2", "p-untitled-jun19_07-48-3"], "note": "", "lines": ["19 mm latching push button", "Black stainless steel with a white LED ring.", "Level up your install with this high-quality switch. It splices in place of your regular button.", "Wiring:", "Black = positive from the battery", "Yellow = ground", "Green + blue = positive trigger for the device and LED ring"]}, "itm-truck-t-shirt": {"imgs": ["p-itm-truck-t-shirt-0", "p-itm-truck-t-shirt-1"], "note": "", "lines": ["Available in S to XXL.", "High-quality screen-printed design on a 100% cotton shirt.", "Front pocket: ITM Customs", "Back: truck design"]}, "6-decal": {"imgs": ["p-6-decal-0"], "note": "", "lines": ["6″ decals", "High-quality weatherproof vinyl"]}};
+const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-rocklights-1", "p-84-chip-pure-white-rocklights-0", "p-84-chip-pure-white-rocklights-2", "p-84-chip-pure-white-rocklights-3", "p-84-chip-pure-white-rocklights-4", "p-84-chip-pure-white-rocklights-5"], "note": "Please allow 2–3 weeks for processing.", "lines": ["Pack of 4 lights (8 lights shown on the truck)", "1 quantity = 4 lights. Example: for 20 lights, order a quantity of 5 (5 packs × 4 lights = 20 lights).", "Comes with 4 rubber mounting pads and the bolts, washers and nuts you need.", "These rock lights are DIY. Each light has about 11″ of wire attached, and you wire them together yourself.", "20 W light. Please wire accordingly.", "Extremely bright!"]}, "72-chip-pure-white-rock-light": {"imgs": ["p-72-chip-pure-white-rock-light-1", "p-72-chip-pure-white-rock-light-0", "p-72-chip-pure-white-rock-light-2", "p-72-chip-pure-white-rock-light-3", "p-72-chip-pure-white-rock-light-4", "p-72-chip-pure-white-rock-light-5", "p-72-chip-pure-white-rock-light-6"], "note": "Please allow 2–3 weeks for processing.", "lines": ["Pack of 4 lights", "1 quantity = 4 lights. Example: for 20 lights, order a quantity of 5 (5 packs × 4 lights = 20 lights).", "Comes with 4 rubber mounting pads and the bolts, washers and nuts you need.", "These rock lights are DIY. Each light has about 11″ of wire attached, and you wire them together yourself.", "14 W, 1.2 A @ 12 V", "Extremely bright!"]}, "16-count": {"imgs": ["p-16-count-0", "p-16-count-1", "p-16-count-2", "p-8-count-0", "p-4-count-0", "p-4-count-1"], "note": "Please allow 2–3 weeks for processing and shipping.", "lines": ["112 LED chip switchback rock lights, white and amber", "Kits of 4, 8, 12, 16 or 20 lights", "Full plug and play with module, remote and Bluetooth app", "Waterproof", "App features:", "Solid white / solid amber", "Wigwag and strobe modes", "Speed and brightness control"]}, "4pc-rgbw-rock-light-kit": {"imgs": ["p-4pc-rgbw-rock-light-kit-0", "p-4pc-rgbw-rock-light-kit-1", "p-4pc-rgbw-rock-light-kit-2", "p-4pc-rgbw-rock-light-kit-3", "p-4pc-rgbw-rock-light-kit-4"], "note": "Please allow 2–3 weeks for processing and shipping.", "lines": ["44 LED chip RGBW rock lights", "Kits of 4, 8, 12, 16 or 20 lights", "Full plug and play with module, remote and Bluetooth app", "Waterproof"]}, "10-row-pure-white-wheel-lights": {"imgs": ["p-10-row-pure-white-wheel-lights-0", "p-10-row-pure-white-wheel-lights-1", "p-10-row-pure-white-wheel-lights-2"], "note": "Please allow 2–3 weeks for production and shipping.", "lines": ["17″ 10-row pure white wheel lights (5 rows inside, 5 outside)", "Full plug and play with module, remote and Bluetooth app", "Waterproof"]}, "5-row-pure-white-wheel-lights": {"imgs": ["p-5-row-pure-white-wheel-lights-0", "p-5-row-pure-white-wheel-lights-1", "p-5-row-pure-white-wheel-lights-2", "p-5-row-pure-white-wheel-lights-3"], "note": "Please allow 2–3 weeks for production and shipping.", "lines": ["17″ 5-row pure white wheel lights", "Full plug and play with module, remote and Bluetooth app", "Waterproof"]}, "magnetic-mount-for-rocklights": {"imgs": ["p-magnetic-mount-for-rocklights-0", "p-magnetic-mount-for-rocklights-1", "p-magnetic-mount-for-rocklights-2", "p-magnetic-mount-for-rocklights-3"], "note": "", "lines": ["Custom magnetic mounts built to work with our 72- and 84-chip rock lights.", "Details:", "Material: 1/8″ thick aluminum, CNC cut and made in the USA.", "Powerful magnet: skip drilling into your frame, and they stay on over any terrain.", "Universal fit: installs on any vehicle. Bumpers, frame rails, rocker panels: these mounts stick to anything metal.", "What’s included: one mount with magnet. No light included."]}, "itm-truck-t-shirt": {"imgs": ["p-itm-truck-t-shirt-0", "p-itm-truck-t-shirt-1"], "note": "", "lines": ["Available in S to XXL.", "High-quality screen-printed design on a 100% cotton shirt.", "Front pocket: ITM Customs", "Back: truck design"]}, "6-decal": {"imgs": ["p-6-decal-0"], "note": "", "lines": ["6.5″ ITM decal", "Colors: white, chrome, blue, red and black", "High-quality weatherproof vinyl"]}, "219-chip-pure-white-rock-light-kit": {"imgs": ["p-219-chip-pure-white-rock-light-kit"], "note": "", "lines": ["219 LED chip pure white rock lights", "Kits of 4, 8, 12, 16, 20 or 24 lights", "Pick your count above. The price updates with the kit size."]}};
 (function () {
   document.body.insertAdjacentHTML('beforeend', `<dialog class="pv" id="pv" aria-labelledby="pvName"><div class="pv-in">
     <button type="button" class="pv-x" aria-label="Close">&times;</button>

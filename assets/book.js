@@ -118,6 +118,7 @@ function details() {
     if (job === 'Rock Lights') line(job, [D('d-rock'), D('d-rock-n') && D('d-rock-n') !== 'Not Sure' ? D('d-rock-n') + ' lights' : D('d-rock-n') ? 'count not sure' : '']);
     else if (job === 'Wheel Lights') line(job, [D('d-wheel'), D('d-wheel-size') ? D('d-wheel-size') + ' wheels' : '']);
     else if (job === 'Switchback / Amber') line(job, [D('d-sb') ? D('d-sb') + ' kit' : '']);
+    else if (job === 'RGBW Color Kit') line(job, [D('d-rgbw') ? D('d-rgbw') + ' kit' : '']);
     else if (job === 'Pillar Lights') line(job, [D('d-pillar')]);
     else if (job === 'Push-Button Switch') line(job, [D('d-sw') ? D('d-sw') + (D('d-sw') === '1' ? ' switch' : ' switches') : '']);
     else if (job === 'Wiring Fix / Troubleshoot') line(job, [(f['d-wire'] || '').trim()]);
@@ -129,14 +130,19 @@ function details() {
 /* live parts estimate from the store's prices; labor is quoted by ITM */
 function partsEstimate() {
   const w = picked('work'), items = [];
+  const KIT219 = { 4: 240, 8: 400, 12: 520, 16: 700, 20: 800, 24: 920 };
+  const SB = { 4: 200, 8: 380, 12: 500, 16: 600, 20: 700 }, RGBW = { 4: 205, 8: 385, 12: 505, 16: 605, 20: 705 };
   if (w.includes('Rock Lights')) {
-    const per = /^72/.test(D('d-rock')) ? 45 : 55, name = /^72/.test(D('d-rock')) ? '72-chip' : '84-chip', n = parseInt(D('d-rock-n'), 10);
-    items.push(n ? [`${name} ×${n}`, per * (n / 4)] : [`${name} rock lights, set of 4`, per, 'from']);
+    const r = D('d-rock'), n = parseInt(D('d-rock-n'), 10);
+    if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit ×${n}`, KIT219[n]] : ['219-chip kit', 240, 'from']);
+    else {
+      const per = /^72/.test(r) ? 45 : 55, name = /^72/.test(r) ? '72-chip' : '84-chip';
+      items.push(n && n % 4 === 0 ? [`${name} ×${n}`, per * (n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
+    }
   }
-  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 499] : ['wheel lights', 380, 'from']);
-  if (w.includes('Switchback / Amber')) { const k = { '4 Lights': 200, '10 Lights': 350, '16 Lights': 500 }[D('d-sb')]; items.push(k ? [`switchback ${D('d-sb').toLowerCase()}`, k] : ['switchback kit', 200, 'from']); }
-  if (w.includes('RGBW Color Kit')) items.push(['RGBW kit', 200]);
-  if (w.includes('Push-Button Switch')) { const n = parseInt(D('d-sw'), 10) || 1; items.push([`switch ×${n}`, 10 * n]); }
+  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 500] : ['wheel lights', 380, 'from']);
+  if (w.includes('Switchback / Amber')) { const n = parseInt(D('d-sb'), 10); items.push(SB[n] ? [`switchback ×${n}`, SB[n]] : ['switchback kit', 200, 'from']); }
+  if (w.includes('RGBW Color Kit')) { const n = parseInt(D('d-rgbw'), 10); items.push(RGBW[n] ? [`RGBW kit ×${n}`, RGBW[n]] : ['RGBW kit', 205, 'from']); }
   return items;
 }
 function estimate() {

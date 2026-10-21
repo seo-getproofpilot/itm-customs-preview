@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p625fcd21">
+<link rel="stylesheet" href="assets/site.css?v=p7d1981e1">
 
 
 </head>
@@ -107,7 +107,7 @@
     <button class="lane" style="--c:#F4F7FF" data-filter="rock">
       <img src="assets/img/gmc-sierra-white-rock-lights-carport.webp" alt="GMC Sierra lit underneath by ITM pure white rock lights" loading="lazy">
       <span class="lane-t">Rock Lights</span>
-      <span class="lane-d">Pure white or RGBW, sold in sets of four.</span>
+      <span class="lane-d">Pure white 72-, 84- and 219-chip lights.</span>
       <span class="lane-go" aria-hidden="true">Shop &rarr;</span>
       <span class="lane-led" aria-hidden="true"></span>
     </button>
@@ -125,10 +125,10 @@
       <span class="lane-go" aria-hidden="true">Shop &rarr;</span>
       <span class="lane-led" aria-hidden="true"></span>
     </button>
-    <button class="lane" style="--c:#2C9AEA" data-filter="parts">
+    <button class="lane" style="--c:#2C9AEA" data-filter="acc">
       <img src="assets/img/p-magnetic-mount-for-rocklights-1.webp" alt="ITM rock light on a magnetic mount under a truck frame" loading="lazy">
-      <span class="lane-t">Mounts & Wiring</span>
-      <span class="lane-d">Magnet mounts, extensions and switches.</span>
+      <span class="lane-t">Accessories</span>
+      <span class="lane-d">Magnetic mounts, tees and decals.</span>
       <span class="lane-go" aria-hidden="true">Shop &rarr;</span>
       <span class="lane-led" aria-hidden="true"></span>
     </button>
@@ -149,9 +149,9 @@
       <button class="chip on" data-filter="all" role="tab" aria-selected="true">All</button>
       <button class="chip" data-filter="rock" role="tab" aria-selected="false">Rock Lights</button>
       <button class="chip" data-filter="switch" role="tab" aria-selected="false">Switchbacks</button>
+      <button class="chip" data-filter="rgbw" role="tab" aria-selected="false">RGBW</button>
       <button class="chip" data-filter="wheel" role="tab" aria-selected="false">Wheel Lights</button>
-      <button class="chip" data-filter="parts" role="tab" aria-selected="false">Mounts & Wiring</button>
-      <button class="chip" data-filter="merch" role="tab" aria-selected="false">Merch</button>
+      <button class="chip" data-filter="acc" role="tab" aria-selected="false">Accessories</button>
     </div>
     <div class="grid" id="grid" aria-live="polite"></div>
     <button type="button" class="see-more" id="seeMore" aria-controls="grid" aria-expanded="false" hidden><b>See More</b><span></span></button>
@@ -204,14 +204,15 @@
       <div class="feat-body">
         <p class="kick"><span class="stripe" aria-hidden="true"></span>RGBW Rock Light Kit</p>
         <h3>One Rig. Any Color You Want Tonight.</h3>
-        <p>Four 44-chip RGBW lights with a plug-and-play Bluetooth harness and remote. Change the color from your phone.</p>
+        <p>44 LED chip RGBW lights in kits of 4 to 20. Full plug and play with module, remote and Bluetooth app, and waterproof. Change the color from your phone.</p>
         <div class="swatches" role="radiogroup" aria-label="Preview color">
           <button role="radio" aria-checked="true" class="on" data-i="0" style="--c:#2BE36A" aria-label="Green"></button>
           <button role="radio" aria-checked="false" data-i="1" style="--c:#2F5BFF" aria-label="Blue"></button>
           <button role="radio" aria-checked="false" data-i="2" style="--c:#FF3030" aria-label="Red"></button>
           <button role="radio" aria-checked="false" data-i="3" style="--c:#F4F6FA" aria-label="White"></button>
         </div>
-        <span class="link oos">$200 · Out Of Stock</span>
+        <div class="price-line"><span class="now">From $205</span><span class="tag">Kits Of 4 To 20</span></div>
+        <a class="btn btn-primary btn-sm" href="#shop" data-jump="rgbw"><span>Pick Your Kit</span></a>
       </div>
     </article>
     <article class="feat feat-wheel">
@@ -222,8 +223,8 @@
       <div class="feat-body">
         <p class="kick"><span class="stripe" aria-hidden="true"></span>17″ Wheel Lights</p>
         <h3>Light From Behind The Wheel, Both Sides.</h3>
-        <p>The 10-row ring runs five rows facing in and five facing out, so the wheel glows from both sides. Each kit is plug and play with a module and wireless controller.</p>
-        <div class="price-line"><span class="was">$650</span><span class="now">$499</span><span class="tag">10-Row · In Stock</span></div>
+        <p>The 10-row ring runs five rows facing in and five facing out, so the wheel glows from both sides. Every kit is full plug and play with module, remote and Bluetooth app, and waterproof.</p>
+        <div class="price-line"><span class="now">$500</span><span class="tag">10-Row Kit</span></div>
         <button class="btn btn-primary btn-sm" data-add="10-row-pure-white-wheel-lights"><span>Add To Cart</span></button>
       </div>
     </article>
@@ -282,12 +283,12 @@
       <p class="body">Still stuck? Email <a href="mailto:info@itmcustoms.com">info@itmcustoms.com</a>, or book an install and let us handle the wiring.</p>
     </div>
     <div class="acc">
-      <details open><summary>How Many Lights Come In One Order?</summary><p>Our 72-chip and 84-chip pure white rock lights sell in sets of four, so a quantity of 1 is 4 lights. For 20 lights, order a quantity of 5.</p></details>
-      <details><summary>How Much Does A Rock Light Install Cost?</summary><p>Parts start at $55 for a set of four 84-chip rock lights, $380 for a 17&Prime; wheel light kit and $200 to $500 for a switchback kit. Install labor depends on your vehicle and how many lights you want, so we quote it before any work starts. <a href="book/">Book your install</a> and we&rsquo;ll send the quote with the confirmation.</p></details>
-      <details><summary>Do I Have To Wire Them Myself?</summary><p>It depends on the kit. The pure white rock light sets are DIY: each light has about 11&Prime; of wire, and you wire them together. The switchback kits, RGBW kit and wheel lights are plug and play, with a module and connectors included.</p></details>
+      <details open><summary>How Many Lights Come In One Order?</summary><p>Our 72-chip and 84-chip pure white rock lights sell in packs of four, so a quantity of 1 is 4 lights. For 20 lights, order a quantity of 5. The 219-chip, switchback and RGBW kits are sold by light count, so you pick the count you want.</p></details>
+      <details><summary>How Much Does A Rock Light Install Cost?</summary><p>Parts start at $55 for a pack of four 84-chip rock lights, $200 for a switchback kit, $205 for an RGBW kit and $380 for a wheel light kit. Install labor depends on your vehicle and how many lights you want, so we quote it before any work starts. <a href="book/">Book your install</a> and we&rsquo;ll send the quote with the confirmation.</p></details>
+      <details><summary>Do I Have To Wire Them Myself?</summary><p>It depends on the kit. The 72-chip and 84-chip pure white packs are DIY: each light has about 11&Prime; of wire, and you wire them together. The switchback, RGBW and wheel light kits are full plug and play, with a module, remote and Bluetooth app. Or book an install and we wire it for you.</p></details>
       <details><summary>How Long Until My Lights Ship?</summary><p>Lights are built to order. Allow 2&ndash;3 weeks for processing and shipping.</p></details>
-      <details><summary>What Can The Switchback Kit Do?</summary><p>Each light has 15&nbsp;ft of wire and runs off a Bluetooth module with an inline fuse to the battery. From the app you get solid white, solid amber, wigwag and strobe modes, with speed and brightness control. A crew cab long bed or rear bumper may need a <a href="#shop" data-jump="parts">wire extension</a>.</p></details>
-      <details><summary>Can I Mount Them Without Drilling?</summary><p>Yes. Our magnetic mounts are 1/8&Prime; CNC-cut aluminum, made in the USA, and fit our 72- and 84-chip lights. The T-bracket mount uses a 110&nbsp;lb-rated magnet for vertical surfaces like frame rails and rockers.</p></details>
+      <details><summary>What Can The Switchback Kit Do?</summary><p>Our 112-chip switchback kits come in 4, 8, 12, 16 and 20 lights. Every kit is full plug and play with module, remote and Bluetooth app, and waterproof. From the app you get solid white, solid amber, wigwag and strobe modes, with speed and brightness control.</p></details>
+      <details><summary>Can I Mount Them Without Drilling?</summary><p>Yes. Our magnetic mounts are 1/8&Prime; CNC-cut aluminum, made in the USA, and fit our 72- and 84-chip lights.</p></details>
       <details><summary>What About Warranty?</summary><p>Email warranty claims and questions to <a href="mailto:info@itmcustoms.com">info@itmcustoms.com</a>.</p></details>
     </div>
   </div>
@@ -342,9 +343,9 @@
       <h4>Shop</h4>
       <a href="#shop" data-jump="rock">Rock Lights</a>
       <a href="#shop" data-jump="switch">Switchbacks</a>
+      <a href="#shop" data-jump="rgbw">RGBW</a>
       <a href="#shop" data-jump="wheel">Wheel Lights</a>
-      <a href="#shop" data-jump="parts">Mounts & Wiring</a>
-      <a href="#shop" data-jump="merch">Merch</a>
+      <a href="#shop" data-jump="acc">Accessories</a>
       <a href="builds/">Customer Builds</a>
     </div>
     <div>
@@ -388,6 +389,6 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p625fcd21"></script>
+<script src="assets/app.js?v=p7d1981e1"></script>
 </body>
 </html>
