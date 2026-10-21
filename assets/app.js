@@ -285,19 +285,19 @@ if ('IntersectionObserver' in window) {
 window.ITMreveal = () => $$('.rv-in').forEach(el => el.classList.add('in'));
 
 
-/* ---------- Isaac's GMC Denali: its lights, in the order they switch on (photo coords, 1672x941) ---------- */
+/* ---------- Isaac's GMC Denali in the desert: its lights, in the order they switch on (photo coords, 1672x941). All white ---------- */
 (function () {
   const stage = document.getElementById('hbStage'); if (!stage) return;
-  const W = 1672, H = 941, A = '#FFB23F', Wt = '#F4F7FF', R = '#FF3B30';
-  // [x, y, rx, ry, color, delay ms]: only the lights that are actually on in the photo
+  const W = 1672, H = 941, Wt = '#F4F7FF';
+  // [x, y, rx, ry, color, delay ms]
   const L = [
-    [1113.8,518.9,8.0,9.3,A,300],   // amber turn signal
-    [1351.0,460.3,22.7,7.7,Wt,520],   // mirror light strips
-    [1199.1,539.6,21.3,4.7,Wt,760],[1553.5,542.9,12.0,4.0,Wt,860],   // fender flare strips
-    [1205.7,600.9,56.6,50.0,Wt,1050],[1562.1,574.2,30.0,30.0,Wt,1160],   // wheel well rock lights
-    [1189.7,720.8,73.3,79.9,Wt,1360],[985.9,707.5,60.0,33.3,Wt,1460],[1575.5,642.2,36.6,50.0,Wt,1560],   // wheel lights
-    [1305.7,660.8,18.7,7.3,Wt,1720],[1359.0,660.8,18.7,7.3,Wt,1790],[1412.3,660.8,18.7,7.3,Wt,1860],[1465.5,660.8,18.7,7.3,Wt,1930],   // rocker rock lights
-    [1624.1,534.3,5.3,14.7,R,2120],   // tail light
+    [1293.2,438.8,23.8,8.1,Wt,500],   // mirror light strips
+    [1003.5,515.2,23.8,21.0,Wt,820],[1043.5,500.5,8.4,9.8,Wt,900],   // headlight + turn signal (white)
+    [984.6,618.4,9.8,21.0,Wt,1060],   // fog light
+    [1133.3,522.3,22.4,4.9,Wt,1220],[1506.4,525.8,12.6,4.2,Wt,1300],   // fender flare strips
+    [1140.3,586.8,59.6,52.6,Wt,1480],[1515.6,558.7,31.6,31.6,Wt,1580],   // wheel well rock lights
+    [1123.4,713.1,77.2,84.2,Wt,1760],[908.8,699.0,63.1,35.1,Wt,1860],[1529.6,630.3,38.6,52.6,Wt,1960],   // wheel lights
+    [1245.5,649.9,19.6,7.7,Wt,2080],[1301.6,649.9,19.6,7.7,Wt,2150],[1357.7,649.9,19.6,7.7,Wt,2220],[1413.9,649.9,19.6,7.7,Wt,2290],   // rocker rock lights
   ];
   const pct = (v, t) => (v / t * 100).toFixed(3) + '%';
   /* each light is a small feathered window onto the lit photo itself, so the real lamp detail switches on

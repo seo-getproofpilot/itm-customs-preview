@@ -744,7 +744,7 @@ section[id]{scroll-margin-top:84px}
 @media (max-width:940px), (max-width:1100px) and (orientation:portrait){
   .hero{padding-top:calc(min(calc(108vw / var(--z,1)),640px) * .84)}
   .hero-bg,.hero-scrim{height:min(calc(108vw / var(--z,1)),640px)}
-  .hb-stage{--px:.98;--py:.62}
+  .hb-stage{--px:.905;--py:.62}
 }
 
 /* ---------- v13: buttons — machined blue primary (from the ITM outline), chrome secondary; amber is light only ---------- */
@@ -1932,12 +1932,9 @@ html.pv-open{overflow:hidden}
 .pv-main img{width:auto;max-width:100%;height:auto;max-height:min(70vh,640px);object-fit:contain;border-radius:10px;display:block}
 .pv-thumbs button{background:none}
 .cart-n{font-size:11px}
-
-/* v109: Isaac's GMC Denali in the hero. The lit frame spreads out from the underglow pool under the truck */
-.hb-on{-webkit-mask:radial-gradient(ellipse 58% 60% at 82% 79%,#000 var(--r),transparent calc(var(--r) + 28%));
-          mask:radial-gradient(ellipse 58% 60% at 82% 79%,#000 var(--r),transparent calc(var(--r) + 28%))}
-@media (min-width:1101px), (min-width:941px) and (orientation:landscape){ .hb-stage{--px:.82} }
-@media (min-width:941px) and (max-width:1100px) and (orientation:landscape){ .hb-stage{--px:.93} }
+/* v110: Isaac's GMC in the desert scene. The lit frame spreads out from the underglow pool under the truck */
+.hb-on{-webkit-mask:radial-gradient(ellipse 55% 60% at 70% 82%,#000 var(--r),transparent calc(var(--r) + 28%));
+          mask:radial-gradient(ellipse 55% 60% at 70% 82%,#000 var(--r),transparent calc(var(--r) + 28%))}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
