@@ -285,21 +285,19 @@ if ('IntersectionObserver' in window) {
 window.ITMreveal = () => $$('.rv-in').forEach(el => el.classList.add('in'));
 
 
-/* ---------- the F-250's lights, in the order they switch on (photo coords, 1672x941) ---------- */
+/* ---------- Isaac's GMC Denali: its lights, in the order they switch on (photo coords, 1672x941) ---------- */
 (function () {
   const stage = document.getElementById('hbStage'); if (!stage) return;
   const W = 1672, H = 941, A = '#FFB23F', Wt = '#F4F7FF', R = '#FF3B30';
-  // [x, y, rx, ry, color, delay ms]
+  // [x, y, rx, ry, color, delay ms]: only the lights that are actually on in the photo
   const L = [
-    [1100,456,10,9,A,0],[1126,451,10,9,A,110],[1146,448,10,9,A,220],[1166,446,10,9,A,330],[1223,445,12,10,A,440],   // cab roof markers
-    [1276,525,22,10,A,640],                                                                                        // mirror marker
-    [834,572,10,8,A,820],[852,572,10,8,A,900],[866,572,10,8,A,980],[886,572,10,8,A,1060],                           // grille amber
-    [811,575,14,14,Wt,1250],[970,570,42,14,Wt,1250],[982,607,26,12,A,1320],[978,628,30,16,Wt,1320],[811,630,12,14,Wt,1250], // headlights + turn
-    [967,667,28,12,Wt,1480],                                                                                        // fog
-    [1112,615,95,85,Wt,1660],                                                                                       // front wheel well rock light
-    [1237,684,22,12,Wt,1860],[1262,681,22,12,Wt,1930],[1287,678,22,12,Wt,2000],[1312,676,22,12,Wt,2070],[1337,673,22,12,Wt,2140],[1362,670,22,12,Wt,2210], // rocker rock lights
-    [1500,600,70,75,Wt,2300],                                                                                       // rear wheel well
-    [1555,570,10,14,R,2380],[1554,605,10,16,R,2380]                                                                 // tail lights
+    [1113.8,518.9,8.0,9.3,A,300],   // amber turn signal
+    [1351.0,460.3,22.7,7.7,Wt,520],   // mirror light strips
+    [1199.1,539.6,21.3,4.7,Wt,760],[1553.5,542.9,12.0,4.0,Wt,860],   // fender flare strips
+    [1205.7,600.9,56.6,50.0,Wt,1050],[1562.1,574.2,30.0,30.0,Wt,1160],   // wheel well rock lights
+    [1189.7,720.8,73.3,79.9,Wt,1360],[985.9,707.5,60.0,33.3,Wt,1460],[1575.5,642.2,36.6,50.0,Wt,1560],   // wheel lights
+    [1305.7,660.8,18.7,7.3,Wt,1720],[1359.0,660.8,18.7,7.3,Wt,1790],[1412.3,660.8,18.7,7.3,Wt,1860],[1465.5,660.8,18.7,7.3,Wt,1930],   // rocker rock lights
+    [1624.1,534.3,5.3,14.7,R,2120],   // tail light
   ];
   const pct = (v, t) => (v / t * 100).toFixed(3) + '%';
   /* each light is a small feathered window onto the lit photo itself, so the real lamp detail switches on
