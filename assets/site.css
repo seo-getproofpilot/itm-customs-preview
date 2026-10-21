@@ -1935,6 +1935,8 @@ html.pv-open{overflow:hidden}
 /* v110: Isaac's GMC in the desert scene. The lit frame spreads out from the underglow pool under the truck */
 .hb-on{-webkit-mask:radial-gradient(ellipse 55% 60% at 69% 81%,#000 var(--r),transparent calc(var(--r) + 28%));
           mask:radial-gradient(ellipse 55% 60% at 69% 81%,#000 var(--r),transparent calc(var(--r) + 28%))}
+/* Shop The Lights: keep the traveling light, drop the dotted border it runs over */
+.btn-led::before{display:none}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
