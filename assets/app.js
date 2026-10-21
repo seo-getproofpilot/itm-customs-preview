@@ -285,19 +285,20 @@ if ('IntersectionObserver' in window) {
 window.ITMreveal = () => $$('.rv-in').forEach(el => el.classList.add('in'));
 
 
-/* ---------- Isaac's GMC Denali in the desert: its lights, in the order they switch on (photo coords, 1672x941). All white ---------- */
+/* ---------- the hero GMC Denali in the desert: its lights, in the order they switch on (photo coords, 1672x941). All white ---------- */
 (function () {
   const stage = document.getElementById('hbStage'); if (!stage) return;
   const W = 1672, H = 941, Wt = '#F4F7FF';
   // [x, y, rx, ry, color, delay ms]
   const L = [
-    [1293.2,438.8,23.8,8.1,Wt,500],   // mirror light strips
-    [1003.5,515.2,23.8,21.0,Wt,820],[1043.5,500.5,8.4,9.8,Wt,900],   // headlight + turn signal (white)
-    [984.6,618.4,9.8,21.0,Wt,1060],   // fog light
-    [1133.3,522.3,22.4,4.9,Wt,1220],[1506.4,525.8,12.6,4.2,Wt,1300],   // fender flare strips
-    [1140.3,586.8,59.6,52.6,Wt,1480],[1515.6,558.7,31.6,31.6,Wt,1580],   // wheel well rock lights
-    [1123.4,713.1,77.2,84.2,Wt,1760],[908.8,699.0,63.1,35.1,Wt,1860],[1529.6,630.3,38.6,52.6,Wt,1960],   // wheel lights
-    [1245.5,649.9,19.6,7.7,Wt,2080],[1301.6,649.9,19.6,7.7,Wt,2150],[1357.7,649.9,19.6,7.7,Wt,2220],[1413.9,649.9,19.6,7.7,Wt,2290],   // rocker rock lights
+    [1093,429,6,4,Wt,0],[1110,428,6,4,Wt,110],[1131,428,6,4,Wt,220],[1182,425,7,4,Wt,330],   // cab roof markers
+    [1230,482,30,7,Wt,520],   // mirror light strip
+    [965,558,32,26,Wt,820],[995,550,10,15,Wt,900],   // headlight + turn signal
+    [942,650,10,22,Wt,1060],   // fog light
+    [1060,567,18,5,Wt,1220],[1474,568,15,5,Wt,1300],   // fender flare strips
+    [1090,615,45,45,Wt,1480],[1478,605,24,24,Wt,1580],   // wheel well rock lights
+    [1060,730,85,95,Wt,1760],[870,728,70,42,Wt,1860],[1490,690,42,62,Wt,1960],   // wheel lights
+    [1262,688,20,8,Wt,2080],[1330,690,26,8,Wt,2150],[1400,688,26,8,Wt,2220],   // rocker rock lights
   ];
   const pct = (v, t) => (v / t * 100).toFixed(3) + '%';
   /* each light is a small feathered window onto the lit photo itself, so the real lamp detail switches on

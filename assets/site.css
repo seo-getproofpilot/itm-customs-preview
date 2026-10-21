@@ -1933,8 +1933,8 @@ html.pv-open{overflow:hidden}
 .pv-thumbs button{background:none}
 .cart-n{font-size:11px}
 /* v110: Isaac's GMC in the desert scene. The lit frame spreads out from the underglow pool under the truck */
-.hb-on{-webkit-mask:radial-gradient(ellipse 55% 60% at 70% 82%,#000 var(--r),transparent calc(var(--r) + 28%));
-          mask:radial-gradient(ellipse 55% 60% at 70% 82%,#000 var(--r),transparent calc(var(--r) + 28%))}
+.hb-on{-webkit-mask:radial-gradient(ellipse 55% 60% at 69% 81%,#000 var(--r),transparent calc(var(--r) + 28%));
+          mask:radial-gradient(ellipse 55% 60% at 69% 81%,#000 var(--r),transparent calc(var(--r) + 28%))}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
