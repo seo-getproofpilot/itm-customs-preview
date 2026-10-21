@@ -1907,7 +1907,7 @@ html.pv-open{overflow:hidden}
 .look-btn{min-height:36px}
 @media (max-width:560px){
   .brand{display:inline-flex;align-items:center;min-height:40px}
-  .social a{display:inline-flex;align-items:center;min-height:36px}
+  .social a{display:inline-block;padding:9px 0;line-height:18px}
   .foot-grid a:not(.btn){display:inline-flex;align-items:center;min-height:36px}
   .foot-grid>div:not(.foot-brand){gap:2px}
 }
@@ -1954,6 +1954,20 @@ html.pv-open{overflow:hidden}
 .m-c img{object-position:50% 58%}
 /* the count photos are portrait: keep the whole count section on one desktop screen */
 @media (min-width:941px){ .count-art{width:100%;max-width:min(470px,calc(50vh / var(--z,1)));justify-self:center} }
+
+/* v113 phone QC: the count section reads heading -> count buttons -> photo -> price, and the photo is sized to the screen */
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){
+  .count-grid{row-gap:0}
+  .count-copy{display:contents}
+  .count-copy>.kick{order:1}
+  .count-copy>h2{order:2}
+  .count-copy>.body{order:3}
+  #seg{order:4}
+  .count-art{order:5;width:100%;max-width:min(330px,calc(78vw / var(--z,1)));justify-self:center;margin:22px auto 4px}
+  .count-copy>.math{order:6}
+  .count-copy>.cta-row{order:7}
+  .count-copy>.fine{order:8}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
