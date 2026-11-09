@@ -1980,6 +1980,11 @@ html.pv-open{overflow:hidden}
 .shop-fill h3{margin:0;font:italic 800 clamp(26px,calc(2.4vw / var(--z,1)),34px)/1.04 var(--f-disp);text-transform:uppercase;color:#F4F7FF}
 .shop-fill p{margin:0;max-width:56ch;font-size:16px;line-height:1.6;color:#B8C0CC}
 .shop-fill[hidden]{display:none}
+/* v115: footer base carries the policy links; the column slot went to Services */
+.foot-base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 20px}
+.foot-pol{display:flex;flex-wrap:wrap;gap:6px 18px}.foot-pol a{color:var(--mute);text-decoration:none}.foot-pol a:hover{color:#fff}
+@media (max-width:560px){ .foot-pol a{display:inline-flex;align-items:center;min-height:36px} }
+@media (max-width:940px){ .c-cat,.inst-tag{font-size:11px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
