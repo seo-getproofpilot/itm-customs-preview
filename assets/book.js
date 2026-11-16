@@ -169,7 +169,7 @@ function estimate() {
   const lab = labor != null ? `Install <b>starting at ${money(labor)}</b>. ` : 'Install labor is <b>quoted before we start</b>. ';
   DEPOSIT_DUE = parts + (labor || 0) > DEPOSIT.over;
   const dep = DEPOSIT_DUE ? `This job is over ${money(DEPOSIT.over)}, so a <b>${money(DEPOSIT.amount)} deposit</b> holds your day. It comes off your total.` : '';
-  const disc = picked('disc').length ? ` <b>${DISCOUNT.pct}% military and first responder discount</b> comes off your total. Bring your ID to drop-off.` : '';
+  const disc = picked('disc').length ? ` <b>${DISCOUNT.pct}% military and first responder discount</b> comes off your whole total, lights and install. Bring your ID to drop-off.` : '';
   el.innerHTML = bits + lab + dep + disc;
   EST_TEXT = el.textContent.trim();
 }
