@@ -2001,6 +2001,7 @@ html.pv-open{overflow:hidden}
 .wd-warn{margin:10px 0 0;padding:10px 12px;border-left:3px solid var(--amber);background:rgba(255,178,63,.12);font-size:14px;line-height:1.5;color:var(--sand-ink)}
 .slot-times{grid-template-columns:1fr}
 .about{padding-bottom:64px}@media (max-width:900px){.about{padding-bottom:48px}}
+@media (max-width:940px){ .rv-who span{font-size:11px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
