@@ -209,3 +209,6 @@ body.sub{padding-top:0}
 /* v116: two city pages (SOW), so the areas grid is two wide */
 .areas{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 @media (min-width:1100px){.areas{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px}}
+
+/* v118: tablet tap floor for the page nav */
+@media (max-width:940px){ .pnav-links a{display:inline-flex;align-items:center;min-height:36px} }
