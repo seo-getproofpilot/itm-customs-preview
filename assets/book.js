@@ -113,7 +113,8 @@ function slotLabel() {
    Jobs over DEPOSIT.over with install hold the day with a DEPOSIT.amount deposit, credited at checkout. */
 const INSTALL_FROM = { 'Rock Lights': null, 'Wheel Lights': null, 'Switchback / Amber': null, 'RGBW Color Kit': null,
   'Cab & Mirror Lights': null, 'Pillar Lights': null, 'Bringing My Own': null };
-const DEPOSIT = { amount: 50, over: 600, url: '' };   // url: Shopify deposit product link, once it exists
+const DEPOSIT = { amount: 50, over: 600, url: '' };
+const DISCOUNT = { pct: 10 };   // military and first responders, ID shown at drop-off (Isaac to confirm the %)   // url: Shopify deposit product link, once it exists
 const WHEEL_WARN = ['16″ Or Smaller', '17″', '18″'];  // wheel sizes where the 17-inch ring may not fit: confirm with Isaac
 /* the follow-up questions for each job, and the lines they produce for the calendar + emails */
 const D = n => picked(n)[0] || '';
@@ -168,7 +169,8 @@ function estimate() {
   const lab = labor != null ? `Install <b>starting at ${money(labor)}</b>. ` : 'Install labor is <b>quoted before we start</b>. ';
   DEPOSIT_DUE = parts + (labor || 0) > DEPOSIT.over;
   const dep = DEPOSIT_DUE ? `This job is over ${money(DEPOSIT.over)}, so a <b>${money(DEPOSIT.amount)} deposit</b> holds your day. It comes off your total.` : '';
-  el.innerHTML = bits + lab + dep;
+  const disc = picked('disc').length ? ` <b>${DISCOUNT.pct}% military and first responder discount</b> comes off your total. Bring your ID to drop-off.` : '';
+  el.innerHTML = bits + lab + dep + disc;
   EST_TEXT = el.textContent.trim();
 }
 form.addEventListener('click', e => { if (e.target.closest('.opts')) setTimeout(estimate); });
@@ -246,7 +248,7 @@ async function bookLive(f, msg) {
     const r = await fetch(BOOK_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'), details: details(),
         parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '',
-        estimate: EST_TEXT, deposit: DEPOSIT_DUE, photo: await photoData() }) });
+        estimate: EST_TEXT, deposit: DEPOSIT_DUE, discount: picked('disc').length ? DISCOUNT.pct : 0, photo: await photoData() }) });
     const j = await r.json();
     if (j.ok) {
       msg.className = 'fine'; msg.textContent = ''; label.textContent = 'Book My Install';

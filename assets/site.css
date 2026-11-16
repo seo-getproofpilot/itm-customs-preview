@@ -2006,6 +2006,9 @@ html.pv-open{overflow:hidden}
 /* v118: tablet tap floors (the full nav shows from 561px up, so give it touch height there too) */
 @media (max-width:940px){ .social a{display:inline-flex;align-items:center;min-height:34px} }
 
+/* v119: photo upload meets the phone tap floor */
+.field-photo input[type=file]{min-height:44px;padding:10px 0;font-size:16px}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

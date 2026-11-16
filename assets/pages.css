@@ -212,3 +212,7 @@ body.sub{padding-top:0}
 
 /* v118: tablet tap floor for the page nav */
 @media (max-width:940px){ .pnav-links a{display:inline-flex;align-items:center;min-height:36px} }
+
+/* v119: GovX button row, and two-photo galleries fill their row */
+.scta{margin-top:22px}
+.sgal:has(> figure:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
