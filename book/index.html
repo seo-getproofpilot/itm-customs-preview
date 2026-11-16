@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p7b835a37">
+<link rel="stylesheet" href="assets/site.css?v=pd5f00f63">
 </head>
 <body class="on-book">
 <a class="skip" href="book/#main">Skip to content</a>
@@ -60,13 +60,13 @@
     <div class="book-side">
       <p class="kick dark"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
       <h1 class="display-2">Book Your Install</h1>
-      <p class="body">Pick the work and a drop-off time. We text you to confirm the slot and your install quote. Drop-off is by appointment, Monday to Saturday, 9 to 4:30.</p>
+      <p class="body">Pick the work and a morning drop-off. Most installs take 6 to 8 hours, so you pick it up the same day. We text you to confirm your day and your final price.</p>
     </div>
     <div class="book-info">
       <ol class="steps">
-        <li><span>1</span><div><b>Pick Your Time</b>Your vehicle, the work and a drop-off slot.</div></li>
-        <li><span>2</span><div><b>We Confirm</b>A text or email locks in the slot and the quote.</div></li>
-        <li><span>3</span><div><b>Roll In, Roll Out Lit</b>Bring it in on the day and drive it home glowing.</div></li>
+        <li><span>1</span><div><b>Pick Your Day</b>Your vehicle, the work and a morning drop-off.</div></li>
+        <li><span>2</span><div><b>We Confirm</b>A text locks in your day and your final price.</div></li>
+        <li><span>3</span><div><b>Roll In, Roll Out Lit</b>Drop it off in the morning, drive it home glowing that day.</div></li>
       </ol>
       <div class="wired" id="wired">
         <p class="wired-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Wired Right, Every Install</p>
@@ -75,12 +75,14 @@
           <li><b>Heat-Sealed Connections</b><span>Sealed against Arizona summers and wash days.</span></li>
           <li><b>Your Lights Or Ours</b><span>Bring a kit you bought from us or your own, or we supply them.</span></li>
           <li><b>Tested Before You Leave</b><span>Every light checked with you at pickup.</span></li>
+          <li><b>Lifetime Warranty</b><span>On every install we do. DIY kits covered for the product.</span></li>
+          <li><b>Done Same Day</b><span>Most installs take 6 to 8 hours. Morning drop-off, evening pickup.</span></li>
         </ul>
       </div>
     </div>
 
     <form class="booker" id="booker" novalidate>
-      <div class="bk-head"><span class="bk-dot" aria-hidden="true"></span><div><b>Book An Install</b><small>Takes about a minute. We text you to confirm your slot and quote.</small></div></div>
+      <div class="bk-head"><span class="bk-dot" aria-hidden="true"></span><div><b>Book An Install</b><small>Takes about a minute. We text you to confirm your day and final price.</small></div></div>
       <fieldset>
         <legend>What Are We Lighting?</legend>
         <div class="opts" data-name="vehicle" data-single>
@@ -91,6 +93,7 @@
           <button type="button" class="opt">Something Else</button>
         </div>
         <label class="field"><span>Year, Make & Model</span><input name="ymm" placeholder="e.g. 2021 Ford F-250 crew cab" autocomplete="off"></label>
+        <label class="field field-photo"><span>Photo Of Your Vehicle</span><input type="file" name="photo" accept="image/*"><small>Helps us quote it right. A side shot of the whole vehicle works best.</small></label>
       </fieldset>
       <fieldset>
         <legend>What Work Do You Want Done? <em>Pick All That Apply</em></legend>
@@ -101,13 +104,12 @@
           <button type="button" class="opt">Pillar Lights</button>
           <button type="button" class="opt">Cab &amp; Mirror Lights</button>
           <button type="button" class="opt">RGBW Color Kit</button>
-          <button type="button" class="opt">Push-Button Switch</button>
           <button type="button" class="opt">Wiring Fix / Troubleshoot</button>
           <button type="button" class="opt">Something Else</button>
         </div>
         <div class="wds">
         <div class="wd" data-for="Rock Lights" hidden>
-          <p class="wd-h">Rock Lights <small>Packs of 4, or 219-chip kits by count</small></p>
+          <p class="wd-h">Rock Lights <small>Packs of 4, or plug-and-play 219-chip kits by count</small></p>
           <div class="opts small" data-name="d-rock" data-single>
             <span class="opts-label">Which Lights?</span>
             <button type="button" class="opt">84-Chip Pure White</button>
@@ -131,7 +133,7 @@
           </div>
         </div>
         <div class="wd" data-for="Wheel Lights" hidden>
-          <p class="wd-h">Wheel Lights <small>We check brake clearance at drop-off</small></p>
+          <p class="wd-h">Wheel Lights <small>Our rings are 17 inches</small></p>
           <div class="opts small" data-name="d-wheel" data-single>
             <span class="opts-label">Which Rings?</span>
             <button type="button" class="opt">10-Row Pure White</button>
@@ -140,12 +142,14 @@
           </div>
           <div class="opts small" data-name="d-wheel-size" data-single>
             <span class="opts-label">Wheel Size</span>
+            <button type="button" class="opt">16″ Or Smaller</button>
             <button type="button" class="opt">17″</button>
             <button type="button" class="opt">18″</button>
             <button type="button" class="opt">20″</button>
             <button type="button" class="opt">22″ And Up</button>
             <button type="button" class="opt">Not Sure</button>
           </div>
+          <p class="wd-warn" id="wheelWarn" role="status" hidden>Our 17-inch rings may not fit behind wheels this size. Book anyway and we'll confirm fit before anything is ordered or installed.</p>
         </div>
         <div class="wd" data-for="Switchback / Amber" hidden>
           <p class="wd-h">Switchback / Amber <small>112-chip, white + amber, app controlled</small></p>
@@ -180,15 +184,6 @@
             <button type="button" class="opt">White + Amber</button>
           </div>
         </div>
-        <div class="wd" data-for="Push-Button Switch" hidden>
-          <p class="wd-h">Push-Button Switch</p>
-          <div class="opts small" data-name="d-sw" data-single>
-            <span class="opts-label">How Many Switches?</span>
-            <button type="button" class="opt">1</button>
-            <button type="button" class="opt">2</button>
-            <button type="button" class="opt">3 Or More</button>
-          </div>
-        </div>
         <div class="wd" data-for="Wiring Fix / Troubleshoot" hidden>
           <p class="wd-h">Wiring Fix / Troubleshoot</p>
           <label class="field"><span>What’s Going On?</span><input name="d-wire" placeholder="e.g. two rock lights out on the driver side" autocomplete="off"></label>
@@ -219,12 +214,10 @@
           <div class="cal-grid" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
         </div></div>
         <div class="pick-times"><div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Part of the day">
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>9 &ndash; 11:30 AM</span></button>
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>12 &ndash; 1:30 PM</span></button>
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>2 &ndash; 4:30 PM</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning Drop-Off</b><span>9 &ndash; 10:30 AM &middot; ready same day</span></button>
         </div>
         <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
-        <p class="slot-note" id="slotNote">Drop-offs by appointment, Monday to Saturday, 9&nbsp;AM to 4:30&nbsp;PM. Striped days are closed and crossed-out times are already booked.</p></div>
+        <p class="slot-note" id="slotNote">Most installs take 6 to 8 hours, so drop-off is in the morning and pickup is the same day. Monday to Saturday, by appointment. Striped days are closed or fully booked.</p></div>
         </div>
         <input type="hidden" name="day"><input type="hidden" name="date"><input type="hidden" name="time">
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -241,7 +234,7 @@
       <div class="book-foot">
         <p class="est" id="est" aria-live="polite"></p>
         <button class="btn btn-primary bk-submit" type="submit"><span><em id="bookBtnT">Book My Install</em> <i aria-hidden="true">&rarr;</i></span></button>
-        <p class="fine" id="bookMsg">Booking is free. We text you to confirm your slot and install quote, or email if you left one.</p>
+        <p class="fine" id="bookMsg">We text you to confirm your day and your final price before any work starts. Jobs over $600 hold the day with a $50 deposit that comes off your total.</p>
       </div>
     </form>
   </div>
@@ -316,7 +309,7 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p7b835a37"></script>
-<script src="assets/book.js?v=p7b835a37"></script>
+<script src="assets/app.js?v=pd5f00f63"></script>
+<script src="assets/book.js?v=pd5f00f63"></script>
 </body>
 </html>

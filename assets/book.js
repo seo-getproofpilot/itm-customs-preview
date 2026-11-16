@@ -17,9 +17,9 @@ const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textC
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
 const HOURS = {
   days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
-  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-  Midday:    ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM'],
-  Afternoon: ['2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'],
+  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM'],   // installs run 6 to 8 hours, so drop-off is morning only (kickoff, 2026-11-16)
+  Midday:    [],
+  Afternoon: [],
   ahead: 60,
 };
 const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
@@ -108,7 +108,13 @@ function slotLabel() {
   $('#bookBtnT').textContent = d && t ? `Book ${d}, ${t}` : d ? `Book ${d}` : 'Book My Install';
   $$('#slotDays, #slotTimes, #slotHours').forEach(g => $('.on', g) && g.classList.remove('bad'));
 }
-/* live parts estimate from the catalog prices above; labor is quoted by ITM */
+/* install pricing (kickoff call, 2026-11-16): the form shows "starting at" labor once Isaac sets flat rates, and he
+   finalizes the price after the booking comes in. null = not set yet, so the line reads "quoted before we start".
+   Jobs over DEPOSIT.over with install hold the day with a DEPOSIT.amount deposit, credited at checkout. */
+const INSTALL_FROM = { 'Rock Lights': null, 'Wheel Lights': null, 'Switchback / Amber': null, 'RGBW Color Kit': null,
+  'Cab & Mirror Lights': null, 'Pillar Lights': null, 'Bringing My Own': null };
+const DEPOSIT = { amount: 50, over: 600, url: '' };   // url: Shopify deposit product link, once it exists
+const WHEEL_WARN = ['16″ Or Smaller', '17″', '18″'];  // wheel sizes where the 17-inch ring may not fit: confirm with Isaac
 /* the follow-up questions for each job, and the lines they produce for the calendar + emails */
 const D = n => picked(n)[0] || '';
 function details() {
@@ -120,7 +126,6 @@ function details() {
     else if (job === 'Switchback / Amber') line(job, [D('d-sb') ? D('d-sb') + ' kit' : '']);
     else if (job === 'RGBW Color Kit') line(job, [D('d-rgbw') ? D('d-rgbw') + ' kit' : '']);
     else if (job === 'Pillar Lights') line(job, [D('d-pillar')]);
-    else if (job === 'Push-Button Switch') line(job, [D('d-sw') ? D('d-sw') + (D('d-sw') === '1' ? ' switch' : ' switches') : '']);
     else if (job === 'Wiring Fix / Troubleshoot') line(job, [(f['d-wire'] || '').trim()]);
     else if (job === 'Something Else') line(job, [(f['d-other'] || '').trim()]);
     else line(job, []);
@@ -145,15 +150,26 @@ function partsEstimate() {
   if (w.includes('RGBW Color Kit')) { const n = parseInt(D('d-rgbw'), 10); items.push(RGBW[n] ? [`RGBW kit ×${n}`, RGBW[n]] : ['RGBW kit', 205, 'from']); }
   return items;
 }
+function laborFrom() {
+  const w = picked('work'), own = picked('parts')[0] === 'Bringing My Own';
+  const rates = w.map(j => own && INSTALL_FROM['Bringing My Own'] != null ? INSTALL_FROM['Bringing My Own'] : INSTALL_FROM[j]);
+  return rates.length && rates.every(r => r != null) ? rates.reduce((a, r) => a + r, 0) : null;
+}
+let DEPOSIT_DUE = false, EST_TEXT = '';
 function estimate() {
   const w = picked('work'), supply = picked('parts')[0] === 'ITM Supplies Them', el = $('#est');
   $$('.wd', form).forEach(x => { x.hidden = !w.includes(x.dataset.for); });
-  if (!w.length) { el.innerHTML = ''; return; }
+  const ws = $('#wheelWarn'); if (ws) ws.hidden = !(w.includes('Wheel Lights') && WHEEL_WARN.includes(D('d-wheel-size')));
+  if (!w.length) { el.innerHTML = ''; DEPOSIT_DUE = false; EST_TEXT = ''; return; }
   const items = supply ? partsEstimate() : [];
-  const total = items.reduce((a, i) => a + i[1], 0), from = items.some(i => i[2]);
+  const parts = items.reduce((a, i) => a + i[1], 0), from = items.some(i => i[2]), labor = laborFrom();
   const bits = items.length ? 'Parts: ' + items.map(i => `${i[0]} <b>${i[2] ? 'from ' : ''}${money(i[1])}</b>`).join(' · ') +
-    (items.length > 1 ? ` = <b>${from ? 'from ' : ''}${money(total)}</b>` : '') + '. ' : '';
-  el.innerHTML = `${bits}Install labor is <b>quoted before we start</b>.`;
+    (items.length > 1 ? ` = <b>${from ? 'from ' : ''}${money(parts)}</b>` : '') + '. ' : '';
+  const lab = labor != null ? `Install <b>starting at ${money(labor)}</b>. ` : 'Install labor is <b>quoted before we start</b>. ';
+  DEPOSIT_DUE = parts + (labor || 0) > DEPOSIT.over;
+  const dep = DEPOSIT_DUE ? `This job is over ${money(DEPOSIT.over)}, so a <b>${money(DEPOSIT.amount)} deposit</b> holds your day. It comes off your total.` : '';
+  el.innerHTML = bits + lab + dep;
+  EST_TEXT = el.textContent.trim();
 }
 form.addEventListener('click', e => { if (e.target.closest('.opts')) setTimeout(estimate); });
 form.addEventListener('input', e => { if (/^d-/.test(e.target.name || '')) setTimeout(estimate); });
@@ -198,8 +214,8 @@ function showBooked(f, when) {
       <b>${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</b><span>Drop-off at ${f.time} · ITM Customs, Mesa</span></div></div>
     <dl class="bk-done-rows"><div class="wide"><dt>Work</dt><dd>${details().map(l => l.replace(/</g, '&lt;')).join('<br>')}</dd></div>${veh ? `<div><dt>Vehicle</dt><dd>${veh.replace(/</g, '&lt;')}</dd></div>` : ''}
       <div><dt>Lights</dt><dd>${picked('parts')[0] || 'Not Sure Yet'}</dd></div><div><dt>Contact</dt><dd>${String(f.contact).replace(/</g, '&lt;')}</dd></div>${(f.notes || '').trim() ? `<div class="wide"><dt>Notes</dt><dd>${f.notes.trim().replace(/</g, '&lt;')}</dd></div>` : ''}</dl>
-    <ol class="bk-done-next"><li><b>We Confirm</b>Your quote comes by ${/@/.test(f.contact) ? 'email' : 'text'} before any work starts.</li>
-      <li><b>Roll In</b>Bring it to the shop at your time.</li><li><b>Roll Out Lit</b>Every light tested with you at pickup.</li></ol>
+    <ol class="bk-done-next"><li><b>We Confirm</b>Your final price comes by ${/@/.test(f.contact) ? 'email' : 'text'} before any work starts.${DEPOSIT_DUE ? ` We send the ${money(DEPOSIT.amount)} deposit link with it.` : ''}</li>
+      <li><b>Roll In</b>Drop it off at your morning time.</li><li><b>Roll Out Lit</b>Same-day pickup, every light tested with you.</li></ol>
     <div class="bk-done-act"><a class="btn btn-primary" href="${gcal}" target="_blank" rel="noopener"><span>Add To My Calendar</span></a>
       <button type="button" class="btn btn-chrome bk-again"><span>Book Another Install</span></button></div>`;
   form.classList.add('done'); $('.bk-head', form).after(box);
@@ -210,6 +226,17 @@ function showBooked(f, when) {
 }
 
 
+/* the customer's vehicle photo, shrunk in the browser to 1600px JPEG before it's sent */
+async function photoData() {
+  const file = form.querySelector('[name=photo]')?.files?.[0];
+  if (!file || !/^image\//.test(file.type)) return null;
+  try {
+    const bmp = await createImageBitmap(file), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    return { type: 'image/jpeg', data: c.toDataURL('image/jpeg', .82).split(',')[1] };
+  } catch (e) { return null; }
+}
 /* book straight onto the shop's Google Calendar */
 async function bookLive(f, msg) {
   const btn = $('button[type=submit]', form), label = $('#bookBtnT');
@@ -218,7 +245,8 @@ async function bookLive(f, msg) {
   try {
     const r = await fetch(BOOK_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ name: f.name, contact: f.contact, vehicle: picked('vehicle')[0] || '', ymm: f.ymm || '', work: picked('work'), details: details(),
-        parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '' }) });
+        parts: picked('parts')[0] || '', date: f.date, time: f.time, notes: f.notes || '', website: f.website || '',
+        estimate: EST_TEXT, deposit: DEPOSIT_DUE, photo: await photoData() }) });
     const j = await r.json();
     if (j.ok) {
       msg.className = 'fine'; msg.textContent = ''; label.textContent = 'Book My Install';
