@@ -2010,6 +2010,13 @@ html.pv-open{overflow:hidden}
 .field-photo input[type=file]{min-height:44px;padding:10px 0;font-size:16px}
 .dr-foot .co-note{margin:12px 0 0;text-align:center}
 
+/* exterior lighting: cab, mirror and fender shots frame the lit part, not the sky */
+.mosaic-ext figure:nth-child(1) img{object-position:50% 12%}
+.mosaic-ext figure:nth-child(2) img{object-position:50% 25%}
+.mosaic-ext figure:nth-child(3) img{object-position:50% 42%}
+.lane-ext,.lane-ext:hover{text-decoration:none;color:inherit}
+.lane-ext img{object-position:40% 45%}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
