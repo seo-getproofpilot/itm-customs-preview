@@ -274,16 +274,17 @@ run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class=
   const btn = document.getElementById('revMore'); if (!btn) return;
   let open = false;
   const live = () => $$('.rv:not([aria-hidden="true"])', run);
+  const TAB = matchMedia('(max-width:1100px)'), TWO = matchMedia('(max-width:900px)');
   function clip() {
-    const all = live(), n = all.length - 3;
-    all.forEach((r, i) => r.classList.toggle('clip', SHOP_PHONE.matches && !open && i >= 3));
-    btn.hidden = !SHOP_PHONE.matches || n <= 0;
+    const all = live(), k = SHOP_PHONE.matches ? 3 : TWO.matches ? 4 : TAB.matches ? 6 : all.length, n = all.length - k, on = k < all.length;
+    all.forEach((r, i) => r.classList.toggle('clip', on && !open && i >= k));
+    btn.hidden = !on || n <= 0;
     $('b', btn).textContent = open ? 'Show Less' : 'See More Reviews';
     $('span', btn).textContent = open ? '' : `${n} more`;
     btn.setAttribute('aria-expanded', open);
   }
   btn.addEventListener('click', () => { open = !open; clip(); if (!open) $('#reviews').scrollIntoView({ block: 'start' }); });
-  SHOP_PHONE.addEventListener('change', clip); clip();
+  [SHOP_PHONE, TAB, TWO].forEach(m => m.addEventListener('change', clip)); clip();
 })();
 
 /* ---------- nav + reveals ---------- */

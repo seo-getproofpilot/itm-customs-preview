@@ -2017,6 +2017,64 @@ html.pv-open{overflow:hidden}
 .lane-ext,.lane-ext:hover{text-decoration:none;color:inherit}
 .lane-ext img{object-position:40% 45%}
 
+/* ---------- v1080: tablet pass (561–940, and portrait tablets to 1100). Phone and desktop untouched ---------- */
+@media (min-width:561px) and (max-width:940px), (min-width:561px) and (max-width:1100px) and (orientation:portrait){
+  /* hero: copy sits right under the truck instead of being pushed to the bottom of a tall screen */
+  .hero{min-height:0;justify-content:flex-start;padding-top:calc(min(calc(108vw / var(--z,1)),640px) * .8);padding-bottom:48px}
+  .hero .lede{max-width:640px}
+  .hero-h{max-width:18ch}
+  /* Shop By Light: a two-column grid of real photo tiles (the fifth spans the row), not thin strips */
+  .lane-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .lane,.lane:first-child,.lane:last-child{--sl:0px;height:auto;aspect-ratio:4/3;clip-path:none;border-radius:12px;padding:18px 20px 22px;justify-content:flex-end}
+  .lane:last-child:nth-child(odd){grid-column:span 2;aspect-ratio:21/9}
+  .lane::before{background:linear-gradient(180deg,rgba(5,6,10,.05) 30%,rgba(5,6,10,.6) 65%,rgba(5,6,10,.95) 100%)}
+  .lane img{object-position:50% 60%}
+  .lane-t{font-size:22px}
+  .lane-d{max-width:none;font-size:13.5px}
+  .lane-go{position:static}
+  /* feature cards side by side, photos capped */
+  .feat-grid{grid-template-columns:1fr 1fr;gap:16px}
+  .feat-media,.feat-media.duo{aspect-ratio:4/3}
+  .feat-media.duo img{aspect-ratio:auto;height:100%}
+  .feat-body{padding:20px 20px 24px}
+  .feat h3{font-size:20px}
+  .feat p{font-size:15px}
+  /* gallery: switchback tall on the left, four even tiles around it, no holes */
+  .mosaic{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,clamp(200px,28vw,280px));gap:12px}
+  .mosaic figure{height:auto!important;aspect-ratio:auto!important}
+  .m-a{grid-column:auto!important;grid-row:span 2!important}
+  .m-e{grid-column:auto!important}
+  .mosaic-2 figure{height:clamp(200px,30vw,280px)}
+  /* reviews: room for the captions */
+  .rv-who span,.c-cat,.price-line .tag{font-size:11.5px}
+  /* footer links tall enough to tap */
+  .foot-grid a:not(.btn){display:inline-flex;align-items:center;min-height:36px}
+  .foot-pol a{display:inline-flex;align-items:center;min-height:36px}
+  /* product view: the photo column can shrink, so every thumbnail fits */
+  .pv-gal{min-width:0}
+  .pv-thumbs{grid-template-columns:repeat(auto-fill,minmax(56px,1fr))}
+}
+/* social links: keep the spaces between the numbers and the words */
+@media (max-width:940px){ .social a{display:inline-block;min-height:0;padding:8px 0;line-height:18px} }
+@media (max-width:1100px){ .belt-run .rv.clip{display:none} }
+@media (min-width:800px) and (max-width:1100px) and (orientation:portrait){
+  .lane-grid{grid-template-columns:repeat(6,1fr)}
+  .lane,.lane:first-child,.lane:last-child{grid-column:span 2;aspect-ratio:4/5}
+  .lane-grid .lane:nth-child(4),.lane-grid .lane:nth-child(5){grid-column:span 3;aspect-ratio:16/10}
+}
+@media (min-width:561px) and (max-width:1100px) and (orientation:portrait){ .social a{display:inline-block;min-height:0;padding:8px 0;line-height:18px} }
+@media (min-width:561px) and (max-width:1100px){
+  #revMore:not([hidden]){display:flex;width:100%;min-height:48px;margin-top:18px;align-items:center;justify-content:center;gap:10px;
+    background:none;border:1px solid rgba(74,168,238,.55);border-radius:10px;color:#fff;cursor:pointer;
+    font:italic 800 15px/1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.02em}
+  #revMore span{font:500 12px/1 var(--f-body);font-style:normal;text-transform:none;color:var(--mute)}
+}
+/* landscape tablets get the desktop layout but are still touch screens: footer and social links stay tappable */
+@media (max-width:1100px), (pointer:coarse){
+  .foot-grid a:not(.btn),.foot-pol a{display:inline-flex;align-items:center;min-height:36px}
+  .social a{display:inline-block;min-height:0;padding:8px 0;line-height:18px}
+}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
