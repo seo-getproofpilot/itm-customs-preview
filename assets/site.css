@@ -2008,6 +2008,7 @@ html.pv-open{overflow:hidden}
 
 /* v119: photo upload meets the phone tap floor */
 .field-photo input[type=file]{min-height:44px;padding:10px 0;font-size:16px}
+.dr-foot .co-note{margin:12px 0 0;text-align:center}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

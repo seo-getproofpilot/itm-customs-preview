@@ -611,5 +611,10 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
 /* demo build: checkout and store purchase links are switched off; every other link works */
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-preview-off], #checkout'); if (!a) return;
-  e.preventDefault(); toast('Checkout goes live with the new site.');
+  e.preventDefault();
+  if (a.id !== 'checkout') return toast('Checkout goes live with the new site.');
+  /* the toast stays hidden while the cart is open, so checkout answers inside the cart */
+  let n = document.getElementById('coNote');
+  if (!n) { a.insertAdjacentHTML('afterend', '<p class="fine co-note" id="coNote" role="status"></p>'); n = document.getElementById('coNote'); }
+  n.textContent = ''; setTimeout(() => { n.textContent = 'Secure checkout opens when the new store goes live. Your cart is saved.'; }, 60);
 }, true);
