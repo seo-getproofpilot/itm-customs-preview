@@ -146,7 +146,7 @@ function partsEstimate() {
       items.push(n ? [`${name}, ${n} lights (${Math.ceil(n / 4)} packs)`, per * Math.ceil(n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
     }
   }
-  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 500] : ['wheel lights', 380, 'from']);
+  if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 499] : ['wheel lights', 380, 'from']);
   if (w.includes('Switchback / Amber')) { const n = parseInt(D('d-sb'), 10); items.push(SB[n] ? [`switchback kit, ${n} lights`, SB[n]] : ['switchback kit', 200, 'from']); }
   if (w.includes('RGBW Color Kit')) { const n = parseInt(D('d-rgbw'), 10); items.push(RGBW[n] ? [`RGBW kit, ${n} lights`, RGBW[n]] : ['RGBW kit', 205, 'from']); }
   return items;

@@ -37,7 +37,7 @@ const P = [
   { h:'10-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'10-Row Pure White Wheel Lights',
     sub:'Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['17″','10 Row','Bluetooth App','Waterproof'],
     imgs:['p-10-row-pure-white-wheel-lights-0','p-10-row-pure-white-wheel-lights-2'], rating:[5.0,1],
-    v:[{t:'17″ kit',id:47012636819709,p:500,ok:true}] },
+    v:[{t:'17″ kit',id:47012636819709,p:499,ok:true}] },
   { h:'5-row-pure-white-wheel-lights', cat:'wheel', catL:'Wheel Lights', name:'5-Row Pure White Wheel Lights',
     sub:'Full plug and play with module, remote and Bluetooth app. Waterproof.', specs:['17″','5 Row','Bluetooth App','Waterproof'],
     imgs:['p-5-row-pure-white-wheel-lights-3','p-5-row-pure-white-wheel-lights-0'],
