@@ -243,3 +243,6 @@ body.sub{padding-top:0}
   .bgrid-all>.bcard:last-child:nth-child(3n+1){grid-column:1/-1;aspect-ratio:21/9}
 }
 .bgrid-all>.bcard:last-child img{object-position:50% 18%}
+
+/* v1083: a page with one matching build shows one card at card width */
+.bgrid:has(> .bcard:only-child){grid-template-columns:minmax(0,360px)}
