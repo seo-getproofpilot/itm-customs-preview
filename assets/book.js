@@ -140,15 +140,15 @@ function partsEstimate() {
   const SB = { 4: 200, 8: 380, 12: 500, 16: 600, 20: 700 }, RGBW = { 4: 205, 8: 385, 12: 505, 16: 605, 20: 705 };
   if (w.includes('Rock Lights')) {
     const r = D('d-rock'), n = parseInt(D('d-rock-n'), 10);
-    if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit ×${n}`, KIT219[n]] : ['219-chip kit', 240, 'from']);
+    if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit, ${n} lights`, KIT219[n]] : ['219-chip kit', 240, 'from']);
     else {
       const per = /^72/.test(r) ? 45 : 55, name = /^72/.test(r) ? '72-chip' : '84-chip';
-      items.push(n ? [`${name} ×${n} (${Math.ceil(n / 4)} packs)`, per * Math.ceil(n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
+      items.push(n ? [`${name}, ${n} lights (${Math.ceil(n / 4)} packs)`, per * Math.ceil(n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
     }
   }
   if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 500] : ['wheel lights', 380, 'from']);
-  if (w.includes('Switchback / Amber')) { const n = parseInt(D('d-sb'), 10); items.push(SB[n] ? [`switchback ×${n}`, SB[n]] : ['switchback kit', 200, 'from']); }
-  if (w.includes('RGBW Color Kit')) { const n = parseInt(D('d-rgbw'), 10); items.push(RGBW[n] ? [`RGBW kit ×${n}`, RGBW[n]] : ['RGBW kit', 205, 'from']); }
+  if (w.includes('Switchback / Amber')) { const n = parseInt(D('d-sb'), 10); items.push(SB[n] ? [`switchback kit, ${n} lights`, SB[n]] : ['switchback kit', 200, 'from']); }
+  if (w.includes('RGBW Color Kit')) { const n = parseInt(D('d-rgbw'), 10); items.push(RGBW[n] ? [`RGBW kit, ${n} lights`, RGBW[n]] : ['RGBW kit', 205, 'from']); }
   return items;
 }
 function laborFrom() {

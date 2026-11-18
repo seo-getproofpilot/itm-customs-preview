@@ -2075,6 +2075,27 @@ html.pv-open{overflow:hidden}
   .social a{display:inline-block;min-height:0;padding:8px 0;line-height:18px}
 }
 
+/* v1082: warranty + discount bar, product view perks, cart discount line, shorter phone intro */
+.promo{display:flex;justify-content:center;align-items:center;gap:10px;min-height:34px;padding:0 var(--gut);background:#0d1118;border-bottom:1px solid var(--line);font:500 12.5px/1.2 var(--f-body);color:#C9CED7;text-align:center;transition:margin-top .3s var(--ease)}
+.promo a{color:#C9CED7;text-decoration:none;display:inline-flex;align-items:center;gap:5px;min-height:34px}
+.promo a:hover{color:#fff}
+.promo b{color:#fff;font-weight:700}
+.promo i{font-style:normal;color:var(--amber)}
+.promo .pm-s{display:none}
+.nav.scrolled .promo{margin-top:-35px}
+@media (max-width:560px){ .promo{font-size:12px;gap:7px} .promo .pm-l{display:none} .promo .pm-s{display:inline} }
+.pv-perks{display:flex;flex-wrap:wrap;gap:4px 14px;margin:10px 0 0;font-size:13px;color:#C9CED7}
+.pv-perks span::before,.pv-perks a::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amber);margin-right:7px;vertical-align:2px}
+.pv-perks a{color:#C9CED7;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:3px;padding:8px 0}
+.pv-lead{margin:16px 0 0;font-size:15px;line-height:1.5;color:#E8ECF2}
+.dr-disc a{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:3px;padding:9px 0}
+@media (max-width:560px){
+  .intro-logo{animation-duration:.6s;animation-delay:.1s}
+  .intro-logo::after{animation-delay:.6s;animation-duration:.8s}
+  .intro-leds i{animation-delay:calc(.55s + var(--i) * 18ms)}
+  .intro-t{animation-delay:.95s}
+}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
