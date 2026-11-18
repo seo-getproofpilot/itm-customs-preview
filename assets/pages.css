@@ -216,3 +216,30 @@ body.sub{padding-top:0}
 /* v119: GovX button row, and two-photo galleries fill their row */
 .scta{margin-top:22px}
 .sgal:has(> figure:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* v1082 inner-page tablet pass: logo ratio, tap floors, no orphaned cards */
+.pnav .brand{flex:none}
+.pnav .brand img{max-width:none}
+.stable a,.ccard a{padding:9px 0}
+@media (max-width:1100px),(pointer:coarse){
+  .crumbs a{display:inline-flex;align-items:center;min-height:36px}
+  .kit-inst{display:inline-flex;align-items:center;min-height:36px;padding-bottom:0;border-bottom:0;text-decoration:underline;text-decoration-color:rgba(255,178,63,.6);text-underline-offset:4px}
+  .stoc a{padding-top:9px;padding-bottom:9px}
+}
+@media (min-width:941px) and (max-width:1100px),(min-width:941px) and (pointer:coarse){
+  .pnav-links a{padding:12px 0;margin:-12px 0}
+}
+@media (min-width:561px) and (max-width:1100px){
+  .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kits{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kits>.kit:last-child:nth-child(odd){grid-column:1/-1}
+}
+@media (min-width:561px) and (max-width:940px){
+  .bgrid-all{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bgrid-all>.bcard:last-child:nth-child(odd){grid-column:1/-1;aspect-ratio:16/9}
+}
+@media (min-width:941px) and (max-width:1100px){
+  .bgrid-all{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bgrid-all>.bcard:last-child:nth-child(3n+1){grid-column:1/-1;aspect-ratio:21/9}
+}
+.bgrid-all>.bcard:last-child img{object-position:50% 18%}
