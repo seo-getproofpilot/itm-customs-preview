@@ -10,3 +10,19 @@
     if (a) window.dataLayer.push({ event: 'book_cta_click', location: location.pathname.split('/').slice(-3, -1).join('/'), label: a.textContent.trim() });
   });
 })();
+
+/* v1085: hide the page nav while scrolling down on phones and tablets, show it on scroll up */
+(function () {
+  var nav = document.querySelector('.pnav'); if (!nav) return;
+  var mq = matchMedia('(max-width:940px)'), last = scrollY, tick = false;
+  addEventListener('scroll', function () {
+    if (tick) return; tick = true;
+    requestAnimationFrame(function () {
+      var y = scrollY, d = y - last;
+      if (!mq.matches || y < 140) nav.classList.remove('away');
+      else if (d > 6) nav.classList.add('away');
+      else if (d < -6) nav.classList.remove('away');
+      if (Math.abs(d) > 6) last = y; tick = false;
+    });
+  }, { passive: true });
+})();

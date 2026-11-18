@@ -246,3 +246,51 @@ body.sub{padding-top:0}
 
 /* v1083: a page with one matching build shows one card at card width */
 .bgrid:has(> .bcard:only-child){grid-template-columns:minmax(0,360px)}
+
+/* v1085: photo-led showcase rows (photo shown whole, never cropped) + uncropped galleries */
+.show{display:grid;gap:44px;margin-top:28px}
+.show-i{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:34px;align-items:center}
+.show-i:nth-child(even) .show-pic{order:2}
+.show-i.show-w{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.show-pic{margin:0;aspect-ratio:var(--ar);max-height:560px;max-width:100%;justify-self:center;width:min(100%,calc(560px * var(--ar)));border-radius:var(--r);overflow:hidden;background:#000;box-shadow:0 18px 40px -22px rgba(0,0,0,.9)}
+.show-pic img{display:block;width:100%;height:100%;object-fit:contain}
+.show-b h3{margin:6px 0 0;font:italic 800 clamp(24px,2.4vw,30px)/1.05 var(--f-disp);text-transform:uppercase;letter-spacing:.01em;color:#fff}
+.show-b p{margin:12px 0 0;font-size:16px;line-height:1.65;color:#C9CED7;max-width:52ch}
+.show-b p a{color:#fff;text-decoration:underline;text-decoration-color:var(--amber);text-underline-offset:3px}
+.show-b .show-tag{margin:0;font:600 11.5px/1 var(--f-mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.show-b .show-price{margin-top:16px;color:#C9CED7}
+.show-b .show-price b{font-size:20px;color:#fff;margin-right:4px}
+.show-b .kit-act{margin-top:14px}
+.sgal-j{display:flex;flex-wrap:wrap;gap:10px}
+.sgal-j figure{flex:var(--ar) 1 0;min-width:0;aspect-ratio:var(--ar);height:auto}
+.sgal-j img{object-fit:contain}
+@media (max-width:760px){
+  .show{gap:38px}
+  .show-i,.show-i.show-w{grid-template-columns:1fr;gap:16px}
+  .show-i:nth-child(even) .show-pic{order:0}
+  .show-pic{max-height:none;width:100%}
+}
+@media (max-width:560px){
+  .sgal-j{gap:6px}
+  .sgal-j figure{aspect-ratio:var(--ar)}
+  .sgal-j figure:only-child,.sgal-j:has(> figure:nth-child(2):last-child) figure{flex-basis:100%}
+}
+
+/* v1085: on phones and tablets the page nav slides away while you scroll down and comes back on scroll up,
+   so its wrapped link rows never sit over the photos */
+@media (max-width:940px){
+  .pnav{transition:transform .28s var(--ease,ease)}
+  .pnav.away{transform:translateY(-100%)}
+}
+/* v1085: seven nav links no longer fit one row on tablets, so the links drop to their own row up to 940px */
+@media (max-width:940px){
+  .pnav-in{flex-wrap:wrap;gap:10px 14px}
+  .pnav .btn{margin-left:auto}
+  .pnav-links{order:3;width:100%;margin:0;gap:0 18px;flex-wrap:wrap}
+  .pnav-links a{white-space:nowrap}
+}
+/* v1085: service-page hero photos keep their own shape, so nothing in the shot is cut off */
+.shero .ahero-pic{aspect-ratio:var(--ar,3/4);max-height:620px;width:min(100%,calc(620px * var(--ar,.75)));justify-self:center;align-self:center}
+.shero .ahero-pic img{object-fit:contain}
+@media (max-width:900px){ .shero .ahero-pic{aspect-ratio:var(--ar,4/3);max-height:none;width:100%} }
+@media (max-width:560px){ .shero .ahero-pic{max-height:70svh;width:min(100%,calc(70svh * var(--ar,.75)))} }
