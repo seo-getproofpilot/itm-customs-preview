@@ -97,8 +97,18 @@
       keys.forEach(function (k, j) { k.classList.toggle('on', j === i); k.setAttribute('aria-selected', j === i); k.tabIndex = j === i ? 0 : -1; });
       panes.forEach(function (x, j) { x.classList.toggle('on', j === i); });
     }
+    /* autoplay: step to the next switch every 3.5 s while on screen; a tap takes over for 12 s */
+    var cur = 0, held = 0, seen = false, ms = 3500, scr = p.querySelector('.swp-screen');
+    scr.insertAdjacentHTML('beforeend', '<span class="swp-t" aria-hidden="true"><i></i></span>');
+    var bar = scr.querySelector('.swp-t i'); p.style.setProperty('--ms', ms + 'ms');
+    function run() { bar.classList.remove('go'); void bar.offsetWidth; bar.classList.add('go'); }
+    var base = on; on = function (n) { cur = n; base(n); p.toggleAttribute('data-amber', n % 2 === 1); run(); };
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(function () { if (seen && !document.hidden && Date.now() > held && !p.matches(':hover')) on((cur + 1) % keys.length); }, ms);
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }, { threshold: .4 }).observe(p); else seen = true;
+    }
     keys.forEach(function (k, i) {
-      k.addEventListener('click', function () { on(i); });
+      k.addEventListener('click', function () { held = Date.now() + 12000; on(i); });
       k.addEventListener('keydown', function (e) {
         var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
         e.preventDefault(); var n = (i + d + keys.length) % keys.length; on(n); keys[n].focus();
