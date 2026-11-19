@@ -107,3 +107,22 @@
     on(0);
   });
 })();
+
+/* v1098: hero reel steps through every photo (about 2 s each), pauses when off screen or the tab is hidden */
+(function () {
+  var r = document.querySelector('[data-reel]'); if (!r) return;
+  var imgs = r.querySelectorAll('.reel-in img'), tag = r.querySelector('.reel-tag'), num = r.querySelector('.reel-n b'), bar = r.querySelector('.reel-bar i');
+  var ms = +r.dataset.ms || 2000, i = 0, t = null, vis = true;
+  r.style.setProperty('--ms', ms + 'ms');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || imgs.length < 2) return;
+  function show(n) {
+    imgs[i].classList.remove('on'); i = n; imgs[i].classList.add('on');
+    tag.textContent = imgs[i].dataset.l; num.textContent = i + 1;
+    if (imgs[(i + 1) % imgs.length].loading === 'lazy') imgs[(i + 1) % imgs.length].loading = 'eager';
+    bar.classList.remove('go'); void bar.offsetWidth; bar.classList.add('go');
+  }
+  function tick() { if (vis && !document.hidden) show((i + 1) % imgs.length); }
+  bar.classList.add('go');
+  t = setInterval(tick, ms);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { vis = es[0].isIntersecting; }).observe(r);
+})();

@@ -917,3 +917,24 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
 .lh-ct{font-size:22px;line-height:1}
 @media (max-width:1000px){ .sx2 .lcounts figure,.lcounts figure{flex-basis:calc((100% - 2 * 22px) / 3)} }
 @media (max-width:640px){ .sx2 .lcounts,.lcounts{gap:14px} .sx2 .lcounts figure,.lcounts figure{flex-basis:calc((100% - 14px) / 2)} .lcounts figcaption{min-height:118px;padding:12px} .lh-ct{font-size:18px} .lcounts figcaption span{font-size:13px} }
+
+/* v1098b: light-count photos crop past the burned-in labels; captions share a height */
+.sx2 .lcounts img,.lcounts img{aspect-ratio:5/4;object-position:50% 55%}
+.sx2 .lcounts figcaption,.lcounts figcaption{min-height:126px}
+@media (max-width:640px){ .sx2 .lcounts figcaption,.lcounts figcaption{min-height:150px} }
+
+/* v1098c: hero reel (rock light installation): every rock light photo, truck by truck */
+.reel{position:relative;aspect-ratio:3/4;max-height:min(600px,76vh);width:min(100%,calc(min(600px,76vh) * .75));justify-self:center;align-self:center}
+.reel-in{position:relative;width:100%;height:100%;overflow:hidden;border-radius:7px;background:#07090D}
+.reel-in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s ease,transform 2.8s linear}
+.reel-in img.on{opacity:1;transform:scale(1)}
+.reel-tag{position:absolute;left:16px;bottom:22px;z-index:2;padding:8px 12px;border-radius:6px;font:400 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#fff;
+  background:rgba(7,9,13,.78);box-shadow:inset 3px 0 0 var(--amber)}
+.reel-n{position:absolute;right:16px;bottom:22px;z-index:2;font:400 12px/1 var(--f-mono);letter-spacing:.08em;color:#C9CED7;text-shadow:0 1px 6px #000}
+.reel-n b{color:#fff;font-weight:400}
+.reel-bar{position:absolute;left:3px;right:3px;bottom:3px;z-index:2;height:4px;background:rgba(255,255,255,.12);border-radius:0 0 7px 7px;overflow:hidden}
+.reel-bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--royal),var(--sky));transform-origin:left;transform:scaleX(0)}
+.reel-bar i.go{animation:reelBar var(--ms,2000ms) linear forwards}
+@keyframes reelBar{to{transform:scaleX(1)}}
+@media (max-width:940px){ .reel{width:100%;max-height:none;aspect-ratio:4/5} }
+@media (prefers-reduced-motion:reduce){ .reel-in img{transition:opacity .3s} .reel-bar{display:none} }
