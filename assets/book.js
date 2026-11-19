@@ -275,6 +275,7 @@ async function bookLive(f, msg) {
   if (q.has('book')) {
     if (q.get('veh')) pick('vehicle', q.get('veh'));
     q.getAll('work').forEach(w => pick('work', w));
+    if (q.get('parts')) pick('parts', q.get('parts'));
     const kits = q.getAll('kit').filter(h => byH[h]);
     if (kits.length && window.ITMbookFor) window.ITMbookFor(kits, 'subpage');
     window.ITMtrack && ITMtrack('book_deeplink', { work: q.getAll('work').join(','), kit: kits.join(',') });
