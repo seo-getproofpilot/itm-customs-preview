@@ -797,3 +797,28 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
   .vsx{grid-template-columns:1fr;gap:14px}
   .vs-mid{justify-self:center;width:54px;height:54px;font-size:19px}
 }
+
+/* ===================== v1095: icons on the numbered run, builds photo strip ===================== */
+.ico{width:36px;height:36px;fill:none;stroke:#E8ECF2;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .5s,filter .5s}
+.ico .f{fill:#E8ECF2;stroke:none;transition:fill .5s}
+.ns-bz{position:relative}
+.nsteps li.in .ico{stroke:#BFE6FA;filter:drop-shadow(0 0 4px rgba(0,141,211,.9));transition-delay:calc(var(--i,0) * 220ms + .3s)}
+.nsteps li.in .ico .f{fill:#BFE6FA}
+.ns-chip{position:absolute;top:-8px;right:-10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:italic 900 14px/1 var(--f-disp);font-stretch:125%;color:#fff;
+  background:linear-gradient(180deg,#29A3DD,#008DD3 45%,#0050BF 75%,#002FB8);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 2px #07090D,0 4px 10px rgba(0,0,0,.45)}
+.bstrip{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 8px 18px;margin:0 -8px;scrollbar-width:thin}
+.bstrip-i{flex:none;display:grid;gap:12px;scroll-snap-align:start;text-decoration:none!important;color:inherit}
+.bstrip-i figure{height:clamp(240px,calc(24vw / var(--z,1)),340px);width:auto;aspect-ratio:var(--ar)}
+.bstrip-i figure img{transition:transform .5s var(--ease)}
+.bstrip-i:hover figure img{transform:scale(1.04)}
+.bstrip-t{display:grid;gap:4px;max-width:min(320px,100%)}
+.bstrip-t i{font:400 11.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sky-hi);font-style:normal}
+.bstrip-t b{font:italic 800 15px/1.2 var(--f-disp);font-stretch:112%;text-transform:uppercase;color:#fff}
+@media (max-width:560px){ .bstrip-i figure{height:230px} .ico{width:32px;height:32px} }
+/* v1095b: bigger, bolder icons; builds strip as an even grid */
+.ico{width:42px;height:42px;stroke-width:2}
+.bstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:26px;overflow:visible;padding:8px 0 4px;margin:0}
+.bstrip-i figure{height:auto;width:auto;aspect-ratio:4/5}
+.bstrip-t{max-width:none}
+@media (max-width:560px){ .bstrip-i figure{height:auto;aspect-ratio:4/3} .ico{width:38px;height:38px} }
+.bstrip-i{align-content:start}.bstrip-t{align-content:start}
