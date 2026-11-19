@@ -995,3 +995,10 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
 /* v1100b: a single landscape hero photo keeps its shape */
 @media (min-width:941px){ .sh3-media.sh3-land{width:64%} .sh3-land .reel-in img{object-position:60% 50%} }
 @media (max-width:940px){ .sh3-media.sh3-land{height:auto;aspect-ratio:var(--ar)} }
+/* v1101: switch panel screen with a photo for each switch */
+.swp-pics .swp-p.on{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:center}
+.swp-pic{margin:0;border-radius:8px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 0 0 2px #07090D,0 0 0 3px rgba(255,255,255,.18)}
+.swp-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.swp-pics .swp-screen{padding:18px 22px 30px}
+html:not(.js) .swp-pics .swp-p{display:grid}
+@media (max-width:940px){ .swp-pics .swp-p.on{grid-template-columns:1fr} .swp-pic{aspect-ratio:4/3} }

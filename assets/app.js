@@ -182,7 +182,7 @@ function renderCart() {
   const body = $('#drBody');
   if (!cart.length) { body.innerHTML = '<p class="dr-empty">Nothing here yet. Start with a set of rock lights.</p>'; }
   else body.innerHTML = cart.map((l, k) => { const p = byH[l.h], v = p.v[l.i];
-    return `<div class="li"><img src="${IMG(p.imgs[0])}" alt="">
+    return `<div class="li"><img src="${IMG(p.imgs[0])}" alt="${p.name}">
       <div><div class="li-n">${p.name}</div><div class="li-v">${v.t}</div>
         <div class="qty"><button data-k="${k}" data-d="-1" aria-label="Less">−</button><span>${l.q}</span><button data-k="${k}" data-d="1" aria-label="More">+</button></div></div>
       <div><div class="li-p">${money(+(v.p * l.q).toFixed(2))}</div><button class="li-rm" data-k="${k}">Remove</button></div></div>`; }).join('');
@@ -529,7 +529,7 @@ function syncAdded() {
     if (!lights.length) { up.innerHTML = ''; return; }
     /* add-on: a rock light kit in the cart and no 84-chip pack yet, so offer the grille + under-hood lights (two each from one pack of four) */
     const rockKit = hs.some(h => ['rock', 'switch', 'rgbw'].includes(byH[h].cat)), has84 = hs.includes('84-chip-pure-white-rocklights');
-    const addon = rockKit && !has84 ? `<div class="up-row"><img src="${IMG('144-chip-gmc-grille-lights-front-sq')}" alt=""><div><b>Light The Grille And Engine Bay</b><span>A pack of four 84-chip lights: two in the grille, two under the hood. $55</span></div><button type="button" class="up-add" data-h="84-chip-pure-white-rocklights" data-i="0">Add</button></div>` : '';
+    const addon = rockKit && !has84 ? `<div class="up-row"><img src="${IMG('144-chip-gmc-grille-lights-front-sq')}" alt="Lights in the grille of a white GMC Sierra HD"><div><b>Light The Grille And Engine Bay</b><span>A pack of four 84-chip lights: two in the grille, two under the hood. $55</span></div><button type="button" class="up-add" data-h="84-chip-pure-white-rocklights" data-i="0">Add</button></div>` : '';
     up.innerHTML = addon + `<a href="book/" class="up-book">We Install It In Mesa <i aria-hidden="true">&rarr;</i></a>`;
   }
   new MutationObserver(upsell).observe($('#drBody'), { childList: true, subtree: true }); upsell();
@@ -581,7 +581,7 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
   function open(h) {
     cur = byH[h]; if (!cur || !PX[h]) return;
     const card = $(`.card[data-h="${h}"]`); sel = card && card._sel != null ? card._sel : (cur.def ?? 0);
-    $('#pvThumbs').innerHTML = PX[h].imgs.map((n, k) => `<button type="button" data-k="${k}" aria-label="Photo ${k + 1}"><img src="${IMG(n)}" alt="" loading="lazy"></button>`).join('');
+    $('#pvThumbs').innerHTML = PX[h].imgs.map((n, k) => `<button type="button" data-k="${k}" aria-label="Photo ${k + 1}"><img src="${IMG(n)}" alt="${PX[h].name || byH[h].name}, photo ${k + 1}" loading="lazy"></button>`).join('');
     $('#pvThumbs').hidden = PX[h].imgs.length < 2;
     show(PX[h].imgs[0], 0); info();
     dlg.showModal(); document.documentElement.classList.add('pv-open'); dlg.scrollTop = 0; $('.pv-in', dlg).scrollTop = 0;
