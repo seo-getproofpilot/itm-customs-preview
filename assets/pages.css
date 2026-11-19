@@ -906,3 +906,14 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
 .nsteps::after{box-shadow:0 0 6px rgba(0,141,211,.6)}
 .swk.on .swk-led{box-shadow:0 0 8px var(--sky)}
 .splate thead th{background:#002FB8!important}
+
+/* v1098: light-count cards: all the same size and spacing, square photos cropped past the burned-in labels, centered 4 + 3 */
+.sx2 .lcounts,.lcounts{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-top:10px}
+.sx2 .lcounts figure,.lcounts figure{flex:0 0 calc((100% - 3 * 22px) / 4);display:flex;flex-direction:column;margin:0;border-radius:10px;padding:3px;overflow:hidden;
+  background:var(--chrome-bevel);box-shadow:0 0 0 2px #07090D,0 0 0 4px var(--sky),0 0 0 6px var(--royal),0 16px 32px rgba(0,0,0,.4);border:0;clip-path:none}
+.sx2 .lcounts img,.lcounts img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:50% 50%;border-radius:7px 7px 0 0;clip-path:none}
+.sx2 .lcounts figcaption,.lcounts figcaption{flex:1;display:grid;align-content:start;gap:8px;min-height:104px;padding:14px 16px 16px;background:#10141B;border-radius:0 0 7px 7px}
+.lcounts figcaption span{font-size:14px;line-height:1.45;color:#C2C8D1}
+.lh-ct{font-size:22px;line-height:1}
+@media (max-width:1000px){ .sx2 .lcounts figure,.lcounts figure{flex-basis:calc((100% - 2 * 22px) / 3)} }
+@media (max-width:640px){ .sx2 .lcounts,.lcounts{gap:14px} .sx2 .lcounts figure,.lcounts figure{flex-basis:calc((100% - 14px) / 2)} .lcounts figcaption{min-height:118px;padding:12px} .lh-ct{font-size:18px} .lcounts figcaption span{font-size:13px} }

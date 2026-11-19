@@ -2122,6 +2122,13 @@ html.pv-open{overflow:hidden}
 .up-row b{display:block;font:italic 800 13px/1.2 var(--f-disp);font-stretch:112%;text-transform:uppercase;color:#fff}
 .up-row span{display:block;margin-top:3px;font-size:12.5px;line-height:1.4;color:#B9C0CB}
 .up-row .up-add{min-height:36px;padding:0 14px;border:0;border-radius:7px;cursor:pointer;font:400 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#0B0D12;background:linear-gradient(180deg,#fff,#C7CED7)}
+/* v113: the count keys are true circles. The v112 grid stretched each key to its column while the height stayed fixed,
+   so they read as tall ovals spread across the row. Fixed-size round keys, packed with a tight gap. */
+.seg{display:flex!important;flex-wrap:nowrap;gap:clamp(6px,.8vw,10px);width:auto;max-width:none;grid-template-columns:none}
+.seg button{flex:0 0 auto;width:clamp(42px,calc((100vw - 2 * var(--gut, 20px) - 36px) / 7),58px)!important;height:auto!important;aspect-ratio:1;font-size:clamp(15px,1.5vw,20px)!important}
+.seg button::after{inset:5px}
+.seg{align-items:center}
+.seg button{--kd:clamp(42px,calc((100vw - 2 * var(--gut, 20px) - 36px) / 7),58px);height:var(--kd)!important;width:var(--kd)!important;min-height:0!important;max-height:none!important;padding:0!important}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
