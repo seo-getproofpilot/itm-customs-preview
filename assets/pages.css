@@ -748,3 +748,52 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
 .shc-wide{grid-template-columns:1fr 1fr!important;grid-template-rows:auto auto!important;max-height:none}
 .shc-wide .shc-main{grid-row:auto!important;grid-column:1 / -1;aspect-ratio:var(--ar)}
 .shc-wide .shc-s{aspect-ratio:4/3}
+
+/* ===================== v1094 (Chris, 2026-11-19): no lined texture, numbered install run, head-to-head comparison ===================== */
+:root{--brush:linear-gradient(transparent,transparent)}
+.tone-alu{background:linear-gradient(180deg,#F2F4F7,#DCE1E7)}
+
+/* numbered run: chrome bezels joined by a wire that lights up */
+.nsteps{list-style:none;margin:8px 0 0;padding:0;position:relative;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:22px}
+.nsteps::before,.nsteps::after{content:"";position:absolute;top:40px;left:40px;right:calc((100% - (var(--n) - 1) * 22px) / var(--n) - 40px);height:4px;border-radius:2px;background:#2A3140}
+.nsteps::after{background:linear-gradient(90deg,var(--royal),var(--sky),var(--sky-hi));box-shadow:0 0 12px rgba(0,141,211,.8);transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .15s}
+.nsteps:has(li.in)::after,html:not(.js) .nsteps::after{transform:none}
+.nsteps li{position:relative;z-index:1;display:grid;gap:10px;align-content:start;min-width:0}
+.ns-bz{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;border:4px solid transparent;
+  background:radial-gradient(circle at 50% 35%,#2E3644,#12161D 72%) padding-box,var(--chrome-bevel) border-box;
+  box-shadow:0 0 0 2px #07090D,0 0 0 4px var(--sky),0 0 0 6px var(--royal),0 12px 26px rgba(0,0,0,.5);transition:box-shadow .6s}
+.nsteps li.in .ns-bz{box-shadow:0 0 0 2px #07090D,0 0 0 4px var(--sky),0 0 0 6px var(--royal),0 0 26px rgba(0,141,211,.65),0 12px 26px rgba(0,0,0,.5);transition-delay:calc(var(--i,0) * 220ms + .3s)}
+.lh-ns{display:block;font-size:38px;line-height:1;padding:0 .08em 0 0}
+.ns-t{margin-top:8px;font:italic 800 16px/1.15 var(--f-disp);font-stretch:118%;text-transform:uppercase;color:#fff}
+.ns-d{font-size:14.5px;line-height:1.55;color:#C2C8D1}
+.tone-alu .ns-t{color:#0B0D12}.tone-alu .ns-d{color:#3B4250}
+
+/* head-to-head comparison */
+.vsx{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:0 20px;margin-top:6px}
+.vs-c{position:relative;padding:24px 26px 26px;border-radius:12px;background:linear-gradient(180deg,#232A35,#141920);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 0 2px #07090D,0 0 0 4px var(--sky),0 0 0 6px var(--royal),0 18px 36px rgba(0,0,0,.35)}
+.lh-vs{font-size:clamp(20px,calc(1.7vw / var(--z,1)),25px);margin-bottom:14px}
+.vs-c dl{margin:0;display:grid;gap:0}
+.vs-c dl div{padding:12px 0;border-top:1px solid rgba(255,255,255,.08)}
+.vs-c dt{font:400 11.5px/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sky-hi)}
+.vs-c dt a{color:var(--sky-hi)!important}
+.vs-c dd{margin:6px 0 0;font-size:16px;line-height:1.5;color:#F1F3F6}
+.vs-c dd a{color:#fff!important}
+.vs-mid{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:italic 900 22px/1 var(--f-disp);font-stretch:125%;color:#0B0D12;
+  background:linear-gradient(180deg,#FFFFFF,#C2C9D2 55%,#EEF1F4);box-shadow:inset 0 1px 0 #fff,0 0 0 2px #07090D,0 0 0 4px var(--sky),0 0 0 6px var(--royal),0 8px 20px rgba(0,0,0,.35)}
+
+@media (max-width:1100px){
+  .nsteps{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:30px}
+  .nsteps::before,.nsteps::after{display:none}
+}
+@media (max-width:760px){
+  .nsteps{grid-template-columns:1fr;gap:18px}
+  .nsteps::before,.nsteps::after{display:block;top:40px;bottom:40px;left:38px;right:auto;width:4px;height:auto;transform-origin:top}
+  .nsteps::after{transform:scaleY(0)}
+  .nsteps:has(li.in)::after,html:not(.js) .nsteps::after{transform:none}
+  .nsteps li{grid-template-columns:80px minmax(0,1fr);column-gap:16px;align-items:start}
+  .nsteps li .ns-bz{grid-row:1 / 3}
+  .ns-t{margin-top:14px}
+  .vsx{grid-template-columns:1fr;gap:14px}
+  .vs-mid{justify-self:center;width:54px;height:54px;font-size:19px}
+}
