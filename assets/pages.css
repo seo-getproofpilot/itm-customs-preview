@@ -516,3 +516,16 @@ body.sub{padding-top:0}
 .ss-after{grid-column:2;margin-top:10px}
 .sx .sgal-j:has(> figure:only-child){max-width:calc(100% * 7 / 11);margin-left:auto}
 @media (max-width:940px){ .sx-wide .ss-body,.ss-after{grid-column:auto} .sx .sgal-j:has(> figure:only-child){max-width:none} }
+.sstats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+/* v1090: subpage top bar: cart next to Book Install; on phones the links run in one swipeable row instead of wrapping onto three lines */
+.pcart{flex:none;width:40px;height:40px;margin-left:14px}
+.pnav-in>.btn{margin-left:12px}
+@media (max-width:940px){
+  .pnav-links{flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;gap:0 20px!important;
+    -webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:28px}
+  .pnav-links a{flex:none}
+  .pcart{margin-left:auto}
+}
+.st.st-long b{font-size:clamp(19px,calc(1.6vw / var(--z,1)),24px);line-height:1.1}
+@media (max-width:940px){ .pnav-links{box-sizing:border-box;max-width:100%;min-width:0} }
+@media (max-width:760px){ .sstats{grid-template-columns:1fr} .st{min-width:0} .st b{overflow-wrap:anywhere} }

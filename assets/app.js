@@ -128,7 +128,7 @@ function paint(el, p) {
 if (grid) P.forEach(p => grid.appendChild(card(p)));
 /* phones: the shop shows three short cards and a See More button, so nobody scrolls through the whole lineup to reach the rest of the page */
 const SHOP_PHONE = matchMedia('(max-width:560px)');
-let shopOpen = false;
+let shopOpen = document.body.classList.contains('on-shop');  // the shop page shows every card on phones
 function clipShop() {
   if (!grid) return;
   const vis = $$('.card:not(.hide)', grid), more = $('#seeMore'), n = vis.length - 3;
@@ -162,7 +162,7 @@ function filter(cat) {
   $$('.chip').forEach(c => { const on = c.dataset.filter === cat; c.classList.toggle('on', on); c.setAttribute('aria-selected', on); });
   $$('.card', grid).forEach(c => c.classList.toggle('hide', cat !== 'all' && c.dataset.cat !== cat));
   $$('.card:not(.hide)', grid).forEach(c => c.classList.add('in'));
-  shopOpen = false; clipShop(); fillShop();
+  shopOpen = document.body.classList.contains('on-shop'); clipShop(); fillShop();
 }
 $$('.chip').forEach(c => c.onclick = () => filter(c.dataset.filter));
 $$('.lane[data-filter], [data-jump]').forEach(l => l.addEventListener('click', e => {
@@ -392,7 +392,9 @@ document.addEventListener('click', e => {
   btn.addEventListener('click', e => { e.stopPropagation(); set(menu.hidden); });
   grid.addEventListener('click', e => {
     const it = e.target.closest('.sm-item'); if (!it) return;
-    set(false); filter(it.dataset.cat);
+    set(false);
+    if (!$('#shop')) { location.href = new URL('collections/all/#' + it.dataset.cat, document.baseURI).href; return; }
+    filter(it.dataset.cat);
     $('#shop').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
   });
   document.addEventListener('click', e => { if (!menu.hidden && !e.target.closest('#shopMenu, #shopToggle')) set(false); });
@@ -621,6 +623,14 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-pure-white-roc
   };
   ['click', 'input', 'change'].forEach(ev => f.addEventListener(ev, () => setTimeout(check, 30)));
   check();
+})();
+
+/* shop page links: collections/all/#rock opens filtered, #cart opens the cart (from the subpage nav) */
+(function () {
+  const h = location.hash.slice(1);
+  if (['rock', 'switch', 'rgbw', 'wheel', 'acc'].includes(h) && $('#grid')) filter(h);
+  if (h === 'cart' && $('#cartOpen')) setTimeout(() => $('#cartOpen').click(), 300);
+  if (document.body.classList.contains('on-shop')) $('#nav')?.classList.add('past-hero');  // no hero here, so Book Install shows from the start
 })();
 
 /* demo build: checkout and store purchase links are switched off; every other link works */

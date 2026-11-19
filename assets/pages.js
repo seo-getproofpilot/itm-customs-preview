@@ -80,3 +80,10 @@
   }, { rootMargin: '0px 0px -4% 0px' });
   els.forEach(function (e) { io.observe(e); });
 })();
+
+/* v1090: cart count in the subpage top bar, read from the same cart the shop uses */
+(function () {
+  var n = 0, el = document.getElementById('pcartN'); if (!el) return;
+  try { (JSON.parse(localStorage.getItem('itm_cart_v1')) || []).forEach(function (l) { n += +l.q || 0; }); } catch (e) {}
+  el.textContent = n; el.classList.toggle('has', n > 0);
+})();

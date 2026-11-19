@@ -2109,6 +2109,12 @@ html.pv-open{overflow:hidden}
 .lane-svc,.lane-svc:hover{text-decoration:none;color:inherit}
 .wd-link{display:inline-flex;align-items:center;min-height:38px;padding:4px 0 0}
 @media (max-width:560px){ .proof-m-wrap + .wd-head{margin-top:8px} }
+/* v1090: shop page (collections/all) built from the homepage shop */
+.shop-page .shop{padding-top:calc(120px + 24px)}
+.shop-page .shop .display-2{margin-top:14px}
+@media (max-width:940px){ .shop-page .shop{padding-top:118px} }
+.nav .nav-book,.nav .nav-book span{font-size:11.5px}
+.sr-anchor{position:absolute;top:0;width:0;height:0;overflow:hidden}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
