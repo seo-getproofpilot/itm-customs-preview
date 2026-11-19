@@ -822,3 +822,4 @@ html:not(.js) .swp-p{display:block;margin-bottom:16px}
 .bstrip-t{max-width:none}
 @media (max-width:560px){ .bstrip-i figure{height:auto;aspect-ratio:4/3} .ico{width:38px;height:38px} }
 .bstrip-i{align-content:start}.bstrip-t{align-content:start}
+@media (max-width:560px){ .bstrip-i figure{aspect-ratio:4/5} }
