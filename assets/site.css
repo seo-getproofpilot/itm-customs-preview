@@ -2129,6 +2129,29 @@ html.pv-open{overflow:hidden}
 .seg button::after{inset:5px}
 .seg{align-items:center}
 .seg button{--kd:clamp(42px,calc((100vw - 2 * var(--gut, 20px) - 36px) / 7),58px);height:var(--kd)!important;width:var(--kd)!important;min-height:0!important;max-height:none!important;padding:0!important}
+/* v114: every product card fits the screen it's on. Chris: on a full screen you should see the nav, the filter bar and
+   the whole card (photo, name, price, Add to cart) without scrolling. Only heights change: the photo box takes what is
+   left of the screen after the nav, the filters and the card's own words (centred, so nothing important is cropped),
+   and the card's inner spacing tightens a little. Photos, copy and widths are unchanged. */
+@media (min-width:941px){
+  .card .c-fig:not(#_){aspect-ratio:auto;height:clamp(170px,calc(100svh - 70px - 64px - 40px - var(--cbody,400px)),480px)}
+  .card .c-fig img{object-position:50% 50%}
+  .card .c-body:not(#_){padding:12px 16px 12px}
+  .card .c-name:not(#_){margin-top:5px;line-height:1.08}
+  .card .c-sub:not(#_){margin-top:6px;line-height:1.45}
+  .card .specs:not(#_){margin-top:8px}
+  .card .rating:not(#_){margin-top:6px}
+  .card .vars:not(#_){margin-top:8px;gap:5px}
+  .card .var:not(#_){padding:6px 9px;min-height:30px;font-size:12px}
+  .card .c-foot:not(#_){padding-top:10px;gap:8px}
+  .card .c-foot .add:not(#_){height:40px}
+  .card .c-inst:not(#_){margin-top:8px;padding-top:8px}
+}
+@media (min-width:941px) and (max-height:820px){
+  .card .c-sub:not(#_){-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+}
+/* the page zooms itself on screens 1800px and wider (index.html sets --z), so the screen height is divided by it */
+@media (min-width:941px){.card .c-fig:not(#_):not(#_){aspect-ratio:auto!important;height:clamp(160px,calc(100svh / var(--z,1) - 70px - 64px - 40px - var(--cbody,440px)),480px)!important}}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
