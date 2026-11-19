@@ -2096,6 +2096,20 @@ html.pv-open{overflow:hidden}
   .intro-t{animation-delay:.95s}
 }
 
+/* v1087: Products / Services heads on the homepage lanes (Isaac, 2026-11-19) */
+.wd-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 18px;margin:0 auto 18px}
+.wd-head-svc{margin-top:46px}
+.wd-h{margin:0;font:italic 900 clamp(30px,calc(3.1vw / var(--z,1)),46px)/1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.01em;
+  background:var(--chrome-text,linear-gradient(180deg,#fff,#AEB6C2));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(7,137,227,.75));padding-right:.08em}
+.wd-sub{margin:0;flex:1 1 320px;min-width:0;font-size:16px;line-height:1.45;color:#C2C8D1}
+.wd-link{font:400 12.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:1px solid rgba(7,137,227,.8);padding:10px 0 6px}
+.wd-link:hover{color:var(--blue-hi,#2C9AEA)}
+.mosaic-itm figure a{display:block;height:100%}
+@media (max-width:560px){ .wd-head{gap:4px 12px;margin-bottom:14px} .wd-head-svc{margin-top:34px} .wd-sub{font-size:14.5px;flex-basis:100%} }
+.lane-svc,.lane-svc:hover{text-decoration:none;color:inherit}
+.wd-link{display:inline-flex;align-items:center;min-height:38px;padding:4px 0 0}
+@media (max-width:560px){ .proof-m-wrap + .wd-head{margin-top:8px} }
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

@@ -187,7 +187,7 @@ function renderCart() {
   const n = cart.reduce((a, l) => a + l.q, 0);
   const cn = $('#cartN'); cn.textContent = n; cn.classList.toggle('has', n > 0);
   const body = $('#drBody');
-  if (!cart.length) { body.innerHTML = '<p class="dr-empty">Nothing here yet. Start with a set of Rock Lights.</p>'; }
+  if (!cart.length) { body.innerHTML = '<p class="dr-empty">Nothing here yet. Start with a set of rock lights.</p>'; }
   else body.innerHTML = cart.map((l, k) => { const p = byH[l.h], v = p.v[l.i];
     return `<div class="li"><img src="${IMG(p.imgs[0])}" alt="">
       <div><div class="li-n">${p.name}</div><div class="li-v">${v.t}</div>

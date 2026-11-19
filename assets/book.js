@@ -17,7 +17,7 @@ const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textC
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
 const HOURS = {
   days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
-  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM'],   // installs run 6 to 8 hours, so drop-off is morning only (kickoff, 2026-11-16)
+  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM'],   // installs run 4 to 8 hours, so drop-off is morning only (kickoff, 2026-11-16)
   Midday:    [],
   Afternoon: [],
   ahead: 60,
@@ -110,10 +110,10 @@ function slotLabel() {
 }
 /* install pricing (kickoff call, 2026-11-16): the form shows "starting at" labor once Isaac sets flat rates, and he
    finalizes the price after the booking comes in. null = not set yet, so the line reads "quoted before we start".
-   Jobs over DEPOSIT.over with install hold the day with a DEPOSIT.amount deposit, credited at checkout. */
+   Every install holds its day with a DEPOSIT.amount deposit, any amount, credited at checkout (Isaac, 2026-11-19). */
 const INSTALL_FROM = { 'Rock Lights': null, 'Wheel Lights': null, 'Switchback / Amber': null, 'RGBW Color Kit': null,
   'Cab & Mirror Lights': null, 'Pillar Lights': null, 'Bringing My Own': null };
-const DEPOSIT = { amount: 50, over: 600, url: '' };
+const DEPOSIT = { amount: 50, url: '' };
 const DISCOUNT = { pct: 10 };   // military and first responders, ID shown at drop-off (Isaac to confirm the %)   // url: Shopify deposit product link, once it exists
 const WHEEL_WARN = ['16″ Or Smaller', '17″', '18″'];  // wheel sizes where the 17-inch ring may not fit: confirm with Isaac
 /* the follow-up questions for each job, and the lines they produce for the calendar + emails */
@@ -167,8 +167,8 @@ function estimate() {
   const bits = items.length ? 'Parts: ' + items.map(i => `${i[0]} <b>${i[2] ? 'from ' : ''}${money(i[1])}</b>`).join(' · ') +
     (items.length > 1 ? ` = <b>${from ? 'from ' : ''}${money(parts)}</b>` : '') + '. ' : '';
   const lab = labor != null ? `Install <b>starting at ${money(labor)}</b>. ` : 'Install labor is <b>quoted before we start</b>. ';
-  DEPOSIT_DUE = parts + (labor || 0) > DEPOSIT.over;
-  const dep = DEPOSIT_DUE ? `This job is over ${money(DEPOSIT.over)}, so a <b>${money(DEPOSIT.amount)} deposit</b> holds your day. It comes off your total.` : '';
+  DEPOSIT_DUE = true;
+  const dep = DEPOSIT_DUE ? `A <b>${money(DEPOSIT.amount)} deposit</b> holds your day. It comes off your total.` : '';
   const disc = picked('disc').length ? ` <b>${DISCOUNT.pct}% military and first responder discount</b> comes off your whole total, lights and install. Bring your ID to drop-off.` : '';
   el.innerHTML = bits + lab + dep + disc;
   EST_TEXT = el.textContent.trim();
