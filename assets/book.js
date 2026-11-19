@@ -122,7 +122,7 @@ function details() {
   const w = picked('work'), out = [], f = Object.fromEntries(new FormData(form));
   const line = (job, bits) => out.push(job + (bits.filter(Boolean).length ? ': ' + bits.filter(Boolean).join(' · ') : ''));
   w.forEach(job => {
-    if (job === 'Rock Lights') line(job, [D('d-rock'), D('d-rock-n') && D('d-rock-n') !== 'Not Sure' ? D('d-rock-n') + ' lights' : D('d-rock-n') ? 'count not sure' : '']);
+    if (job === 'Rock Lights') line(job, [D('d-rock'), D('d-rock-n') && D('d-rock-n') !== 'Not Sure' ? D('d-rock-n') + ' lights' : D('d-rock-n') ? 'count not sure' : '', ...picked('d-addon').map(a => 'add-on ' + a.replace('+', '').toLowerCase())]);
     else if (job === 'Wheel Lights') line(job, [D('d-wheel'), D('d-wheel-size') ? D('d-wheel-size') + ' wheels' : '']);
     else if (job === 'Switchback / Amber') line(job, [D('d-sb') ? D('d-sb') + ' kit' : '']);
     else if (job === 'RGBW Color Kit') line(job, [D('d-rgbw') ? D('d-rgbw') + ' kit' : '']);
@@ -136,15 +136,17 @@ function details() {
 /* live parts estimate from the store's prices; labor is quoted by ITM */
 function partsEstimate() {
   const w = picked('work'), items = [];
-  const KIT219 = { 4: 240, 8: 400, 12: 520, 16: 700, 20: 800, 24: 920 };
+  const KIT219 = { 4: 240, 8: 400, 12: 520, 16: 700, 20: 800, 24: 920 }, KIT144 = { 4: 210, 8: 360, 12: 460, 16: 640, 20: 730, 24: 840 };
   const SB = { 4: 200, 8: 380, 12: 500, 16: 600, 20: 700 }, RGBW = { 4: 205, 8: 385, 12: 505, 16: 605, 20: 705 };
   if (w.includes('Rock Lights')) {
     const r = D('d-rock'), n = parseInt(D('d-rock-n'), 10);
     if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit, ${n} lights`, KIT219[n]] : ['219-chip kit', 240, 'from']);
+    else if (/^144/.test(r)) items.push(KIT144[n] ? [`144-chip kit, ${n} lights`, KIT144[n]] : ['144-chip kit', 210, 'from']);
     else {
       const per = /^72/.test(r) ? 45 : 55, name = /^72/.test(r) ? '72-chip' : '84-chip';
       items.push(n ? [`${name}, ${n} lights (${Math.ceil(n / 4)} packs)`, per * Math.ceil(n / 4)] : [`${name} rock lights, pack of 4`, per, 'from']);
     }
+    if (picked('d-addon').length) items.push(['84-chip pack of 4 for the grille and under the hood', 55]);
   }
   if (w.includes('Wheel Lights')) items.push(/^5/.test(D('d-wheel')) ? ['5-row wheel lights', 380] : /^10/.test(D('d-wheel')) ? ['10-row wheel lights', 499] : ['wheel lights', 380, 'from']);
   if (w.includes('Switchback / Amber')) { const n = parseInt(D('d-sb'), 10); items.push(SB[n] ? [`switchback kit, ${n} lights`, SB[n]] : ['switchback kit', 200, 'from']); }

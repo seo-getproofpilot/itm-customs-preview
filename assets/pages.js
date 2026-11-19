@@ -87,3 +87,23 @@
   try { (JSON.parse(localStorage.getItem('itm_cart_v1')) || []).forEach(function (l) { n += +l.q || 0; }); } catch (e) {}
   el.textContent = n; el.classList.toggle('has', n > 0);
 })();
+
+/* v1091: switch panels: one switch on at a time, the screen shows its line */
+(function () {
+  document.documentElement.classList.add('js');
+  document.querySelectorAll('[data-swp]').forEach(function (p) {
+    var keys = p.querySelectorAll('.swk'), panes = p.querySelectorAll('.swp-p');
+    function on(i) {
+      keys.forEach(function (k, j) { k.classList.toggle('on', j === i); k.setAttribute('aria-selected', j === i); k.tabIndex = j === i ? 0 : -1; });
+      panes.forEach(function (x, j) { x.classList.toggle('on', j === i); });
+    }
+    keys.forEach(function (k, i) {
+      k.addEventListener('click', function () { on(i); });
+      k.addEventListener('keydown', function (e) {
+        var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+        e.preventDefault(); var n = (i + d + keys.length) % keys.length; on(n); keys[n].focus();
+      });
+    });
+    on(0);
+  });
+})();
