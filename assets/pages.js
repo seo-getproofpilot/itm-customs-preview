@@ -68,3 +68,15 @@
   }, { rootMargin: '400px' });
   maps.forEach(function (el) { io.observe(el); });
 })();
+
+/* v1089: service pages reveal sections, cards, photos and timeline steps as they scroll in */
+(function () {
+  var els = document.querySelectorAll('.sp .rv-in');
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+  document.documentElement.classList.add('js');
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -4% 0px' });
+  els.forEach(function (e) { io.observe(e); });
+})();
