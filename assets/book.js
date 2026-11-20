@@ -114,7 +114,7 @@ function slotLabel() {
 const INSTALL_FROM = { 'Rock Lights': null, 'Wheel Lights': null, 'Switchback / Amber': null, 'RGBW Color Kit': null,
   'Cab & Mirror Lights': null, 'Pillar Lights': null, 'Bringing My Own': null };
 const DEPOSIT = { amount: 50, url: '' };
-const DISCOUNT = { pct: 10 };   // military and first responders, ID shown at drop-off (Isaac to confirm the %)   // url: Shopify deposit product link, once it exists
+const DISCOUNT = { pct: 10 };   // military and first responders, always 10%, ID shown at drop-off   // url: Shopify deposit product link, once it exists
 const WHEEL_WARN = ['16″ Or Smaller', '17″', '18″'];  // wheel sizes where the 17-inch ring may not fit: confirm with Isaac
 /* the follow-up questions for each job, and the lines they produce for the calendar + emails */
 const D = n => picked(n)[0] || '';
