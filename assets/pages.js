@@ -136,3 +136,16 @@
   t = setInterval(tick, ms);
   if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { vis = es[0].isIntersecting; }).observe(r);
 })();
+
+/* v1108: services menu on inner pages (same menu as the homepage) */
+(function () {
+  var btn = document.getElementById('pMenuBtn'), menu = document.getElementById('pMenu'); if (!btn || !menu) return;
+  function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); btn.classList.toggle('on', on); }
+  btn.addEventListener('click', function (e) { e.stopPropagation(); set(menu.hidden); });
+  document.addEventListener('click', function (e) { if (!menu.hidden && !e.target.closest('#pMenu, #pMenuBtn')) set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+  menu.querySelectorAll('a').forEach(function (a) {
+    if (a.pathname === location.pathname && !a.hash) { a.setAttribute('aria-current', 'page'); a.classList.add('here'); }
+    a.addEventListener('click', function () { set(false); });
+  });
+})();
