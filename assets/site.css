@@ -2207,6 +2207,15 @@ html.pv-open{overflow:hidden}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -3px 0 rgba(120,60,0,.25),0 0 0 1px rgba(255,210,130,.9),0 0 22px rgba(255,178,63,.5),0 10px 24px -12px rgba(240,138,28,.8)!important}
 .chip.on:not(:disabled) :is(span,b,i,em,small){color:#140C02!important;-webkit-text-fill-color:#140C02;opacity:.75}
 
+/* v1110: homepage leads with services only; menus get a Shop Our Lights link (Chris, 2026-11-20) */
+.lanes-svc-only .wd-head-svc{margin-top:0}
+.sm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}
+.sm-head .sm-h{margin:0}
+.sm-shop{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border:1px solid rgba(240,138,28,.6);border-radius:6px;text-decoration:none;
+  font:400 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#F08A1C;transition:background .2s,color .2s}
+.sm-shop i{font-style:normal}
+.sm-shop:hover,.sm-shop:focus-visible{background:var(--amber-glow);color:#140C02;border-color:#F08A1C;outline:none}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
