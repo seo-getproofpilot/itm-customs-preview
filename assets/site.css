@@ -2192,6 +2192,17 @@ html.pv-open{overflow:hidden}
   .sm-svc .sm-fig{aspect-ratio:16/9}
 }
 
+/* ===================== v1107: a picked option stays lit amber, same as hover (Chris, 2026-11-20) ===================== */
+:is(.var,.seg button,.booker .opt,.booker .slot,.booker .stime).on:not(:disabled):not(.so){
+  background:var(--amber-glow)!important;border-color:#F08A1C!important;color:#140C02!important;-webkit-text-fill-color:#140C02;filter:none!important;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -3px 0 rgba(120,60,0,.25),0 0 0 1px rgba(255,210,130,.9),0 0 22px rgba(255,178,63,.5),0 10px 24px -12px rgba(240,138,28,.8)!important}
+:is(.var,.seg button,.booker .opt,.booker .slot,.booker .stime).on:not(:disabled):not(.so) :is(span,b,i,em,small){color:#140C02!important;-webkit-text-fill-color:#140C02}
+/* the LED dots inside picked booking options go dark so they read on amber */
+.booker .opt.on::before{background:radial-gradient(circle,#3a2406 0 40%,#140C02 46%)!important;box-shadow:0 0 0 1.5px rgba(20,12,2,.35)!important}
+.booker .slot.on::before{background:#140C02!important;filter:none!important}
+.booker .stime.on::after{background:#140C02!important;box-shadow:none!important}
+.seg button.on::after{border-color:rgba(20,12,2,.5)!important;box-shadow:none!important}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
