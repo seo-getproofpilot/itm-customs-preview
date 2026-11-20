@@ -2175,6 +2175,23 @@ html.pv-open{overflow:hidden}
 @media (max-width:760px){ .lane-svc[href$="light-installation/"] img{object-position:40% 66%} }
 @media (min-width:941px) and (max-width:1100px){ .card .var:not(#_){min-height:36px} }
 
+/* ===================== v1106: every service on the homepage + a services menu ===================== */
+.lane-grid-svc2{margin-top:14px}
+@media (max-width:940px), (max-width:1100px) and (orientation:portrait){ .lane-grid-svc2{margin-top:8px} }
+@media (min-width:561px) and (max-width:940px), (min-width:561px) and (max-width:1100px) and (orientation:portrait){ .lane-grid-svc2{margin-top:12px} }
+@media (min-width:800px) and (max-width:1100px) and (orientation:portrait){
+  .lane-grid-svc .lane,.lane-grid-svc .lane:first-child,.lane-grid-svc .lane:last-child,.lane-grid-svc .lane:nth-child(4){grid-column:span 3;aspect-ratio:16/10}
+}
+.sm-h{margin:0 0 10px;font:400 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#8E96A3}
+.sm-grid.sm-svc{grid-template-columns:repeat(4,1fr)}
+.sm-svc .sm-item{text-decoration:none;position:relative}
+.sm-svc .sm-fig{aspect-ratio:16/9}
+@media (max-width:940px){ .sm-grid.sm-svc{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:560px){
+  .sm-grid.sm-svc{grid-template-columns:1fr 1fr;gap:8px}
+  .sm-svc .sm-fig{aspect-ratio:16/9}
+}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}

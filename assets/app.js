@@ -378,7 +378,7 @@ document.addEventListener('click', e => {
     ['acc', 'Accessories', 'p-magnetic-mount-for-rocklights-0', 'Mounts + Merch'],
   ];
   const count = c => c === 'all' ? P.length : P.filter(p => p.cat === c).length;
-  grid.innerHTML = CATS.map(([c, n, img, d]) =>
+  if (!grid.children.length) grid.innerHTML = CATS.map(([c, n, img, d]) =>
     `<button class="sm-item" data-cat="${c}"><span class="sm-fig"><img src="${IMG(img)}" alt="${n} from ITM Customs" loading="lazy"></span>
       <span class="sm-txt"><b>${n}</b><i>${d}</i></span></button>`).join('');
   const set = on => { menu.hidden = !on; btn.setAttribute('aria-expanded', on); btn.classList.toggle('on', on); };
@@ -386,6 +386,7 @@ document.addEventListener('click', e => {
   grid.addEventListener('click', e => {
     const it = e.target.closest('.sm-item'); if (!it) return;
     set(false);
+    if (!it.dataset.cat) return;
     if (!$('#shop')) { location.href = new URL('collections/all/#' + it.dataset.cat, document.baseURI).href; return; }
     filter(it.dataset.cat);
     $('#shop').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
