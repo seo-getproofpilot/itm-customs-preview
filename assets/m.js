@@ -64,4 +64,54 @@
     PHONE.addEventListener('change', () => { if (!PHONE.matches && dots) { dots.remove(); dots = null; } start(); });
     start(); mark();
   }
+  /* ---------- v1124 (Chris): shop cards, one product per screen ----------
+     Phones: every store photo swipes inside the card (arrows + count), with the
+     product's own description, options, price and Add To Cart in view. */
+  const grid = $('#grid');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  if (grid && typeof PX !== 'undefined' && typeof byH !== 'undefined') {
+    const build = c => {
+      if (c._m) return; const h = c.dataset.h, x = PX[h], p = byH[h], fig = $('.c-fig', c); if (!p || !fig) return;
+      c._m = 1; c.classList.add('m-pcard');
+      const lead0 = p.imgs[1] || p.imgs[0], base = (x && x.imgs.length) ? x.imgs : p.imgs;
+      const imgs = [lead0, ...base.filter(m => m !== lead0 && m !== lead0.replace(/-sq$/, ''))], n = imgs.length;  /* opens on the installed-truck photo the card used */
+      const g = document.createElement('div'); g.className = 'm-gal';
+      g.innerHTML = `<div class="m-track">${imgs.map((m, i) => `<img src="${IMG(m)}" alt="${esc(p.name)}, photo ${i + 1} of ${n}" loading="lazy" draggable="false">`).join('')}</div>`
+        + (n > 1 ? `<button type="button" class="m-arr m-prev" aria-label="Previous photo"><i aria-hidden="true"></i></button><button type="button" class="m-arr m-next" aria-label="Next photo"><i aria-hidden="true"></i></button><span class="m-count" aria-hidden="true">1 / ${n}</span>` : '');
+      fig.before(g);
+      const tr = $('.m-track', g), cnt = $('.m-count', g);
+      const at = () => Math.round(tr.scrollLeft / tr.clientWidth);
+      const go = i => tr.scrollTo({ left: Math.max(0, Math.min(n - 1, i)) * tr.clientWidth, behavior: 'smooth' });
+      if (n > 1) {
+        $('.m-prev', g).onclick = () => go(at() - 1 < 0 ? n - 1 : at() - 1);
+        $('.m-next', g).onclick = () => go(at() + 1 >= n ? 0 : at() + 1);
+        tr.addEventListener('scroll', () => requestAnimationFrame(() => { cnt.textContent = `${at() + 1} / ${n}`; }), { passive: true });
+      }
+      const lines = x ? x.lines.filter(l => !/:$/.test(l) && !/^Please allow/i.test(l)).slice(0, 2) : [];
+      const d = document.createElement('div'); d.className = 'm-desc';
+      d.innerHTML = `<p>${esc((x && x.lead) || p.sub)}</p>${lines.length ? `<ul>${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}`
+        + (x ? `<button type="button" class="m-more">Full details</button>` : '');
+      const sub = $('.c-sub', c); (sub || $('.c-name', c)).after(d);
+      const more = $('.m-more', d); if (more) more.onclick = () => $('.c-name', c).click();
+    };
+    const all = () => { if (PHONE.matches) [...grid.querySelectorAll('.card')].forEach(build); };
+    PHONE.addEventListener('change', all); all();
+    new MutationObserver(all).observe(grid, { childList: true });
+  }
+
+  /* ---------- v1124 (Chris): RGBW photo arrows + auto-advance ---------- */
+  const sw = [...document.querySelectorAll('.feat-rgbw .swatches button')], media = $('.feat-rgbw .feat-media');
+  if (sw.length && media) {
+    let hold = 0;
+    const cur = () => Math.max(0, sw.findIndex(b => b.classList.contains('on')));
+    const to = i => { const b = sw[(i + sw.length) % sw.length]; b.onclick && b.onclick(); };
+    media.insertAdjacentHTML('beforeend', '<button type="button" class="m-arr m-prev" aria-label="Previous color"><i aria-hidden="true"></i></button><button type="button" class="m-arr m-next" aria-label="Next color"><i aria-hidden="true"></i></button>');
+    $('.m-prev', media).onclick = () => { hold = Date.now() + 12000; to(cur() - 1); };
+    $('.m-next', media).onclick = () => { hold = Date.now() + 12000; to(cur() + 1); };
+    sw.forEach(b => b.addEventListener('click', () => { hold = Date.now() + 12000; }));
+    if (!matchMedia('(prefers-reduced-motion:reduce)').matches) setInterval(() => {
+      if (Date.now() < hold || document.hidden) return; const r = media.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return; to(cur() + 1);
+    }, 3500);
+  }
 })();

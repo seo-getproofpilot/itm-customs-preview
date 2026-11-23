@@ -237,9 +237,10 @@ function setCount(n) {
   const cb = $('#countBook'); if (cb) cb.setAttribute('href', `book/?book=1&count=${n}`);
   const img = $('#countImg'), src = IMG(`count-${n}-lights`);
   if (img.getAttribute('src') !== src) {
-    img.classList.add('swap');
+    /* v1124 (Chris): the old photo stays up until the new one is ready, so a tap never blacks out the frame */
     const pre = new Image(); pre.src = src;
-    pre.onload = () => { img.src = src; img.alt = `Truck lit by ${n} ITM rock lights, with where each light goes`; requestAnimationFrame(() => img.classList.remove('swap')); };
+    const put = () => { if (curN !== n) return; img.src = src; img.alt = `Truck lit by ${n} ITM rock lights, with where each light goes`; };
+    (pre.decode ? pre.decode() : Promise.reject()).then(put, () => { pre.complete ? put() : (pre.onload = put); });
   }
 }
 $$('#seg button').forEach(b => b.onclick = () => setCount(+b.dataset.n));

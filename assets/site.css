@@ -2336,6 +2336,48 @@ html.qdlg-open{overflow:hidden}
 /* v1123: no borders inside borders (Chris) */
 .count-frame:not(#_) img{box-shadow:none;border:0}
 @media (max-width:560px){ .card .c-fig:not(#_){box-shadow:0 0 0 1px rgba(255,255,255,.22)} }
+/* v1124 (Chris, 2026-11-23) */
+/* RGBW photo arrows, every width */
+.feat-rgbw .feat-media .m-arr{position:absolute;top:50%;z-index:2;transform:translateY(-50%)}
+.m-arr{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(7,9,13,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;cursor:pointer;padding:0}
+.m-arr i{width:9px;height:9px;border:solid #fff;border-width:2px 2px 0 0;transform:rotate(225deg);margin-left:3px}
+.m-arr.m-next i{transform:rotate(45deg);margin:0 3px 0 0}
+.m-prev{left:10px}.m-next{right:10px}
+.m-arr:hover{background:rgba(7,9,13,.8)}
+.m-gal,.m-desc{display:none}
+@media (max-width:560px){
+  /* logo sits top left from the moment the page loads; it shrinks into the bar once you scroll */
+  .nav:not(.scrolled) .brand img:not(#_){opacity:1;transform:none;height:38px}
+  .hero .hero-logo:not(#_){display:none}
+  /* count: the buttons sit clear of the photo's shade, and photo + buttons + both CTAs fit one screen */
+  .count-frame:not(#_)::after{content:none}
+  .seg.seg-on-photo:not(#_){position:relative;z-index:3;margin:6px 0 0}
+  .seg.seg-on-photo:not(#_) button:not(.on){background:#12161D}
+  .count-frame:not(#_) #countImg{width:auto;max-width:100%;max-height:min(420px,calc(100svh - 424px));margin-inline:auto}
+  .count .math:not(#_){margin-top:6px}
+  .count #countAdd:not(#_),.count #countBook:not(#_){min-height:46px;height:46px}
+  /* shop: one product per screen */
+  .card.m-pcard .c-fig:not(#_){display:none}
+  .card.m-pcard .card-in:not(#_):not(#_){display:flex;flex-direction:column}
+  .card.m-pcard .m-gal{display:block;position:relative;margin:10px 10px 0;border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.22);background:#000}
+  .m-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;aspect-ratio:5/4}
+  .m-track::-webkit-scrollbar{display:none}
+  .m-track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:start}
+  .m-gal .m-arr{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px}
+  .m-count{position:absolute;right:10px;bottom:10px;padding:4px 9px;border-radius:20px;background:rgba(7,9,13,.7);font:700 11px/1 var(--f-ui,inherit);letter-spacing:.08em;color:#fff}
+  .card.m-pcard .c-body:not(#_):not(#_){padding:14px 16px 16px}
+  .card.m-pcard .c-name:not(#_){font-size:20px;line-height:1.1}
+  .card.m-pcard .specs:not(#_):not(#_),.card.m-pcard .c-sub:not(#_):not(#_){display:none}
+  .card.m-pcard .m-desc{display:block;margin-top:8px;font-size:14px;line-height:1.45;color:#C9CED7}
+  .m-desc p{margin:0}
+  .m-desc ul{margin:6px 0 0;padding-left:18px}
+  .m-desc li{margin:2px 0}
+  .m-more{margin-top:6px;padding:8px 0;min-height:36px;background:none;border:0;color:#fff;font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+  .card.m-pcard .vars:not(#_):not(#_){display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .card.m-pcard .c-foot:not(#_):not(#_){margin-top:10px}
+  .card.m-pcard .c-foot .add:not(#_):not(#_){min-width:140px;height:44px}
+}
+@media (max-width:560px){ .count-frame:not(#_){aspect-ratio:auto!important} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
