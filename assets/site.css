@@ -2378,6 +2378,14 @@ html.qdlg-open{overflow:hidden}
   .card.m-pcard .c-foot .add:not(#_):not(#_){min-width:140px;height:44px}
 }
 @media (max-width:560px){ .count-frame:not(#_){aspect-ratio:auto!important} }
+/* v1125 (Chris): count buttons never touch; clear space between every circle */
+.seg:not(#_):not(#_){gap:10px;flex-wrap:nowrap}
+.seg:not(#_):not(#_) button{flex:none;width:54px;height:54px}
+@media (max-width:560px){
+  .seg:not(#_):not(#_),.seg.seg-on-photo:not(#_):not(#_){gap:6px;justify-content:space-between}
+  .seg:not(#_):not(#_) button,.seg.seg-on-photo:not(#_):not(#_) button{width:40px;height:40px;font-size:14px}
+  .seg:not(#_):not(#_) button::after{inset:4px}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

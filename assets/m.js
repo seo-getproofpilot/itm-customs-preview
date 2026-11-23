@@ -73,8 +73,7 @@
     const build = c => {
       if (c._m) return; const h = c.dataset.h, x = PX[h], p = byH[h], fig = $('.c-fig', c); if (!p || !fig) return;
       c._m = 1; c.classList.add('m-pcard');
-      const lead0 = p.imgs[1] || p.imgs[0], base = (x && x.imgs.length) ? x.imgs : p.imgs;
-      const imgs = [lead0, ...base.filter(m => m !== lead0 && m !== lead0.replace(/-sq$/, ''))], n = imgs.length;  /* opens on the installed-truck photo the card used */
+      const imgs = (x && x.imgs.length) ? x.imgs : p.imgs, n = imgs.length;  /* v1125: product shots first, then the product on a vehicle */
       const g = document.createElement('div'); g.className = 'm-gal';
       g.innerHTML = `<div class="m-track">${imgs.map((m, i) => `<img src="${IMG(m)}" alt="${esc(p.name)}, photo ${i + 1} of ${n}" loading="lazy" draggable="false">`).join('')}</div>`
         + (n > 1 ? `<button type="button" class="m-arr m-prev" aria-label="Previous photo"><i aria-hidden="true"></i></button><button type="button" class="m-arr m-next" aria-label="Next photo"><i aria-hidden="true"></i></button><span class="m-count" aria-hidden="true">1 / ${n}</span>` : '');
