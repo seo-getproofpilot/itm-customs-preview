@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>/* v1121: a fresh visit starts at the top (phones were reopening halfway down); Back still restores */try{var nt=(performance.getEntriesByType("navigation")[0]||{}).type;if("scrollRestoration" in history&&nt!=="back_forward"&&!location.hash)history.scrollRestoration="manual"}catch(e){}</script>
 <title>Rock Lights That Light The Whole Wheel Well | ITM Customs</title>
 <meta name="description" content="Ricky had run three other sets of lights before ITM. Ricky’s photo shows one light filling the wheel well, tire tread and all.">
 <meta name="theme-color" content="#08090C">
@@ -16,8 +17,8 @@
 <meta property="og:image" content="https://seo-getproofpilot.github.io/itm-customs-preview/assets/img/build-ricky-wheel-well-rock-lights.webp"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/site.css?v=e47cf406">
-<link rel="stylesheet" href="../../assets/pages.css?v=e47cf406">
+<link rel="stylesheet" href="../../assets/site.css?v=cd283ab7">
+<link rel="stylesheet" href="../../assets/pages.css?v=cd283ab7">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://itmcustoms.com/"}, {"@type": "ListItem", "position": 2, "name": "Builds", "item": "https://itmcustoms.com/builds/"}, {"@type": "ListItem", "position": 3, "name": "Rock Lights That Light The Whole Wheel Well", "item": "https://itmcustoms.com/builds/ricky-rock-lights/"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Review", "author": {"@type": "Person", "name": "Ricky Frazier"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "name": "AMAZING!!", "reviewBody": "I have had 3 other sets of lights and these are hands down BRIGHT and the best. Build quality is great, customer service is awesome and pricing is amazing! If you wanna be the one that pulls up or running down the highway that breaks necks, then ITM lights is where it’s at.", "itemReviewed": {"@type": "Product", "name": "72-Chip Pure White Rock Lights", "brand": {"@type": "Brand", "name": "ITM Customs"}}}</script>
 </head>
 <body class="sub">
@@ -64,31 +65,7 @@
   <div><p class="kick"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
   <h2 class="band-h"><span class="lh" data-t="Pick A Day.">Pick A Day.</span><span class="lh" data-t="Roll In Dark.">Roll In Dark.</span><span class="lh" data-t="Leave Glowing.">Leave Glowing.</span></h2>
   <p class="body">Bring our kit or your own lights. We text you to confirm your drop-off and quote.</p>
-  <a class="btn btn-primary" href="../../book/"><span>Book An Install <i aria-hidden="true">&rarr;</i></span></a></div>
-  <form class="qform" id="quoteForm" novalidate>
-  <h3 class="qf-h">Get A Quote</h3>
-  <div class="qf-row"><label>Name<input name="name" autocomplete="name" required></label>
-  <label>Number To Text, Or Email<input name="reach" autocomplete="email" required></label></div>
-  <label>Vehicle<input name="vehicle" placeholder="e.g. 2021 Ford F-250"></label>
-  <label>What Do You Want Lit?<textarea name="message" rows="3" required placeholder="e.g. 16 rock lights and wheel lights"></textarea></label>
-  <button class="btn btn-primary" type="submit"><span>Send <i aria-hidden="true">&rarr;</i></span></button>
-  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <p class="snote" id="quoteNote" role="status">Goes to Isaac. He gets back to you with a quote.</p>
-</form>
-<script>
-(function(){var f=document.getElementById('quoteForm');if(!f)return;var n=document.getElementById('quoteNote');
-f.addEventListener('submit',function(e){e.preventDefault();
-if(!f.checkValidity()){n.textContent='Add your name, how to reach you and what you want lit.';f.reportValidity();return;}
-var page=document.title.split(' | ')[0],msg='Quote request from the '+page+' page:\n\n'+f.message.value;
-var m=document.querySelector('meta[name=itm-booking-api]'),API=m?m.content.trim():'';
-if(API){var b=f.querySelector('button[type=submit]');b.disabled=true;n.textContent='Sending\u2026';
-fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'contact',name:f.name.value,contact:f.reach.value,vehicle:f.vehicle.value,message:msg,website:f.website.value})})
-.then(function(r){return r.json()}).then(function(j){if(j.ok){f.reset();n.textContent='Sent. Isaac will get back to you with a quote.'}else{n.textContent=j.error||'That did not go through. Email info@itmcustoms.com instead.';b.disabled=false}})
-.catch(function(){n.textContent='That did not go through. Email info@itmcustoms.com instead.';b.disabled=false});return;}
-if(f.website.value)return;
-location.href='mailto:info@itmcustoms.com?subject='+encodeURIComponent('Quote request from '+f.name.value)+'&body='+encodeURIComponent('Name: '+f.name.value+'\nReach me at: '+f.reach.value+'\nVehicle: '+(f.vehicle.value||'-')+'\n\n'+msg);
-n.textContent='Your email app should open with the message filled in.';});})();
-</script>
+  <div class="cta-row band-cta"><a class="btn btn-primary" href="../../book/"><span>Book An Install <i aria-hidden="true">&rarr;</i></span></a><button type="button" class="btn btn-chrome" data-quote><span>Get A Quote</span></button></div></div>
 </div></section>
 <footer class="foot">
   <div class="wrap foot-grid foot-grid-5">
@@ -101,6 +78,36 @@ n.textContent='Your email app should open with the message filled in.';});})();
   </div>
   <div class="wrap foot-base"><span>&copy; 2026 ITM Customs &middot; Mesa, AZ</span><span class="foot-pol"><a href="https://itmcustoms.com/pages/warranty-information" target="_blank" rel="noopener">Warranty</a><a href="https://itmcustoms.com/policies/refund-policy" target="_blank" rel="noopener">Refund Policy</a></span></div>
 </footer>
-<script src="../../assets/pages.js?v=e47cf406"></script>
+<dialog class="qdlg" id="quoteDlg" aria-labelledby="qfH"><form class="qform" id="quoteForm" novalidate>
+  <button type="button" class="qf-x" aria-label="Close">&times;</button>
+  <h3 class="qf-h" id="qfH">Get A Quote</h3>
+  <p class="qf-sub">Tell Isaac the vehicle and what you want lit. He gets back to you with a price.</p>
+  <div class="qf-row"><label>Name<input name="name" autocomplete="name" required></label>
+  <label>Number To Text, Or Email<input name="reach" autocomplete="email" required></label></div>
+  <label>Vehicle<input name="vehicle" placeholder="e.g. 2021 Ford F-250"></label>
+  <label>What Do You Want Lit?<textarea name="message" rows="3" required placeholder="e.g. 16 rock lights and wheel lights"></textarea></label>
+  <button class="btn btn-primary" type="submit"><span>Send <i aria-hidden="true">&rarr;</i></span></button>
+  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <p class="snote" id="quoteNote" role="status"></p>
+</form></dialog>
+<script>
+(function(){var d=document.getElementById('quoteDlg');if(!d)return;var f=document.getElementById('quoteForm'),n=document.getElementById('quoteNote');
+document.addEventListener('click',function(e){var b=e.target.closest('[data-quote]');if(!b)return;e.preventDefault();if(d.showModal)d.showModal();else d.setAttribute('open','');document.documentElement.classList.add('qdlg-open')});
+function shut(){if(d.close)d.close();else d.removeAttribute('open');document.documentElement.classList.remove('qdlg-open')}
+d.addEventListener('close',function(){document.documentElement.classList.remove('qdlg-open')});
+d.querySelector('.qf-x').addEventListener('click',shut);d.addEventListener('click',function(e){if(e.target===d)shut()});
+f.addEventListener('submit',function(e){e.preventDefault();
+if(!f.checkValidity()){n.textContent='Add your name, how to reach you and what you want lit.';f.reportValidity();return;}
+var page=document.title.split(' | ')[0],msg='Quote request from the '+page+' page:\n\n'+f.message.value;
+var m=document.querySelector('meta[name=itm-booking-api]'),API=m?m.content.trim():'';
+if(API){var b=f.querySelector('button[type=submit]');b.disabled=true;n.textContent='Sending\u2026';
+fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'contact',name:f.name.value,contact:f.reach.value,vehicle:f.vehicle.value,message:msg,website:f.website.value})})
+.then(function(r){return r.json()}).then(function(j){if(j.ok){f.reset();n.textContent='Sent. Isaac will get back to you with a quote.'}else{n.textContent=j.error||'That did not go through. Email info@itmcustoms.com instead.';b.disabled=false}})
+.catch(function(){n.textContent='That did not go through. Email info@itmcustoms.com instead.';b.disabled=false});return;}
+if(f.website.value)return;
+location.href='mailto:info@itmcustoms.com?subject='+encodeURIComponent('Quote request from '+f.name.value)+'&body='+encodeURIComponent('Name: '+f.name.value+'\nReach me at: '+f.reach.value+'\nVehicle: '+(f.vehicle.value||'-')+'\n\n'+msg);
+n.textContent='Your email app should open with the message filled in.';});})();
+</script>
+<script src="../../assets/pages.js?v=cd283ab7"></script>
 </body>
 </html>

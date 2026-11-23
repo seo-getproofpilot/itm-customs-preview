@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <base href="../">
+<script>/* v1121: a fresh visit starts at the top (phones were reopening halfway down); Back still restores */try{var nt=(performance.getEntriesByType("navigation")[0]||{}).type;if("scrollRestoration" in history&&nt!=="back_forward"&&!location.hash)history.scrollRestoration="manual"}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Book An Install | ITM Customs, Mesa AZ</title>
 <meta name="description" content="Book a rock light, wheel light or switchback install at ITM Customs in Mesa, AZ. Pick your lights and a drop-off time, and we text you to confirm.">
@@ -26,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=p63d0859c">
+<link rel="stylesheet" href="assets/site.css?v=p1ba46b5a">
 </head>
 <body class="on-book">
 <a class="skip" href="book/#main">Skip to content</a>
@@ -66,7 +67,7 @@
     </div>
     <div class="book-info">
       <ol class="steps">
-        <li><span>1</span><div><b>Pick Your Day</b>Your vehicle, the work and a morning drop-off.</div></li>
+        <li><span>1</span><div><b>Pick Your Day</b>Your vehicle, the work and a drop-off time.</div></li>
         <li><span>2</span><div><b>We Confirm</b>A text locks in your day and your final price.</div></li>
         <li><span>3</span><div><b>Roll In, Roll Out Lit</b>Drop it off in the morning, drive it home glowing that day.</div></li>
       </ol>
@@ -332,7 +333,39 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=p63d0859c"></script>
-<script src="assets/book.js?v=p63d0859c"></script>
+<script src="assets/app.js?v=p1ba46b5a"></script>
+<script src="assets/book.js?v=p1ba46b5a"></script>
+<script src="assets/m.js?v=p1ba46b5a"></script>
+<!-- v1121: Get A Quote pop-up (same markup as tools-build-pages.py QUOTE_FORM) -->
+<dialog class="qdlg" id="quoteDlg" aria-labelledby="qfH"><form class="qform" id="quoteForm" novalidate>
+  <button type="button" class="qf-x" aria-label="Close">&times;</button>
+  <h3 class="qf-h" id="qfH">Get A Quote</h3>
+  <p class="qf-sub">Tell Isaac the vehicle and what you want lit. He gets back to you with a price.</p>
+  <div class="qf-row"><label>Name<input name="name" autocomplete="name" required></label>
+  <label>Number To Text, Or Email<input name="reach" autocomplete="email" required></label></div>
+  <label>Vehicle<input name="vehicle" placeholder="e.g. 2021 Ford F-250"></label>
+  <label>What Do You Want Lit?<textarea name="message" rows="3" required placeholder="e.g. 16 rock lights and wheel lights"></textarea></label>
+  <button class="btn btn-primary" type="submit"><span>Send <i aria-hidden="true">&rarr;</i></span></button>
+  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <p class="snote" id="quoteNote" role="status"></p>
+</form></dialog>
+<script>
+(function(){var d=document.getElementById('quoteDlg');if(!d)return;var f=document.getElementById('quoteForm'),n=document.getElementById('quoteNote');
+document.addEventListener('click',function(e){var b=e.target.closest('[data-quote]');if(!b)return;e.preventDefault();if(d.showModal)d.showModal();else d.setAttribute('open','');document.documentElement.classList.add('qdlg-open')});
+function shut(){if(d.close)d.close();else d.removeAttribute('open');document.documentElement.classList.remove('qdlg-open')}
+d.addEventListener('close',function(){document.documentElement.classList.remove('qdlg-open')});
+d.querySelector('.qf-x').addEventListener('click',shut);d.addEventListener('click',function(e){if(e.target===d)shut()});
+f.addEventListener('submit',function(e){e.preventDefault();
+if(!f.checkValidity()){n.textContent='Add your name, how to reach you and what you want lit.';f.reportValidity();return;}
+var page=document.title.split(' | ')[0],msg='Quote request from the '+page+' page:\n\n'+f.message.value;
+var m=document.querySelector('meta[name=itm-booking-api]'),API=m?m.content.trim():'';
+if(API){var b=f.querySelector('button[type=submit]');b.disabled=true;n.textContent='Sending\u2026';
+fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'contact',name:f.name.value,contact:f.reach.value,vehicle:f.vehicle.value,message:msg,website:f.website.value})})
+.then(function(r){return r.json()}).then(function(j){if(j.ok){f.reset();n.textContent='Sent. Isaac will get back to you with a quote.'}else{n.textContent=j.error||'That did not go through. Email info@itmcustoms.com instead.';b.disabled=false}})
+.catch(function(){n.textContent='That did not go through. Email info@itmcustoms.com instead.';b.disabled=false});return;}
+if(f.website.value)return;
+location.href='mailto:info@itmcustoms.com?subject='+encodeURIComponent('Quote request from '+f.name.value)+'&body='+encodeURIComponent('Name: '+f.name.value+'\nReach me at: '+f.reach.value+'\nVehicle: '+(f.vehicle.value||'-')+'\n\n'+msg);
+n.textContent='Your email app should open with the message filled in.';});})();
+</script>
 </body>
 </html>

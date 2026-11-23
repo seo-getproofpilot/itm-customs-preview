@@ -133,9 +133,11 @@ function clipShop() {
   $('span', more).textContent = shopOpen ? '' : `${n} more`;
   more.setAttribute('aria-expanded', shopOpen);
 }
-$('#seeMore')?.addEventListener('click', () => {
+$('#seeMore')?.addEventListener('click', e => {
+  /* v1121: Show Less keeps the button where it was on screen instead of jumping to the top of the shop (Chris) */
+  const b = e.currentTarget, y0 = b.getBoundingClientRect().top;
   shopOpen = !shopOpen; clipShop();
-  if (!shopOpen) $('#shop').scrollIntoView({ block: 'start' });
+  if (!shopOpen) scrollBy({ top: b.getBoundingClientRect().top - y0, behavior: 'instant' });
   window.ITMtrack && ITMtrack('shop_see_more', { open: shopOpen });
 });
 SHOP_PHONE.addEventListener('change', clipShop);
@@ -281,14 +283,14 @@ run.innerHTML = R.map(rv).join('') + R.map(rv).join('').replace(/<article class=
   const live = () => $$('.rv:not([aria-hidden="true"])', run);
   const TAB = matchMedia('(max-width:1100px)'), TWO = matchMedia('(max-width:900px)');
   function clip() {
-    const all = live(), k = SHOP_PHONE.matches ? 3 : TWO.matches ? 4 : TAB.matches ? 6 : all.length, n = all.length - k, on = k < all.length;
+    const all = live(), k = SHOP_PHONE.matches ? all.length : TWO.matches ? 4 : TAB.matches ? 6 : all.length, n = all.length - k, on = k < all.length;
     all.forEach((r, i) => r.classList.toggle('clip', on && !open && i >= k));
     btn.hidden = !on || n <= 0;
     $('b', btn).textContent = open ? 'Show Less' : 'See More Reviews';
     $('span', btn).textContent = open ? '' : `${n} more`;
     btn.setAttribute('aria-expanded', open);
   }
-  btn.addEventListener('click', () => { open = !open; clip(); if (!open) $('#reviews').scrollIntoView({ block: 'start' }); });
+  btn.addEventListener('click', () => { const y0 = btn.getBoundingClientRect().top; open = !open; clip(); if (!open) scrollBy({ top: btn.getBoundingClientRect().top - y0, behavior: 'instant' }); });
   [SHOP_PHONE, TAB, TWO].forEach(m => m.addEventListener('change', clip)); clip();
 })();
 

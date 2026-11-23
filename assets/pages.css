@@ -1092,3 +1092,40 @@ html:not(.js) .swp-pics .swp-p{display:grid}
 .gw-open img{height:100%;object-fit:cover}
 @media (max-width:1000px){ .gw-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px} }
 @media (max-width:700px){ .gw-grid{gap:16px 12px} .gw-open{aspect-ratio:1} }
+/* ===================== v1121: service pages on phones (Chris, 2026-11-23) ===================== */
+@media (max-width:560px){
+  /* "Everything we put on a truck": a left-to-right swipe row of smaller cards, not eight stacked */
+  .ssec .svc:not(#_){display:flex;grid-template-columns:none;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(var(--gut,16px) * -1);padding:4px var(--gut,16px) 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .ssec .svc::-webkit-scrollbar{display:none}
+  .ssec .svc-i:not(#_){flex:0 0 68%;scroll-snap-align:start;padding:14px 14px 18px;gap:4px}
+  .ssec .svc-i:not(#_) b{font-size:14px}
+  .ssec .svc-i:not(#_) span{font-size:13px;line-height:1.45}
+  .ssec .svc-i:not(#_) i{font-size:11px;margin-top:4px}
+  .svc-hint:not(#_){display:block;margin-top:2px;font:400 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+  /* color/law table: white cards with dark, readable text (it was dark text on dark rows) */
+  .splate:not(#_){padding:0;background:none!important;box-shadow:none;border-radius:0!important}
+  .splate:not(#_) table{background:none;border-radius:0}
+  .splate:not(#_) tr{background:#fff!important;border:0;border-radius:10px;margin-top:10px;box-shadow:0 0 0 1px rgba(11,13,18,.08),0 0 0 3px #07090D,0 0 0 4px rgba(0,141,211,.55);overflow:hidden}
+  .splate:not(#_) tbody th{color:#0B0D12!important;background:linear-gradient(90deg,#002FB8,#008DD3);color:#fff!important;padding:11px 14px;font:italic 800 15px/1.15 var(--f-disp);font-stretch:118%;text-transform:uppercase}
+  .splate:not(#_) td{color:#1E2430!important;font-size:14.5px;line-height:1.45;padding:10px 14px;border-top:1px solid rgba(11,13,18,.08)!important;display:grid;grid-template-columns:1fr;gap:4px;text-align:left}
+  .splate:not(#_) td::before{color:#596170;font-size:11px}
+}
+.svc-hint{display:none}
+@media (max-width:560px){
+  .ssec .svc:not(#_){scroll-padding-inline:var(--gut,16px)}
+  /* zone cards: icon beside the text, a third of the height */
+  .tips:not(#_){gap:10px}
+  .tips .tip:not(#_){display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:start;padding:14px 16px}
+  .tips .tip:not(#_) .tip-ic{grid-row:span 2;width:44px;height:44px;margin:0}
+  .tips .tip:not(#_) .tip-ic .ico{width:22px;height:22px}
+  .tips .tip:not(#_) b{margin:0;font-size:15px}
+  .tips .tip:not(#_) span:not(.tip-ic){font-size:14px;line-height:1.45}
+}
+@media (max-width:560px){
+  /* product cards on service pages: a swipe row with the next card peeking in */
+  .ssec .kits:not(#_){display:flex;grid-template-columns:none;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut,16px);margin-inline:calc(var(--gut,16px) * -1);padding:6px var(--gut,16px) 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .ssec .kits::-webkit-scrollbar{display:none}
+  .ssec .kits>*:not(#_){flex:0 0 82%;scroll-snap-align:start;min-width:0}
+}
+@media (max-width:560px){ .ssec .kits:not(#_){align-items:flex-start} }
