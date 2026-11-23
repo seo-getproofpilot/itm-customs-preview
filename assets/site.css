@@ -2228,6 +2228,20 @@ html.pv-open{overflow:hidden}
 .trust-i figcaption q{font-size:15px;line-height:1.4;font-style:italic;color:var(--amber,#F08A1C)}
 .trust-i figcaption q::before{content:"\201C"}.trust-i figcaption q::after{content:"\201D"}
 @media (max-width:900px){ .trust{margin-top:40px} .trust-row{display:grid;grid-template-columns:1fr 1fr;gap:14px} .trust-wide{grid-column:1/-1} .trust-i figcaption b{font-size:14px} .trust-i figcaption span{font-size:13px} }
+/* v1118: the inner-page chrome + blue-ring photo frame (pages.css .lf) on the Meet Isaac photos */
+.about,.trust{--fr-bevel:linear-gradient(135deg,#FBFCFD 0%,#B9C1CB 22%,#EEF1F4 42%,#8D97A3 62%,#E2E6EB 80%,#9AA3AE 100%)}
+.about-pic,.trust-ph{padding:3px;background:var(--fr-bevel);border-radius:10px;box-shadow:0 0 0 2px #07090D,0 0 0 4px #008DD3,0 0 0 6px #002FB8,0 22px 44px rgba(0,0,0,.5);overflow:hidden}
+.about-pic img,.trust-ph img{border-radius:7px}
+.about-pic figcaption{left:15px;bottom:15px}
+.trust-row{gap:26px;padding:6px}
+.trust-i{gap:16px}
+.trust-ph img{transition:transform .6s var(--ease)}
+.trust-i:hover .trust-ph img{transform:scale(1.035)}
+.trust-i figcaption b{display:flex;align-items:center;gap:10px}
+.trust-i figcaption b::before{content:"";flex:none;width:22px;height:4px;border-radius:2px;background:linear-gradient(90deg,#29A3DD,#002FB8);box-shadow:0 0 8px rgba(0,141,211,.7)}
+.trust-i figcaption span,.trust-i figcaption q{padding-left:32px}
+@media (max-width:900px){ .trust-row{gap:20px 16px;padding:6px} }
+@media (max-width:900px){ .trust-i figcaption span,.trust-i figcaption q{padding-left:0} .trust-i figcaption b::before{width:14px} .trust-i figcaption b{gap:8px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
