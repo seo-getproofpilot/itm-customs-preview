@@ -2333,6 +2333,9 @@ html.qdlg-open{overflow:hidden}
   .card .c-fig:not(#_) img+img{display:block;opacity:1}
   .card .c-fig:not(#_) img+img+img{display:none}
 }
+/* v1123: no borders inside borders (Chris) */
+.count-frame:not(#_) img{box-shadow:none;border:0}
+@media (max-width:560px){ .card .c-fig:not(#_){box-shadow:0 0 0 1px rgba(255,255,255,.22)} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

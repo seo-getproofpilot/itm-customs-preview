@@ -1165,3 +1165,10 @@ html:not(.js) .swp-pics .swp-p{display:grid}
 .swp-pics .swp-p-pic .swp-pic img{width:100%;height:100%;object-fit:cover}
 @media (max-width:940px){ .swp-pics .swp-p-pic.on:not(#_){grid-template-columns:1fr} }
 .kits:has(>.kit:only-child)>.kit>img:not(#_),.kits:has(>.kit:nth-child(2):last-child)>.kit>img:not(#_){height:100%!important}
+/* ===================== v1123 (Chris, 2026-11-23): no borders inside borders ===================== */
+/* a framed panel or card keeps its frame; the photo and screen inside it don't get a second one (a slim white line at most) */
+.swp .swp-screen:not(#_){box-shadow:none;border:0}
+.swp .swp-screen .swp-scr{display:none}
+.swp .swp-pic:not(#_){box-shadow:0 0 0 1px rgba(255,255,255,.28);border:0;border-radius:8px}
+.bcase .bcase-f.lf:not(#_){padding:0;background:none;box-shadow:0 0 0 1px rgba(255,255,255,.28);border-radius:8px;overflow:hidden}
+.bcase .bcase-f.lf:not(#_) img{border-radius:8px;clip-path:none}
