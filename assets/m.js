@@ -113,4 +113,23 @@
       if (r.bottom < 0 || r.top > innerHeight) return; to(cur() + 1);
     }, 3500);
   }
+  /* ---------- v1126 (Chris): phone gallery shows 6 photos side by side, then See More ---------- */
+  const gal = document.querySelector('#gallery .wrap'), blocks = gal ? [...gal.querySelectorAll(':scope > .mosaic, :scope > .mosaic-2')] : [];
+  if (blocks.length) {
+    const box = document.createElement('div'); box.className = 'g-grid';
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'see-more g-more'; btn.setAttribute('aria-expanded', 'false');
+    const figs = () => [...box.querySelectorAll('figure')];
+    let open = false;
+    const paint = () => { const f = figs(), n = f.length - 6;
+      f.forEach((x, i) => x.classList.toggle('g-clip', !open && i >= 6));
+      btn.innerHTML = open ? '<b>Show Less</b><span></span>' : `<b>See More Photos</b><span>${n} more</span>`;
+      btn.setAttribute('aria-expanded', open); };
+    const place = () => {
+      if (PHONE.matches && !box.isConnected) { blocks[0].before(box); blocks.forEach(b => box.appendChild(b)); box.after(btn); paint(); }
+      else if (!PHONE.matches && box.isConnected) { blocks.forEach(b => box.before(b)); box.remove(); btn.remove(); figs().forEach(x => x.classList.remove('g-clip')); blocks.forEach(b => b.querySelectorAll('figure').forEach(x => x.classList.remove('g-clip'))); }
+    };
+    btn.addEventListener('click', () => { const y0 = btn.getBoundingClientRect().top; open = !open; paint();
+      if (!open) scrollBy({ top: btn.getBoundingClientRect().top - y0, behavior: 'instant' }); });
+    PHONE.addEventListener('change', place); place();
+  }
 })();

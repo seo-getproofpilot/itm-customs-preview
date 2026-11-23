@@ -2386,6 +2386,17 @@ html.qdlg-open{overflow:hidden}
   .seg:not(#_):not(#_) button,.seg.seg-on-photo:not(#_):not(#_) button{width:40px;height:40px;font-size:14px}
   .seg:not(#_):not(#_) button::after{inset:4px}
 }
+/* v1126 (Chris): phone gallery = 6 photos in two columns, See More for the rest */
+@media (max-width:560px){
+  .g-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+  .g-grid>.mosaic,.g-grid>.mosaic-2{display:contents}
+  .g-grid figure:not(#_):not(#_){grid-column:auto!important;grid-row:auto!important;height:auto!important;aspect-ratio:1/1!important;margin:0;min-height:0}
+  .g-grid figure img{width:100%;height:100%;object-fit:cover}
+  .g-grid figure.g-clip{display:none!important}
+  .g-grid figcaption:not(#_){font-size:10px;left:8px;bottom:8px;max-width:calc(100% - 16px)}
+  .g-grid .look-btn:not(#_){font-size:10px;padding:6px 8px;min-height:30px;top:8px;right:8px}
+  .g-more{margin-top:12px;width:100%}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
