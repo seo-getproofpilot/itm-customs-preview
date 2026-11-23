@@ -1129,3 +1129,39 @@ html:not(.js) .swp-pics .swp-p{display:grid}
   .ssec .kits>*:not(#_){flex:0 0 82%;scroll-snap-align:start;min-width:0}
 }
 @media (max-width:560px){ .ssec .kits:not(#_){align-items:flex-start} }
+/* ===================== v1122: no half-empty rows (Chris, 2026-11-23) ===================== */
+.sx-duo{display:grid;gap:14px;align-self:center}
+.sx-duo2{grid-template-columns:1fr 1fr}
+.sx-duo2 figure{aspect-ratio:4/5}
+.sx-duo3{grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr}
+.sx-duo3 figure:first-child{grid-row:span 2}
+.sx-duo3 figure{aspect-ratio:auto;min-height:0}
+.sx-duo3 figure:not(:first-child){aspect-ratio:4/3}
+.sx-duo figure{margin:0;width:100%}
+.sx-duo figure img{width:100%;height:100%;object-fit:cover}
+/* photo strips stretch to the end of the row instead of stopping halfway */
+.film figure{flex:1 0 auto;max-width:calc(var(--ar) * 2.2 * clamp(230px,calc(26vw / var(--z,1)),360px))}
+/* builds: two or three across, never one card stretched over the whole row */
+.bcases[style*="--n"]{grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+.bcases[style*="--n:3"] .bcase{grid-template-columns:1fr}
+.bcases[style*="--n:3"] .bcase-f{aspect-ratio:4/3}
+@media (max-width:940px){ .bcases[style*="--n"]{grid-template-columns:1fr} .bcases[style*="--n:3"] .bcase{grid-template-columns:minmax(0,38%) minmax(0,1fr)} .bcases[style*="--n:3"] .bcase-f{aspect-ratio:4/5} }
+@media (max-width:560px){ .sx-duo{gap:8px} .sx-duo3{grid-template-columns:1fr 1fr;grid-template-rows:auto} .sx-duo3 figure:first-child{grid-row:auto;grid-column:span 2;aspect-ratio:16/10} }
+/* v1122: law callouts run the full row; a single follow-up paragraph isn't squeezed into half a two-column layout */
+.sx2-law .sx-copy:not(#_){max-width:none}
+.sx2-law .sx-copy .sx-lead{font-size:clamp(16px,calc(1.15vw / var(--z,1)),18px);line-height:1.6}
+@media (min-width:1100px){ .sx2:not(.sx2-side) .sx-more:has(>p:only-child){column-count:1;max-width:none} }
+.sx2-law .sx-copy .sx-lead:not(#_){max-width:none}
+/* v1122: one or two product cards fill the row as wide cards (photo beside the details) instead of sitting at the left */
+@media (min-width:941px){
+  .kits:has(>.kit:only-child),.kits:has(>.kit:nth-child(2):last-child){display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr))!important}
+  .kits:has(>.kit:only-child)>.kit,.kits:has(>.kit:nth-child(2):last-child)>.kit{display:grid;grid-template-columns:minmax(0,42%) minmax(0,1fr);align-items:stretch;max-width:none}
+  .kits:has(>.kit:only-child)>.kit>img,.kits:has(>.kit:nth-child(2):last-child)>.kit>img{width:100%;height:100%;min-height:260px;aspect-ratio:auto;object-fit:cover}
+  .kits:has(>.kit:only-child)>.kit{grid-template-columns:minmax(0,34%) minmax(0,1fr)}
+}
+/* v1122: the switch panel screen shows the photo big (Chris: preview what each light looks like) */
+.swp-pics .swp-p-pic.on:not(#_){grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:center}
+.swp-pics .swp-p-pic .swp-pic:not(#_){width:100%;height:auto;aspect-ratio:4/3;margin:0;border-radius:8px;overflow:hidden}
+.swp-pics .swp-p-pic .swp-pic img{width:100%;height:100%;object-fit:cover}
+@media (max-width:940px){ .swp-pics .swp-p-pic.on:not(#_){grid-template-columns:1fr} }
+.kits:has(>.kit:only-child)>.kit>img:not(#_),.kits:has(>.kit:nth-child(2):last-child)>.kit>img:not(#_){height:100%!important}
