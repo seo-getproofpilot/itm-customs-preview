@@ -2215,6 +2215,19 @@ html.pv-open{overflow:hidden}
   font:400 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#F08A1C;transition:background .2s,color .2s}
 .sm-shop i{font-style:normal}
 .sm-shop:hover,.sm-shop:focus-visible{background:var(--amber-glow);color:#140C02;border-color:#F08A1C;outline:none}
+/* ===================== v1117: Meet Isaac + shops he's lit for ===================== */
+.trust{margin-top:56px}
+.trust-h{margin:0 0 18px;font:italic 800 clamp(18px,1.6vw,22px)/1.15 var(--f-disp);font-stretch:112%;text-transform:uppercase;color:var(--ink,#fff)}
+.trust-row{display:flex;gap:18px;align-items:flex-start}
+.trust-i{margin:0;flex:var(--ar) 1 0;min-width:0;display:grid;gap:12px}
+.trust-ph{aspect-ratio:var(--ar);max-width:100%;border-radius:var(--r);overflow:hidden;background:#000}
+.trust-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.trust-i figcaption{display:grid;gap:4px}
+.trust-i figcaption b{font:italic 800 16px/1.15 var(--f-disp);font-stretch:112%;text-transform:uppercase;color:var(--ink,#fff)}
+.trust-i figcaption span{font-size:14px;line-height:1.4;color:var(--mute)}
+.trust-i figcaption q{font-size:15px;line-height:1.4;font-style:italic;color:var(--amber,#F08A1C)}
+.trust-i figcaption q::before{content:"\201C"}.trust-i figcaption q::after{content:"\201D"}
+@media (max-width:900px){ .trust{margin-top:40px} .trust-row{display:grid;grid-template-columns:1fr 1fr;gap:14px} .trust-wide{grid-column:1/-1} .trust-i figcaption b{font-size:14px} .trust-i figcaption span{font-size:13px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
