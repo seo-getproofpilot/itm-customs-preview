@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=pcd673c3f">
+<link rel="stylesheet" href="assets/site.css?v=p63d0859c">
 </head>
 <body class="on-book">
 <a class="skip" href="book/#main">Skip to content</a>
@@ -62,7 +62,7 @@
     <div class="book-side">
       <p class="kick dark"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
       <h1 class="display-2">Book Your Install</h1>
-      <p class="body">Pick the work and a morning drop-off. Most installs take 4 to 8 hours, so you pick it up the same day. We text you to confirm your day and your final price.</p>
+      <p class="body">Pick the work and a drop-off time, 8 AM to 8 PM, Monday to Friday. Most installs take 4 to 8 hours, so a morning drop-off is usually ready the same day. We text you to confirm your day and your final price.</p>
     </div>
     <div class="book-info">
       <ol class="steps">
@@ -226,10 +226,12 @@
           <div class="cal-grid" id="slotDays" role="radiogroup" aria-label="Drop-off day"></div>
         </div></div>
         <div class="pick-times"><div class="slot-times" id="slotTimes" role="radiogroup" aria-label="Part of the day">
-          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning Drop-Off</b><span>9 &ndash; 10:30 AM &middot; ready same day</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Morning"><b>Morning</b><span>8 AM &ndash; 12 PM &middot; usually ready same day</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Midday"><b>Midday</b><span>12 &ndash; 4 PM</span></button>
+          <button type="button" class="slot" role="radio" aria-checked="false" data-t="Afternoon"><b>Afternoon</b><span>4 &ndash; 8 PM</span></button>
         </div>
         <div class="slot-hours" id="slotHours" role="radiogroup" aria-label="Drop-off time" hidden></div>
-        <p class="slot-note" id="slotNote">Most installs take 4 to 8 hours, so drop-off is in the morning and pickup is the same day. Monday to Saturday, by appointment. Striped days are closed or fully booked.</p></div>
+        <p class="slot-note" id="slotNote">Drop-off and pickup are 8 AM to 8 PM, Monday to Friday, by appointment. Most installs take 4 to 8 hours, so a morning drop-off is usually ready the same day. Striped days are closed or fully booked.</p></div>
         </div>
         <input type="hidden" name="day"><input type="hidden" name="date"><input type="hidden" name="time">
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -330,7 +332,7 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=pcd673c3f"></script>
-<script src="assets/book.js?v=pcd673c3f"></script>
+<script src="assets/app.js?v=p63d0859c"></script>
+<script src="assets/book.js?v=p63d0859c"></script>
 </body>
 </html>

@@ -16,8 +16,8 @@
 <meta property="og:image" content="https://seo-getproofpilot.github.io/itm-customs-preview/assets/img/build-bray-mower-rock-lights.webp"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/site.css?v=pcd673c3fd0b5dbf">
-<link rel="stylesheet" href="../../assets/pages.css?v=pcd673c3fd0b5dbf">
+<link rel="stylesheet" href="../../assets/site.css?v=e47cf406">
+<link rel="stylesheet" href="../../assets/pages.css?v=e47cf406">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://itmcustoms.com/"}, {"@type": "ListItem", "position": 2, "name": "Builds", "item": "https://itmcustoms.com/builds/"}, {"@type": "ListItem", "position": 3, "name": "72-Chip Rock Lights On A Sierra 1500, And A Mower", "item": "https://itmcustoms.com/builds/bray-sierra-1500-and-mower/"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Review", "author": {"@type": "Person", "name": "Bray"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "name": "Sierra 1500 and mower", "reviewBody": "Probably the brightest rock lights I’ve seen. I’ve been using them on my projects since August 2025. They’ve always worked and never quit working. Recommend this brand!", "itemReviewed": {"@type": "Product", "name": "72-Chip Pure White Rock Lights", "brand": {"@type": "Brand", "name": "ITM Customs"}}}</script>
 </head>
 <body class="sub">
@@ -63,8 +63,32 @@
 <section class="band band2"><div class="wrap band-in">
   <div><p class="kick"><span class="stripe" aria-hidden="true"></span>Installs In Mesa</p>
   <h2 class="band-h"><span class="lh" data-t="Pick A Day.">Pick A Day.</span><span class="lh" data-t="Roll In Dark.">Roll In Dark.</span><span class="lh" data-t="Leave Glowing.">Leave Glowing.</span></h2>
-  <p class="body">Bring our kit or your own lights. We text you to confirm your drop-off and quote.</p></div>
-  <a class="btn btn-primary" href="../../book/"><span>Book An Install <i aria-hidden="true">&rarr;</i></span></a>
+  <p class="body">Bring our kit or your own lights. We text you to confirm your drop-off and quote.</p>
+  <a class="btn btn-primary" href="../../book/"><span>Book An Install <i aria-hidden="true">&rarr;</i></span></a></div>
+  <form class="qform" id="quoteForm" novalidate>
+  <h3 class="qf-h">Get A Quote</h3>
+  <div class="qf-row"><label>Name<input name="name" autocomplete="name" required></label>
+  <label>Number To Text, Or Email<input name="reach" autocomplete="email" required></label></div>
+  <label>Vehicle<input name="vehicle" placeholder="e.g. 2021 Ford F-250"></label>
+  <label>What Do You Want Lit?<textarea name="message" rows="3" required placeholder="e.g. 16 rock lights and wheel lights"></textarea></label>
+  <button class="btn btn-primary" type="submit"><span>Send <i aria-hidden="true">&rarr;</i></span></button>
+  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <p class="snote" id="quoteNote" role="status">Goes to Isaac. He gets back to you with a quote.</p>
+</form>
+<script>
+(function(){var f=document.getElementById('quoteForm');if(!f)return;var n=document.getElementById('quoteNote');
+f.addEventListener('submit',function(e){e.preventDefault();
+if(!f.checkValidity()){n.textContent='Add your name, how to reach you and what you want lit.';f.reportValidity();return;}
+var page=document.title.split(' | ')[0],msg='Quote request from the '+page+' page:\n\n'+f.message.value;
+var m=document.querySelector('meta[name=itm-booking-api]'),API=m?m.content.trim():'';
+if(API){var b=f.querySelector('button[type=submit]');b.disabled=true;n.textContent='Sending\u2026';
+fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'contact',name:f.name.value,contact:f.reach.value,vehicle:f.vehicle.value,message:msg,website:f.website.value})})
+.then(function(r){return r.json()}).then(function(j){if(j.ok){f.reset();n.textContent='Sent. Isaac will get back to you with a quote.'}else{n.textContent=j.error||'That did not go through. Email info@itmcustoms.com instead.';b.disabled=false}})
+.catch(function(){n.textContent='That did not go through. Email info@itmcustoms.com instead.';b.disabled=false});return;}
+if(f.website.value)return;
+location.href='mailto:info@itmcustoms.com?subject='+encodeURIComponent('Quote request from '+f.name.value)+'&body='+encodeURIComponent('Name: '+f.name.value+'\nReach me at: '+f.reach.value+'\nVehicle: '+(f.vehicle.value||'-')+'\n\n'+msg);
+n.textContent='Your email app should open with the message filled in.';});})();
+</script>
 </div></section>
 <footer class="foot">
   <div class="wrap foot-grid foot-grid-5">
@@ -77,6 +101,6 @@
   </div>
   <div class="wrap foot-base"><span>&copy; 2026 ITM Customs &middot; Mesa, AZ</span><span class="foot-pol"><a href="https://itmcustoms.com/pages/warranty-information" target="_blank" rel="noopener">Warranty</a><a href="https://itmcustoms.com/policies/refund-policy" target="_blank" rel="noopener">Refund Policy</a></span></div>
 </footer>
-<script src="../../assets/pages.js?v=pcd673c3fd0b5dbf"></script>
+<script src="../../assets/pages.js?v=e47cf406"></script>
 </body>
 </html>

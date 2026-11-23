@@ -13,13 +13,13 @@ function pick(name, label) {
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
 /* drop-off picker: a month calendar (tomorrow to 60 days out) + a window + an exact time.
-   HOURS is the shop's drop-off schedule, confirmed by Isaac on call 1 (Mon–Sat 9–4:30). When ITM connects a scheduler
+   HOURS is the shop's drop-off schedule: Mon–Fri, 8 AM to 8 PM for drop-off and pickup (Chris, 2026-11-23). When ITM connects a scheduler
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
 const HOURS = {
-  days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
-  Morning:   ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM'],   // installs run 4 to 8 hours, so drop-off is morning only (kickoff, 2026-11-16)
-  Midday:    [],
-  Afternoon: [],
+  days: [1, 2, 3, 4, 5],                         // Mon to Fri; weekends closed
+  Morning:   ['8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
+  Midday:    ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'],
+  Afternoon: ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM'],
   ahead: 60,
 };
 const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
