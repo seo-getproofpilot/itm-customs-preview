@@ -215,7 +215,10 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
       box.querySelectorAll('.pch-p').forEach(function (p) { p.hidden = p.dataset.k !== t.dataset.k; }); }
   });
   /* photos load once the post is near the screen, so a swipe never lands on a blank frame */
-  if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.querySelectorAll('.m-track img').forEach(function (im) { im.loading = 'eager'; }); io.unobserve(en.target); } }); }, { rootMargin: '500px' });
+  document.querySelectorAll('.ppost .m-track').forEach(function (tr) { var all = function () { tr.querySelectorAll('img').forEach(function (im) { im.loading = 'eager'; }); };
+    tr.addEventListener('pointerdown', all, { once: true }); tr.addEventListener('scroll', all, { once: true, passive: true });
+    tr.parentNode.querySelectorAll('.m-arr').forEach(function (b) { b.addEventListener('click', all, { once: true }); }); });
+  if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var im = en.target.querySelectorAll('.m-track img')[1]; if (im) im.loading = 'eager'; io.unobserve(en.target); } }); }, { rootMargin: '300px' });
     document.querySelectorAll('.ppost').forEach(function (p) { io.observe(p); }); }
 })();
 

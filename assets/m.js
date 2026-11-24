@@ -93,7 +93,10 @@
       const sp = $('.specs', c); (sp || $('.c-sub', c) || $('.c-name', c)).after(d);
       const more = $('.m-more', d); if (more) more.onclick = () => $('.c-name', c).click();
       /* load every photo in the strip once the card is near the screen, so a swipe never shows a blank frame */
-      if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { tr.querySelectorAll('img').forEach(im => im.loading = 'eager'); io.disconnect(); } }, { rootMargin: '400px' }); io.observe(c); }
+      /* v1133: the second photo loads as the card nears the screen; the rest load the moment someone swipes or taps an arrow */
+      const all = () => tr.querySelectorAll('img').forEach(im => im.loading = 'eager');
+      if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { const im = tr.querySelectorAll('img')[1]; if (im) im.loading = 'eager'; io.disconnect(); } }, { rootMargin: '300px' }); io.observe(c); }
+      tr.addEventListener('pointerdown', all, { once: true }); tr.addEventListener('scroll', all, { once: true, passive: true }); g.querySelectorAll('.m-arr').forEach(b => b.addEventListener('click', all, { once: true }));
     };
     const all = () => [...grid.querySelectorAll('.card')].forEach(build);  /* v1128: every width, not just phones */
     PHONE.addEventListener('change', all); all();
