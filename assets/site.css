@@ -112,7 +112,7 @@ section[id]{scroll-margin-top:84px}
 .intro-leds i{width:clamp(7px,calc(1.3vw / var(--z,1)),11px);height:clamp(7px,calc(1.3vw / var(--z,1)),11px);border-radius:2px;background:#1b1e25;
   animation:led .25s calc(1s + var(--i) * 32ms) forwards}
 @keyframes led{to{background:#fff;box-shadow:0 0 10px 2px rgba(255,255,255,.85),0 0 30px 6px rgba(255,236,200,.35)}}
-.intro-t{margin:0;font:600 11.66px/1 var(--f-mono);letter-spacing:.32em;text-transform:uppercase;color:var(--mute);opacity:0;animation:fadeIn .5s 1.7s forwards;text-align:center}
+.intro-t{margin:0;font:600 12px/1 var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:var(--mute);opacity:0;animation:fadeIn .5s 1.7s forwards;text-align:center}
 @keyframes fadeIn{to{opacity:1}}
 
 /* ---------- hero: the F-250 sits dark, then the rock lights come on ---------- */
@@ -2528,6 +2528,10 @@ html.qdlg-open{overflow:hidden}
 .fz2-cols>div:not(#_){gap:4px}
 /* v1135: drawer note when an option can't be checked out online yet */
 .dr-note{margin:0 0 10px;padding:10px 12px;border:1px solid rgba(255,176,32,.45);border-left:3px solid #ffb020;border-radius:8px;background:rgba(255,176,32,.08);color:#f3ead8;font-size:13px;line-height:1.45}
+/* v1135: the product grid is drawn by script; hold its space until the cards land so nothing below it jumps (CLS) */
+#grid.grid:empty{min-height:max(1500px,180vh)}
+@media (min-width:900px){#grid.grid:empty{min-height:1400px}}
+@media (max-width:899px){.mbar-msg,.mbar-msg span{font-size:12px}}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

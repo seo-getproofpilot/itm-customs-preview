@@ -72,7 +72,7 @@ if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(loca
   Promise.all(P.map(p => fetch(`/products/${p.h}.js`).then(r => r.ok ? r.json() : null).catch(() => null).then(sp => {
     if (!sp) return;
     p.v.forEach(v => {
-      const m = sp.variants.find(x => norm(x.title) === norm(v.t)) || (sp.variants.length === 1 && p.v.length === 1 ? sp.variants[0] : null);
+      const m = sp.variants.find(x => norm(x.title) === norm(v.t));  // exact option name only: a store listing sold another way (e.g. 16 lights for $500) must never stand in for a set of 4
       if (m) { v.id = m.id; v.p = m.price / 100; v.ok = m.available; }
     });
   }))).then(() => { try { renderCart(); } catch (e) {} });
