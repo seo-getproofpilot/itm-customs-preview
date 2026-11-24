@@ -196,6 +196,10 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     var on = post.querySelector('.pp-opt.on'), vt = on && on.dataset.vt;
     var a = post.querySelector('.pp-add'); if (a && a.tagName === 'A') a.href = post.dataset.root + '?add=' + post.dataset.h + (vt ? '&vt=' + encodeURIComponent(vt) : '&v=' + i) + '&q=' + q + '#shop';
   }
+  /* v1136: − greys out at 1 and + at 20, so neither looks clickable when it can't change anything */
+  function cqEnds(post) { var n = post.querySelector('.cq-n'); if (!n) return; var v = +n.textContent;
+    post.querySelectorAll('.cq button').forEach(function (b) { var off = +b.dataset.q < 0 ? v <= 1 : v >= 20; b.toggleAttribute('aria-disabled', off); b.classList.toggle('is-end', off); }); }
+  document.querySelectorAll('.ppost').forEach(cqEnds);
   document.addEventListener('click', function (e) {
     var post = e.target.closest('.ppost');
     if (post) {
@@ -203,7 +207,7 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
       if (o) { post.querySelectorAll('.pp-opt').forEach(function (x) { var on = x === o; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
         post.querySelector('.pp-p').textContent = o.dataset.p; post.querySelector('.pp-unit').textContent = o.dataset.unit; href(post); }
       var q = e.target.closest('.cq button');
-      if (q) { var n = post.querySelector('.cq-n'); n.textContent = Math.max(1, Math.min(20, +n.textContent + +q.dataset.q)); href(post); }
+      if (q) { var n = post.querySelector('.cq-n'); n.textContent = Math.max(1, Math.min(20, +n.textContent + +q.dataset.q)); href(post); cqEnds(post); }
       var sw = e.target.closest('.pp-sw button');
       if (sw) { var tr = post.querySelector('.m-track'), ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.dataset.m.indexOf(sw.dataset.sw) > -1; });
         post.querySelectorAll('.pp-sw button').forEach(function (b) { b.classList.toggle('on', b === sw); });
@@ -249,6 +253,11 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     var t = r.querySelector('.brail-t'), step = function () { return Math.max(260, t.clientWidth * 0.8); };
     r.querySelector('.m-prev').onclick = function () { t.scrollBy({ left: -step(), behavior: 'smooth' }); };
     r.querySelector('.m-next').onclick = function () { t.scrollBy({ left: step(), behavior: 'smooth' }); };
+    /* v1136: the arrow at the end of the rail greys out instead of doing nothing */
+    var ends = function () { var p = r.querySelector('.m-prev'), x = r.querySelector('.m-next'), max = t.scrollWidth - t.clientWidth - 2;
+      p.toggleAttribute('aria-disabled', t.scrollLeft <= 2); p.classList.toggle('is-end', t.scrollLeft <= 2);
+      x.toggleAttribute('aria-disabled', t.scrollLeft >= max); x.classList.toggle('is-end', t.scrollLeft >= max); };
+    t.addEventListener('scroll', ends, { passive: true }); addEventListener('resize', ends); ends();
   });
 })();
 

@@ -187,6 +187,9 @@ function filter(cat) {
   shopOpen = document.body.classList.contains('on-shop'); clipShop(); fillShop();
 }
 $$('.chip').forEach(c => c.onclick = () => filter(c.dataset.filter));
+/* v1136: Isaac's old collection addresses open the shop on their own category (their links and rankings keep working) */
+{ const COL = { 'wheel-lights': 'wheel', 'switchback-rocklights': 'switch', '72-chip-rock-lights': 'rock' };
+  const m = location.pathname.match(/^\/collections\/([a-z0-9-]+)/); if (m && COL[m[1]] && $$('.chip').length) filter(COL[m[1]]); }
 $$('.lane[data-filter], [data-jump]').forEach(l => l.addEventListener('click', e => {
   e.preventDefault(); filter(l.dataset.filter || l.dataset.jump);
   $('#shop').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
@@ -603,6 +606,9 @@ function syncAdded() {
     const vi = vti > -1 ? vti : parseInt(q.get('v'), 10), i = p.v[vi] ? vi : (p.def ?? 0);  /* v1131: ?vt=<option name> from the Shopify product template */
     const qn = Math.max(1, Math.min(20, parseInt(q.get('q'), 10) || 1));  /* v1130: ?q= quantity from service and product pages */
     if (p.v[i].ok) setTimeout(() => { add(p.h, i, qn); openCart(true); }, 400);
+    /* v1136: drop the add link from the address bar, so a refresh or Back doesn't add the same item again */
+    ['add', 'vt', 'v', 'q'].forEach(k => q.delete(k));
+    try { history.replaceState(history.state, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); } catch (e) {}
   }
 })();
 
