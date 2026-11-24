@@ -144,7 +144,7 @@
   btn.addEventListener('click', function (e) { e.stopPropagation(); set(menu.hidden); });
   document.addEventListener('click', function (e) { if (!menu.hidden && !e.target.closest('#pMenu, #pMenuBtn')) set(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
-  menu.querySelectorAll('a').forEach(function (a) {
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { set(false); });  /* v1129 */
     if (a.pathname === location.pathname && !a.hash) { a.setAttribute('aria-current', 'page'); a.classList.add('here'); }
     a.addEventListener('click', function () { set(false); });
   });

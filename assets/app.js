@@ -396,7 +396,7 @@ document.addEventListener('click', e => {
   });
   document.addEventListener('click', e => { if (!menu.hidden && !e.target.closest('#shopMenu, #shopToggle')) set(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
-  $$('.sm-links a').forEach(l => l.addEventListener('click', () => set(false)));
+  $$('.sm-links a, .sm-shop, #shopMenu a.sm-item').forEach(l => l.addEventListener('click', () => set(false)));  /* v1129: Shop Our Lights closes the menu and lands on the lights */
 })();
 
 /* nav Book install waits until the hero has scrolled away */
