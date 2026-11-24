@@ -241,7 +241,7 @@ document.addEventListener('click', e => {
 });
 const drawer = $('#drawer'), scrim = $('#scrim');
 function openCart(on) {
-  drawer.classList.toggle('on', on); drawer.setAttribute('aria-hidden', !on);
+  drawer.classList.toggle('on', on); drawer.setAttribute('aria-hidden', !on); document.documentElement.classList.toggle('cart-open', on);
   if (on) { $('#toast').classList.remove('on'); scrim.hidden = false; void scrim.offsetWidth; scrim.classList.add('on'); $('#cartClose').focus(); }
   else { scrim.classList.remove('on'); setTimeout(() => scrim.hidden = true, 300); }
 }

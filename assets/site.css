@@ -398,7 +398,11 @@ section[id]{scroll-margin-top:84px}
 .dr-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid var(--line)}
 .dr-head h3{margin:0;font:italic 800 19.96px/1.08 var(--f-disp);text-transform:uppercase}
 .x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:transparent;font-size:24px;line-height:1}
-.dr-body{flex:1;overflow:auto;padding:8px 24px}
+.dr-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px 24px}
+/* the page behind the open cart stays put: wheel and touch over the drawer scroll only the drawer */
+html.cart-open{overflow:hidden;scrollbar-gutter:stable}
+.drawer,.scrim{overscroll-behavior:contain}
+.scrim{touch-action:none}
 .dr-empty{color:var(--mute);padding:40px 0;text-align:center}
 .li{display:grid;grid-template-columns:72px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
 .li img{width:72px;height:88px;object-fit:cover;border-radius:8px}
