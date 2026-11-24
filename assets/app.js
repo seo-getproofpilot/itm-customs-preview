@@ -215,6 +215,8 @@ if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(loca
     if (c.item_count === 0) { cart = []; save(); try { localStorage.removeItem('itm_co'); } catch (e) {} try { renderCart(); } catch (e) {} }
   }).catch(() => {});
   document.addEventListener('click', e => { const co = e.target.closest('#checkout'); if (co && !co.hasAttribute('aria-disabled')) try { localStorage.setItem('itm_co', Date.now()); } catch (x) {} });
+  /* v1144 (QA): on the store itself checkout opens in the same tab; a new tab only made sense on the demo's other domain */
+  $$('#checkout').forEach(a => { a.removeAttribute('target'); a.removeAttribute('rel'); });
 }
 function add(h, i, qty = 1) {
   const p = byH[h], v = p.v[i];
