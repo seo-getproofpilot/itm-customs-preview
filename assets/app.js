@@ -65,6 +65,18 @@ const TC = t => t.replace(/[A-Za-z]+/g, (w, i) => (i && /^(ft|w|mm|pc)$/i.test(w
 P.forEach(p => p.v.forEach(v => { v.t = TC(v.t); }));
 /* variants not yet created in Shopify get a local key, so each stays its own cart line until it has a real variant id */
 P.forEach(p => p.v.forEach((v, i) => { if (!v.id) v.id = `${p.h}#${i}`; }));
+/* v1135: on the live store, match every option to the store's own variant by name, so new Shopify options (e.g. "Set Of 4")
+   connect without a code change, and the price shown is the price charged */
+if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(location.hostname)) {
+  const norm = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '');
+  Promise.all(P.map(p => fetch(`/products/${p.h}.js`).then(r => r.ok ? r.json() : null).catch(() => null).then(sp => {
+    if (!sp) return;
+    p.v.forEach(v => {
+      const m = sp.variants.find(x => norm(x.title) === norm(v.t)) || (sp.variants.length === 1 && p.v.length === 1 ? sp.variants[0] : null);
+      if (m) { v.id = m.id; v.p = m.price / 100; v.ok = m.available; }
+    });
+  }))).then(() => { try { renderCart(); } catch (e) {} });
+}
 /* install-first: how each kit goes on (from the product specs and FAQ) and which booking job it maps to */
 const INST = {
   '84-chip-pure-white-rocklights': ['DIY Wiring', 'Rock Lights'],
@@ -206,8 +218,15 @@ function renderCart() {
   const tot = cart.reduce((a, l) => a + byH[l.h].v[l.i].p * l.q, 0);
   $('#drTotal').textContent = '$' + tot.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const co = $('#checkout');
+  /* v1135: checkout uses each option's real Shopify variant id (resolved from the store at load); an option the store
+     doesn't sell yet keeps a local key, and checkout stays off with a note instead of sending a broken cart link */
+  const vid = l => byH[l.h].v[l.i].id, bad = cart.filter(l => !/^\d+$/.test(String(vid(l))));
+  const ok = cart.length && !bad.length;
   co.href = '#';
   co.toggleAttribute('aria-disabled', !cart.length); co.style.pointerEvents = cart.length ? '' : 'none'; co.style.opacity = cart.length ? '' : '.45';
+  let nb = $('#drNote'); if (!nb) { nb = document.createElement('p'); nb.id = 'drNote'; nb.className = 'dr-note'; co.parentNode.insertBefore(nb, co); }
+  nb.hidden = true;
+  nb.textContent = bad.length ? `${[...new Set(bad.map(l => byH[l.h].name + ' · ' + byH[l.h].v[l.i].t))].join(', ')} can't be checked out online yet. Remove it to check out, or book an install and we'll sort it out with you.` : '';
 }
 $('#drBody').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return; const k = +b.dataset.k;
