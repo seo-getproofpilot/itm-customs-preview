@@ -86,14 +86,14 @@
         $('.m-next', g).onclick = () => go(at() + 1 >= n ? 0 : at() + 1);
         tr.addEventListener('scroll', () => requestAnimationFrame(() => { cnt.textContent = `${at() + 1} / ${n}`; }), { passive: true });
       }
-      /* v1128 (Chris): the whole product description shows on the card, every width; "Label:" lines become small headings */
-      const lines = x ? x.lines.filter(l => !/^Please allow/i.test(l) && !/Pick your count/i.test(l)) : [];
-      const li = lines.map(l => /:$/.test(l) ? `</ul><p class="m-dh">${esc(l.slice(0, -1))}</p><ul>` : `<li>${esc(l)}</li>`).join('');
-      const d = document.createElement('div'); d.className = 'm-desc';
-      d.innerHTML = `<p>${esc((x && x.lead) || p.sub)}</p>${lines.length ? `<ul>${li}</ul>`.replace(/<ul><\/ul>/g, '') : ''}`
-        + (x ? `<button type="button" class="m-more">Full details</button>` : '');
-      const sub = $('.c-sub', c); (sub || $('.c-name', c)).after(d);
+      /* v1130 (Chris + Baymard research): the card says what it is and what comes with it (one line + spec chips);
+         the full description stays one tap away in Full Details. */
+      const d = document.createElement('div'); d.className = 'm-desc m-desc-min';
+      d.innerHTML = x ? `<button type="button" class="m-more">Full Details</button>` : '';
+      const sp = $('.specs', c); (sp || $('.c-sub', c) || $('.c-name', c)).after(d);
       const more = $('.m-more', d); if (more) more.onclick = () => $('.c-name', c).click();
+      /* load every photo in the strip once the card is near the screen, so a swipe never shows a blank frame */
+      if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { tr.querySelectorAll('img').forEach(im => im.loading = 'eager'); io.disconnect(); } }, { rootMargin: '400px' }); io.observe(c); }
     };
     const all = () => [...grid.querySelectorAll('.card')].forEach(build);  /* v1128: every width, not just phones */
     PHONE.addEventListener('change', all); all();

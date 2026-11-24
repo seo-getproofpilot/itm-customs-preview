@@ -12,7 +12,7 @@
 <meta name="itm-booking-api" content="">
 <script>document.documentElement.classList.add('js');(function(){var q=new URLSearchParams(location.search),c=q.get('cta');if(c)document.documentElement.dataset.cta=c;if(q.has('nointro'))try{sessionStorage.setItem('itm_intro','1')}catch(e){}})();try{if(sessionStorage.getItem('itm_intro'))document.documentElement.classList.add('intro-seen')}catch(e){}</script>
 <script>/* big screens: scale the whole site to the display (16" Mac and smaller untouched) */(function(){var d=document.documentElement,pw=0,ph=0;function f(){var o=d.style.zoom;d.style.zoom='';var W=innerWidth,H=innerHeight;if(!(W>0)){W=1440;H=900}if(W===pw&&H===ph){d.style.zoom=o;return}pw=W;ph=H;var z=W>=1800?Math.max(1,Math.min(W/1440,H/900,2.4)):1;d.style.zoom=z>1.02?z.toFixed(3):'';d.style.setProperty('--z',z);var lw=W/z;if(z>1.02)d.style.setProperty('--wrap',Math.round(Math.min(1880,Math.max(1320,lw*.86)))+'px');else d.style.removeProperty('--wrap');d.classList.toggle('xwide',z>1.02&&lw>1700)}f();addEventListener('resize',f);addEventListener('pageshow',function(){pw=0;f()})})();</script>
-<link rel="icon" href="assets/img/itm-customs-logo.png">
+<link rel="icon" href="assets/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="assets/img/favicon-64.png"><link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png"><script src="assets/analytics.js" defer></script>
 <link rel="canonical" href="https://itmcustoms.com/book/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ITM Customs">
@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=pe4a1fd43">
+<link rel="stylesheet" href="assets/site.css?v=p1419b245">
 </head>
 <body class="on-book">
 <a class="skip" href="book/#main">Skip to content</a>
@@ -37,7 +37,7 @@
 <header class="nav" id="nav">
   <div class="promo"><a href="pages/military-first-responder-discount/"><b>10% Off</b> <span class="pm-l">For Military, Veterans, Police, Fire And EMS</span><span class="pm-s">Military, Police, Fire, EMS</span></a><i aria-hidden="true">&middot;</i><span><b>Lifetime Warranty</b><span class="pm-l"> On Every Install</span></span></div>
   <div class="nav-in">
-    <a class="brand" href="#top" aria-label="ITM Customs home"><img src="assets/img/itm-customs-logo.png" alt="ITM Customs" width="900" height="316"></a>
+    <a class="brand" href="#top" aria-label="ITM Customs home"><img src="assets/img/itm-customs-logo-sm.webp" alt="ITM Customs" width="480" height="169"></a>
     <a class="btn btn-primary btn-sm nav-book" href="book/"><span>Book Install</span></a>
     <div class="nav-act">
       <button class="shop-btn" id="shopToggle" aria-expanded="false" aria-controls="shopMenu" aria-label="Menu: services and pages"><i></i><i></i><i></i></button>
@@ -283,8 +283,7 @@
       <a class="btn btn-primary btn-sm" href="book/"><span>Book An Install <i aria-hidden="true">&rarr;</i></span></a>
       <p class="fz2-gov"><a href="pages/military-first-responder-discount/">10% off</a> for military, veterans, police, fire and EMS.</p></div>
   </div>
-  <a class="wrap fz2-lock" href="./" aria-label="ITM Customs home"><img src="assets/img/itm-customs-logo.png" alt="" width="1800" height="632" loading="lazy"></a>
-  <div class="wrap foot-base fz2-base"><span>&copy; 2026 ITM Customs &middot; Mesa, AZ</span><span class="foot-pol"><a href="https://itmcustoms.com/pages/warranty-information" target="_blank" rel="noopener">Warranty</a><a href="https://itmcustoms.com/policies/refund-policy" target="_blank" rel="noopener">Refund Policy</a><a href="https://itmcustoms.com/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a><a href="https://itmcustoms.com/policies/terms-of-service" target="_blank" rel="noopener">Terms Of Service</a></span></div>
+  <div class="wrap foot-base fz2-base"><span class="fz2-mark"><a href="./" aria-label="ITM Customs home"><img src="assets/img/itm-customs-logo-sm.webp" alt="" width="480" height="169" loading="lazy"></a>&copy; 2026 ITM Customs &middot; Mesa, AZ</span><span class="foot-pol"><a href="https://itmcustoms.com/pages/warranty-information" target="_blank" rel="noopener">Warranty</a><a href="https://itmcustoms.com/policies/refund-policy" target="_blank" rel="noopener">Refund Policy</a><a href="https://itmcustoms.com/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a><a href="https://itmcustoms.com/policies/terms-of-service" target="_blank" rel="noopener">Terms Of Service</a></span></div>
 </footer>
 
 <!-- ============ CART ============ -->
@@ -301,9 +300,9 @@
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/app.js?v=pe4a1fd43"></script>
-<script src="assets/book.js?v=pe4a1fd43"></script>
-<script src="assets/m.js?v=pe4a1fd43"></script>
+<script src="assets/app.js?v=p1419b245"></script>
+<script src="assets/book.js?v=p1419b245"></script>
+<script src="assets/m.js?v=p1419b245"></script>
 <!-- v1121: Get A Quote pop-up (same markup as tools-build-pages.py QUOTE_FORM) -->
 <dialog class="qdlg" id="quoteDlg" aria-labelledby="qfH"><form class="qform" id="quoteForm" novalidate>
   <button type="button" class="qf-x" aria-label="Close">&times;</button>

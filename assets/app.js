@@ -97,18 +97,32 @@ function card(p) {
       <ul class="specs">${p.specs.map(s=>`<li>${s}</li>`).join('')}</ul>
       ${p.rating ? `<div class="rating">★ ${p.rating[0].toFixed(p.rating[0]%1?2:1)} <span>(${p.rating[1]} review${p.rating[1]>1?'s':''})</span></div>` : ''}
       ${p.v.length>1 ? `<div class="vars" role="radiogroup" aria-label="Option">${p.v.map((x,i)=>`<button class="var${i===sel?' on':''}${x.ok?'':' so'}" data-i="${i}" role="radio" aria-checked="${i===sel}">${x.t}</button>`).join('')}</div>` : ''}
-      <div class="c-foot"><div class="price"></div><span class="act"></span></div>
+      <div class="c-foot"><div class="price"></div><div class="cq" aria-label="Quantity"><button type="button" data-q="-1" aria-label="One less">&minus;</button><span class="cq-n">1</span><button type="button" data-q="1" aria-label="One more">+</button></div><span class="act"></span></div>
+      <p class="c-unit"></p>
       ${INST[p.h] ? `<div class="c-inst"><span class="inst-tag">${INST[p.h][0]}</span><a href="book/" class="inst-book" data-inst="${p.h}">We Install It <i aria-hidden="true">&rarr;</i></a></div>` : ''}
     </div></div></div></div>`;
-  el._sel = sel;
+  el._sel = sel; el.dataset.qty = 1;
   paint(el, p);
+  $$('.cq button', el).forEach(b => b.onclick = () => { const n = Math.max(1, Math.min(20, +el.dataset.qty + +b.dataset.q)); el.dataset.qty = n; $('.cq-n', el).textContent = n; });
   $$('.var', el).forEach(b => b.onclick = () => { el._sel = +b.dataset.i;
     $$('.var', el).forEach(x => { x.classList.toggle('on', x===b); x.setAttribute('aria-checked', x===b); });
     paint(el, p); });
   return el;
 }
+/* v1130 (Chris): every Add To Cart has a quantity, and says what one quantity is */
+function unitOf(p, v) {
+  const m = /^(\d+) Lights$/.exec(v.t);
+  if (m) return `1 = a kit of ${m[1]} lights`;
+  if (/Pack Of 4/i.test(v.t)) return '1 = a pack of 4 lights';
+  if (p.cat === 'wheel') return '1 = rings for all 4 wheels';
+  if (/mount/.test(p.h)) return '1 = one mount';
+  if (/t-shirt/.test(p.h)) return `1 = one shirt, size ${v.t}`;
+  if (/decal/.test(p.h)) return `1 = one ${v.t.toLowerCase()} decal`;
+  return '1 = ' + v.t.toLowerCase();
+}
 function paint(el, p) {
   const v = p.v[el._sel];
+  const cu = $('.c-unit', el); if (cu) cu.textContent = unitOf(p, v);
   $('.price', el).innerHTML = `<span class="now">${money(v.p)}</span>${v.was?`<span class="was">${money(v.was)}</span>`:''}`;
   const b = [];
   if (v.was && v.ok) b.push('<span class="badge sale">Sale</span>');
@@ -202,7 +216,8 @@ $('#drBody').addEventListener('click', e => {
 });
 document.addEventListener('click', e => {
   const a = e.target.closest('.add[data-h], [data-add]'); if (!a || a.tagName === 'A') return;
-  a.dataset.add ? add(a.dataset.add, 0) : add(a.dataset.h, +a.dataset.i);
+  const q = Math.max(1, +(a.closest('[data-qty]')?.dataset.qty || 1));
+  a.dataset.add ? add(a.dataset.add, 0, q) : add(a.dataset.h, +a.dataset.i, q);
 });
 const drawer = $('#drawer'), scrim = $('#scrim');
 function openCart(on) {
@@ -548,7 +563,8 @@ function syncAdded() {
   const q = new URLSearchParams(location.search);
   if (q.has('add') && byH[q.get('add')]) {
     const p = byH[q.get('add')], vi = parseInt(q.get('v'), 10), i = p.v[vi] ? vi : (p.def ?? 0);
-    if (p.v[i].ok) setTimeout(() => { add(p.h, i); openCart(true); }, 400);
+    const qn = Math.max(1, Math.min(20, parseInt(q.get('q'), 10) || 1));  /* v1130: ?q= quantity from service and product pages */
+    if (p.v[i].ok) setTimeout(() => { add(p.h, i, qn); openCart(true); }, 400);
   }
 })();
 

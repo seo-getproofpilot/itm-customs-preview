@@ -160,3 +160,71 @@ box.querySelector('.gw-prev').addEventListener('click',function(){step(-1)});box
 box.querySelector('.gw-x').addEventListener('click',function(){box.close()});
 box.addEventListener('click',function(e){if(e.target===box)box.close()});
 box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});})();
+
+/* v1129 launch QA: light-count pickers on kit cards and product pages update the price and the Add To Cart link */
+(function () {
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.kit-n .kn'); if (!b) return;
+    var box = b.closest('.kit, .pp-buy'); if (!box) return;
+    box.querySelectorAll('.kit-n .kn').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
+    var p = box.querySelector('.kit-p'), u = box.querySelector('.kit-u'), a = box.querySelector('.kit-add');
+    if (p) p.textContent = b.dataset.p;
+    if (u) u.textContent = b.dataset.n + ' lights';
+    if (a) a.href = a.dataset.root + '?add=' + a.dataset.h + '&v=' + b.dataset.i + '#shop';
+  });
+})();
+
+/* v1129: product page gallery: arrows, swipe, thumbs, count */
+(function () {
+  document.querySelectorAll('.pp-gal').forEach(function (g) {
+    var tr = g.querySelector('.m-track'), n = tr.children.length, cnt = g.querySelector('.m-count'), ths = g.parentNode.querySelectorAll('.pp-th');
+    var at = function () { return Math.round(tr.scrollLeft / tr.clientWidth); };
+    var go = function (i) { i = (i + n) % n; tr.scrollTo({ left: i * tr.clientWidth, behavior: 'smooth' }); };
+    var pv = g.querySelector('.m-prev'), nx = g.querySelector('.m-next');
+    if (pv) pv.onclick = function () { go(at() - 1); };
+    if (nx) nx.onclick = function () { go(at() + 1); };
+    ths.forEach(function (t) { t.onclick = function () { go(+t.dataset.i); }; });
+    tr.addEventListener('scroll', function () { requestAnimationFrame(function () { var i = at(); if (cnt) cnt.textContent = (i + 1) + ' / ' + n; ths.forEach(function (t, k) { t.classList.toggle('on', k === i); }); }); }, { passive: true });
+  });
+})();
+
+/* v1130: product posts on service pages: option, quantity, swatches and the 5 vs 10-row chooser */
+(function () {
+  function href(post) {
+    var i = (post.querySelector('.pp-opt.on') || {}).dataset; i = i ? i.i : post.dataset.d;
+    var q = +(post.querySelector('.cq-n') || { textContent: 1 }).textContent;
+    var a = post.querySelector('.pp-add'); if (a) a.href = post.dataset.root + '?add=' + post.dataset.h + '&v=' + i + '&q=' + q + '#shop';
+  }
+  document.addEventListener('click', function (e) {
+    var post = e.target.closest('.ppost');
+    if (post) {
+      var o = e.target.closest('.pp-opt');
+      if (o) { post.querySelectorAll('.pp-opt').forEach(function (x) { var on = x === o; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
+        post.querySelector('.pp-p').textContent = o.dataset.p; post.querySelector('.pp-unit').textContent = o.dataset.unit; href(post); }
+      var q = e.target.closest('.cq button');
+      if (q) { var n = post.querySelector('.cq-n'); n.textContent = Math.max(1, Math.min(20, +n.textContent + +q.dataset.q)); href(post); }
+      var sw = e.target.closest('.pp-sw button');
+      if (sw) { var tr = post.querySelector('.m-track'), ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.dataset.m.indexOf(sw.dataset.sw) > -1; });
+        post.querySelectorAll('.pp-sw button').forEach(function (b) { b.classList.toggle('on', b === sw); });
+        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); tr.scrollTo({ left: k * tr.clientWidth, behavior: 'smooth' }); } }
+    }
+    var t = e.target.closest('.pch');
+    if (t) { var box = t.closest('.pchoose');
+      box.querySelectorAll('.pch').forEach(function (b) { var on = b === t; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      box.querySelectorAll('.pch-p').forEach(function (p) { p.hidden = p.dataset.k !== t.dataset.k; }); }
+  });
+  /* photos load once the post is near the screen, so a swipe never lands on a blank frame */
+  if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.querySelectorAll('.m-track img').forEach(function (im) { im.loading = 'eager'; }); io.unobserve(en.target); } }); }, { rootMargin: '500px' });
+    document.querySelectorAll('.ppost').forEach(function (p) { io.observe(p); }); }
+})();
+
+/* v1130: tap-a-count picker on service pages */
+(function () {
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.cp-b'); if (!b) return; var box = b.closest('.cpick');
+    box.querySelectorAll('.cp-b').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    var img = box.querySelector('.cp-fig img'), src = box.dataset.root + 'assets/img/count-' + b.dataset.n + '-lights.webp', pre = new Image();
+    pre.onload = function () { img.src = src; img.alt = 'Truck with ' + b.dataset.n + ' ITM rock lights: ' + b.dataset.d; }; pre.src = src;
+    box.querySelector('.cp-n').textContent = b.dataset.n + ' Lights'; box.querySelector('.cp-d').textContent = b.dataset.d;
+  });
+})();
