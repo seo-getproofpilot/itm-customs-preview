@@ -103,6 +103,48 @@
     new MutationObserver(all).observe(grid, { childList: true });
   }
 
+  /* ---------- v1134 (Chris): the site reads the screen it's on and sizes itself to it ----------
+     <html data-screen> is phone, tablet, laptop or wide (from width, height and touch), and updates on resize,
+     rotation and window moves. Product cards: each whole card (photos, name, options, price, Add To Cart) fits
+     between the bottom of the ITM Customs header and the bottom of the screen. The words keep their size; the photo
+     box takes the height that's left, never taller than square. */
+  const root = document.documentElement, hdr = document.getElementById('nav');
+  const screenKind = () => {
+    const W = innerWidth, H = innerHeight, touch = matchMedia('(pointer:coarse)').matches;
+    return W < 600 ? 'phone' : (W < 1100 || (touch && W < 1400)) ? 'tablet' : (W >= 1800 ? 'wide' : 'laptop');
+  };
+  let fitRaf = 0;
+  const fitCards = () => {
+    fitRaf = 0;
+    const kind = screenKind(); if (root.dataset.screen !== kind) root.dataset.screen = kind;
+    if (!grid) return;
+    const cards = [...grid.querySelectorAll('.card.m-pcard')].filter(c => c.offsetParent);
+    if (!cards.length) return;
+    const H = innerHeight, hb = hdr ? hdr.getBoundingClientRect().height : 0;  /* the header's own height: once you scroll to the shop it sits at the top */
+    const room = H - hb - (kind === 'phone' ? 12 : 20);              /* visual px between the header and the screen bottom */
+    let need = 0, scale = 1, w = 0;
+    cards.forEach(c => {
+      const g = c.querySelector('.m-gal'), r = c.getBoundingClientRect(), gr = g.getBoundingClientRect();
+      need = Math.max(need, r.height - gr.height);                    /* everything in the card except the photo */
+      if (g.offsetHeight) scale = gr.height / g.offsetHeight;          /* visual px per CSS px (big screens zoom the page) */
+      w = Math.max(w, g.offsetWidth);
+    });
+    const cap = kind === 'phone' ? w * 0.8 : w;                        /* phones 5:4, everything else up to square */
+    const px = Math.round(Math.max(150, Math.min(cap, (room - need) / scale)));
+    grid.style.setProperty('--gal-h', px + 'px');
+    /* second pass: text can re-wrap once the photo changes, so correct by what is actually on screen */
+    const tall = Math.max(...cards.map(c => c.getBoundingClientRect().height));
+    const px2 = Math.round(Math.max(150, Math.min(cap, px + (room - tall) / scale)));
+    if (Math.abs(px2 - px) > 2) grid.style.setProperty('--gal-h', px2 + 'px');
+  };
+  const queueFit = () => { if (!fitRaf) fitRaf = setTimeout(fitCards, 60); };
+  addEventListener('resize', queueFit); addEventListener('orientationchange', queueFit); addEventListener('pageshow', queueFit);
+  if (window.visualViewport) visualViewport.addEventListener('resize', queueFit);
+  if (grid) { new MutationObserver(queueFit).observe(grid, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    if ('ResizeObserver' in window) new ResizeObserver(queueFit).observe(grid); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueFit);
+  queueFit();
+
   /* ---------- v1124 (Chris): RGBW photo arrows + auto-advance ---------- */
   const sw = [...document.querySelectorAll('.feat-rgbw .swatches button')], media = $('.feat-rgbw .feat-media');
   if (sw.length && media) {

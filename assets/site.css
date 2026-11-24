@@ -2537,6 +2537,9 @@ html.qdlg-open{overflow:hidden}
 @media (min-width:900px){#grid.grid:empty{min-height:1400px}}
 @media (max-width:899px){.mbar-msg,.mbar-msg span{font-size:12px}}
 
+/* v1134: the photo box height comes from the screen-fit script in m.js (whole card fits under the header) */
+#grid[style*='--gal-h'] .card.m-pcard .m-track:not(#_){aspect-ratio:auto;height:var(--gal-h)}
+
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
 html,body{background:#07080B}
