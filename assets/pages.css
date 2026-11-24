@@ -1565,3 +1565,8 @@ body:has(.sp2) .stripe{background:var(--itm)!important}
 .swp-pic{position:relative}
 .swp-pic figcaption{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:4px;background:rgba(5,6,10,.78);font:400 11.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#C8CED6}
 .swp-pic figcaption:not(#_){font-size:12px}
+.pp-full:not(#_){display:inline-block;padding:8px 0}
+.sl-d:not(#_){height:24px;background:none;position:relative}
+.sl-d::after{content:"";position:absolute;left:0;right:0;top:10px;height:4px;background:rgba(255,255,255,.2)}
+.sl-d.on::after{background:var(--itm);box-shadow:0 0 8px var(--itm)}
+.sl-d.on:not(#_){background:none;box-shadow:none}
