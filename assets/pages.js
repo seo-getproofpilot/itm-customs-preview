@@ -169,8 +169,18 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     box.querySelectorAll('.kit-n .kn').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
     var p = box.querySelector('.kit-p'), u = box.querySelector('.kit-u'), a = box.querySelector('.kit-add');
     if (p) p.textContent = b.dataset.p;
-    if (u) u.textContent = b.dataset.n + ' lights';
+    if (u) u.textContent = b.dataset.u || b.dataset.n + ' lights';
     if (a) a.href = a.dataset.root + '?add=' + a.dataset.h + '&v=' + b.dataset.i + '#shop';
+  });
+})();
+
+/* v1140: kit stepper on product pages: picks the matching light count behind the scenes (1 kit = 4 lights) */
+(function () {
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest('.kq [data-kq]'); if (!q) return;
+    var box = q.closest('.kit, .pp-buy'), ks = box.querySelectorAll('.kit-n .kn'), n = box.querySelector('.kq .cq-n');
+    var k = Math.max(1, Math.min(ks.length, +n.textContent + +q.dataset.kq)); n.textContent = k; ks[k - 1].click();
+    box.querySelectorAll('.kq button').forEach(function (b) { var off = +b.dataset.kq < 0 ? k <= 1 : k >= ks.length; b.toggleAttribute('aria-disabled', off); b.classList.toggle('is-end', off); });
   });
 })();
 
@@ -192,13 +202,13 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
 (function () {
   function href(post) {
     var i = (post.querySelector('.pp-opt.on') || {}).dataset; i = i ? i.i : post.dataset.d;
-    var q = +(post.querySelector('.cq-n') || { textContent: 1 }).textContent;
+    var q = post.classList.contains('is-kit') ? 1 : +(post.querySelector('.cq-n') || { textContent: 1 }).textContent;  // v1140: on kits the box counts kits, and the option carries the count
     var on = post.querySelector('.pp-opt.on'), vt = on && on.dataset.vt;
     var a = post.querySelector('.pp-add'); if (a && a.tagName === 'A') a.href = post.dataset.root + '?add=' + post.dataset.h + (vt ? '&vt=' + encodeURIComponent(vt) : '&v=' + i) + '&q=' + q + '#shop';
   }
   /* v1136: − greys out at 1 and + at 20, so neither looks clickable when it can't change anything */
-  function cqEnds(post) { var n = post.querySelector('.cq-n'); if (!n) return; var v = +n.textContent;
-    post.querySelectorAll('.cq button').forEach(function (b) { var off = +b.dataset.q < 0 ? v <= 1 : v >= 20; b.toggleAttribute('aria-disabled', off); b.classList.toggle('is-end', off); }); }
+  function cqEnds(post) { var n = post.querySelector('.cq-n'); if (!n) return; var v = +n.textContent, max = post.classList.contains('is-kit') ? post.querySelectorAll('.pp-opt').length : 20;
+    post.querySelectorAll('.cq button').forEach(function (b) { var off = +b.dataset.q < 0 ? v <= 1 : v >= max; b.toggleAttribute('aria-disabled', off); b.classList.toggle('is-end', off); }); }
   document.querySelectorAll('.ppost').forEach(cqEnds);
   document.addEventListener('click', function (e) {
     var post = e.target.closest('.ppost');
@@ -207,7 +217,10 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
       if (o) { post.querySelectorAll('.pp-opt').forEach(function (x) { var on = x === o; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
         post.querySelector('.pp-p').textContent = o.dataset.p; post.querySelector('.pp-unit').textContent = o.dataset.unit; href(post); }
       var q = e.target.closest('.cq button');
-      if (q) { var n = post.querySelector('.cq-n'); n.textContent = Math.max(1, Math.min(20, +n.textContent + +q.dataset.q)); href(post); cqEnds(post); }
+      if (q && post.classList.contains('is-kit')) { var ops = post.querySelectorAll('.pp-opt'), kn = post.querySelector('.cq-n'), k = Math.max(1, Math.min(ops.length, +kn.textContent + +q.dataset.q)); kn.textContent = k;
+        ops.forEach(function (x, j) { x.classList.toggle('on', j === k - 1); x.setAttribute('aria-checked', j === k - 1 ? 'true' : 'false'); });
+        post.querySelector('.pp-p').textContent = ops[k - 1].dataset.p; post.querySelector('.pp-unit').textContent = ops[k - 1].dataset.unit; href(post); cqEnds(post); }
+      else if (q) { var n = post.querySelector('.cq-n'); n.textContent = Math.max(1, Math.min(20, +n.textContent + +q.dataset.q)); href(post); cqEnds(post); }
       var sw = e.target.closest('.pp-sw button');
       if (sw) { var tr = post.querySelector('.m-track'), ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.dataset.m.indexOf(sw.dataset.sw) > -1; });
         post.querySelectorAll('.pp-sw button').forEach(function (b) { b.classList.toggle('on', b === sw); });

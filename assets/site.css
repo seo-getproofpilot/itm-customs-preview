@@ -2542,6 +2542,7 @@ html.qdlg-open{overflow:hidden}
 /* v1139: kit count under each count option; kits have no quantity box */
 .var small,.pp-opt small{display:block;font-size:.72em;opacity:.7;letter-spacing:.04em;margin-top:1px}
 .cq[hidden]{display:none!important}
+.kit-n[hidden],.pp-opts[hidden],.vars[hidden]{display:none!important}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
