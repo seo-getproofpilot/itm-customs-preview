@@ -136,8 +136,10 @@ function details() {
 /* live parts estimate from the store's prices; labor is quoted by ITM */
 function partsEstimate() {
   const w = picked('work'), items = [];
-  const KIT219 = { 4: 240, 8: 400, 12: 520, 16: 700, 20: 800, 24: 920 }, KIT144 = { 4: 210, 8: 360, 12: 460, 16: 640, 20: 730, 24: 840 };
-  const SB = { 4: 200, 8: 380, 12: 500, 16: 600, 20: 700 }, RGBW = { 4: 205, 8: 385, 12: 505, 16: 605, 20: 705 };
+  /* v1132 (Chris): kits sell as sets of 4 at the set price */
+  const sets = (p, max) => { const o = {}; for (let n = 4; n <= max; n += 4) o[n] = p * n / 4; return o; };
+  const KIT219 = sets(240, 24), KIT144 = sets(210, 24);
+  const SB = sets(200, 20), RGBW = sets(205, 20);
   if (w.includes('Rock Lights')) {
     const r = D('d-rock'), n = parseInt(D('d-rock-n'), 10);
     if (/^219/.test(r)) items.push(KIT219[n] ? [`219-chip kit, ${n} lights`, KIT219[n]] : ['219-chip kit', 240, 'from']);

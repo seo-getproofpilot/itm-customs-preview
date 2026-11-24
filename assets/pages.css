@@ -1532,3 +1532,32 @@ body:has(.sp2) .stripe{background:var(--itm)!important}
 .sy-step .show-tag{margin:0;font:400 12px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#7FC4EA}
 .sy-step:nth-child(3n+2) .show-tag{color:#F4F7FF}.sy-step:nth-child(3n) .show-tag{color:#FFC15E}
 :is(.svc-i i,.svc-hint,.var,.look-btn):not(#_):not(#_){font-size:12px}
+/* ===== v1132 (Chris, round 3) ===== */
+/* count picker: the photo already shows "8 LIGHTS" and where they go, so it shows whole with nothing on top */
+.cp-fig img{max-height:none!important;object-fit:contain!important;height:auto}
+.cp-fig figcaption{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.cpick{grid-template-columns:minmax(0,520px) minmax(0,1fr)}
+@media (max-width:760px){ .cpick{grid-template-columns:1fr} }
+/* wide product posts: the full description fills the column, Add To Cart sits at the bottom */
+.ppost-w .pp-info{display:flex;flex-direction:column;min-height:100%}
+.ppost-w .pp-grid{align-items:stretch}
+.ppost-w .pp-desc-w.m-desc{display:block;margin:14px 0 0;padding:0;border:0;font-size:14.5px;line-height:1.55;color:#DCE0E6}
+.ppost-w .pp-desc-w ul{margin:0;padding-left:18px}.ppost-w .pp-desc-w li{margin:4px 0}.ppost-w .pp-desc-w li::marker{color:var(--itm)}
+.ppost-w .pp-buybox{margin-top:auto;padding-top:16px}
+.ppost-w .pp-media{display:flex;flex-direction:column}
+/* slideshow: photos change on their own, arrows and dots too */
+.slides{position:relative}
+.sl-stage{position:relative;aspect-ratio:16/9;clip-path:var(--pod);background:#05060A;filter:drop-shadow(0 0 1px rgba(214,221,230,.5))}
+.sl-i{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .8s var(--ease)}
+.sl-i.on{opacity:1}
+.sl-i img{width:100%;height:100%;object-fit:cover}
+.sl-i figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 20px 16px;background:linear-gradient(0deg,rgba(5,6,10,.92),transparent);font-size:15px;color:#fff}
+.slides .m-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(7,9,13,.72)}
+.slides .m-prev{left:12px}.slides .m-next{right:12px}
+.sl-dots{display:flex;justify-content:center;gap:8px;margin-top:12px}
+.sl-d{width:28px;height:4px;border:0;padding:0;background:rgba(255,255,255,.2);cursor:pointer}
+.sl-d.on{background:var(--itm);box-shadow:0 0 8px var(--itm)}
+.sp2 #switch-panels .sx-copy p,.sp2 #switch-panels .sx-copy .sx-lead{font-size:17px}
+.sp2 #switch-panels .lh{font-size:clamp(28px,calc(2.6vw / var(--z,1)),40px)}
+/* wheel lights "how it works": real photos, numbered */
+.sp2 #how .ptile figcaption{font-size:20px}

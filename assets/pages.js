@@ -193,7 +193,8 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
   function href(post) {
     var i = (post.querySelector('.pp-opt.on') || {}).dataset; i = i ? i.i : post.dataset.d;
     var q = +(post.querySelector('.cq-n') || { textContent: 1 }).textContent;
-    var a = post.querySelector('.pp-add'); if (a) a.href = post.dataset.root + '?add=' + post.dataset.h + '&v=' + i + '&q=' + q + '#shop';
+    var on = post.querySelector('.pp-opt.on'), vt = on && on.dataset.vt;
+    var a = post.querySelector('.pp-add'); if (a && a.tagName === 'A') a.href = post.dataset.root + '?add=' + post.dataset.h + (vt ? '&vt=' + encodeURIComponent(vt) : '&v=' + i) + '&q=' + q + '#shop';
   }
   document.addEventListener('click', function (e) {
     var post = e.target.closest('.ppost');
@@ -245,5 +246,19 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     var t = r.querySelector('.brail-t'), step = function () { return Math.max(260, t.clientWidth * 0.8); };
     r.querySelector('.m-prev').onclick = function () { t.scrollBy({ left: -step(), behavior: 'smooth' }); };
     r.querySelector('.m-next').onclick = function () { t.scrollBy({ left: step(), behavior: 'smooth' }); };
+  });
+})();
+
+/* v1132: slideshows change on their own (pause on hover or after a tap), arrows and dots too */
+(function () {
+  document.querySelectorAll('.slides').forEach(function (sl) {
+    var it = sl.querySelectorAll('.sl-i'), ds = sl.querySelectorAll('.sl-d'), k = 0, n = it.length, hold = 0, ms = +sl.dataset.ms || 3800;
+    function go(i) { k = (i + n) % n; it.forEach(function (x, j) { x.classList.toggle('on', j === k); var im = x.querySelector('img'); if (j === (k + 1) % n && im) im.loading = 'eager'; }); ds.forEach(function (d, j) { d.classList.toggle('on', j === k); }); }
+    sl.querySelector('.m-prev').onclick = function () { hold = Date.now(); go(k - 1); };
+    sl.querySelector('.m-next').onclick = function () { hold = Date.now(); go(k + 1); };
+    ds.forEach(function (d) { d.onclick = function () { hold = Date.now(); go(+d.dataset.k); }; });
+    sl.addEventListener('mouseenter', function () { hold = Date.now() + 864e5; }); sl.addEventListener('mouseleave', function () { hold = Date.now(); });
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setInterval(function () { if (Date.now() - hold > 9000 && document.visibilityState === 'visible') go(k + 1); }, ms);
   });
 })();
