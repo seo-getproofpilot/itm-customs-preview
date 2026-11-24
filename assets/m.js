@@ -86,14 +86,16 @@
         $('.m-next', g).onclick = () => go(at() + 1 >= n ? 0 : at() + 1);
         tr.addEventListener('scroll', () => requestAnimationFrame(() => { cnt.textContent = `${at() + 1} / ${n}`; }), { passive: true });
       }
-      const lines = x ? x.lines.filter(l => !/:$/.test(l) && !/^Please allow/i.test(l)).slice(0, 2) : [];
+      /* v1128 (Chris): the whole product description shows on the card, every width; "Label:" lines become small headings */
+      const lines = x ? x.lines.filter(l => !/^Please allow/i.test(l) && !/Pick your count/i.test(l)) : [];
+      const li = lines.map(l => /:$/.test(l) ? `</ul><p class="m-dh">${esc(l.slice(0, -1))}</p><ul>` : `<li>${esc(l)}</li>`).join('');
       const d = document.createElement('div'); d.className = 'm-desc';
-      d.innerHTML = `<p>${esc((x && x.lead) || p.sub)}</p>${lines.length ? `<ul>${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}`
+      d.innerHTML = `<p>${esc((x && x.lead) || p.sub)}</p>${lines.length ? `<ul>${li}</ul>`.replace(/<ul><\/ul>/g, '') : ''}`
         + (x ? `<button type="button" class="m-more">Full details</button>` : '');
       const sub = $('.c-sub', c); (sub || $('.c-name', c)).after(d);
       const more = $('.m-more', d); if (more) more.onclick = () => $('.c-name', c).click();
     };
-    const all = () => { if (PHONE.matches) [...grid.querySelectorAll('.card')].forEach(build); };
+    const all = () => [...grid.querySelectorAll('.card')].forEach(build);  /* v1128: every width, not just phones */
     PHONE.addEventListener('change', all); all();
     new MutationObserver(all).observe(grid, { childList: true });
   }

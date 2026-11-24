@@ -71,7 +71,7 @@
 
 /* v1089: service pages reveal sections, cards, photos and timeline steps as they scroll in */
 (function () {
-  var els = document.querySelectorAll('.sp .rv-in');
+  var els = document.querySelectorAll('.sp .rv-in, .sp .rv-sec');
   if (!els.length) return;
   if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) { els.forEach(function (e) { e.classList.add('in'); }); return; }
   document.documentElement.classList.add('js');
