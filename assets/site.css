@@ -2539,6 +2539,9 @@ html.qdlg-open{overflow:hidden}
 
 /* v1134: the photo box height comes from the screen-fit script in m.js (whole card fits under the header) */
 #grid[style*='--gal-h'] .card.m-pcard .m-track:not(#_){aspect-ratio:auto;height:var(--gal-h)}
+/* v1139: kit count under each count option; kits have no quantity box */
+.var small,.pp-opt small{display:block;font-size:.72em;opacity:.7;letter-spacing:.04em;margin-top:1px}
+.cq[hidden]{display:none!important}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
