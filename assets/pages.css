@@ -1561,3 +1561,7 @@ body:has(.sp2) .stripe{background:var(--itm)!important}
 .sp2 #switch-panels .lh{font-size:clamp(28px,calc(2.6vw / var(--z,1)),40px)}
 /* wheel lights "how it works": real photos, numbered */
 .sp2 #how .ptile figcaption{font-size:20px}
+/* v1133: illustration tag on a generated photo (honest, small, top corner) */
+.swp-pic{position:relative}
+.swp-pic figcaption{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:4px;background:rgba(5,6,10,.78);font:400 11.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#C8CED6}
+.swp-pic figcaption:not(#_){font-size:12px}
