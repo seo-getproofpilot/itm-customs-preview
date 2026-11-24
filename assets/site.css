@@ -2512,6 +2512,7 @@ html.qdlg-open{overflow:hidden}
 .fz2-base:not(#_){margin-top:48px;align-items:center}
 .fz2-mark{display:inline-flex;align-items:center;gap:14px}
 .fz2-mark img{display:block;width:96px;height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
+:is(.svc-i i,.svc-hint,.var,.look-btn):not(#_):not(#_){font-size:12px}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

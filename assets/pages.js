@@ -228,3 +228,22 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     box.querySelector('.cp-n').textContent = b.dataset.n + ' Lights'; box.querySelector('.cp-d').textContent = b.dataset.d;
   });
 })();
+
+/* v1130 batch 2: scroll sections (pinned photo follows the copy) and the builds rail arrows */
+(function () {
+  document.querySelectorAll('.scrolly').forEach(function (sc) {
+    var imgs = sc.querySelectorAll('.sy-i'), steps = sc.querySelectorAll('.sy-step'), n = sc.querySelector('.sy-n b');
+    imgs.forEach(function (im, i) { if (i < 2) im.loading = 'eager'; });
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting) return; var k = e.target.dataset.k;
+      steps.forEach(function (s) { s.classList.toggle('on', s === e.target); });
+      imgs.forEach(function (im) { var on = im.dataset.k === k; if (on || +im.dataset.k === +k + 1) im.loading = 'eager'; im.classList.toggle('on', on); });
+      if (n) n.textContent = +k + 1; }); }, { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach(function (s) { io.observe(s); });
+  });
+  document.querySelectorAll('.brail').forEach(function (r) {
+    var t = r.querySelector('.brail-t'), step = function () { return Math.max(260, t.clientWidth * 0.8); };
+    r.querySelector('.m-prev').onclick = function () { t.scrollBy({ left: -step(), behavior: 'smooth' }); };
+    r.querySelector('.m-next').onclick = function () { t.scrollBy({ left: step(), behavior: 'smooth' }); };
+  });
+})();
