@@ -1576,3 +1576,5 @@ body:has(.sp2) .stripe{background:var(--itm)!important}
 .var small,.pp-opt small{display:block;font-size:.72em;opacity:.7;letter-spacing:.04em;margin-top:1px}
 .cq[hidden]{display:none!important}
 .kit-n[hidden],.pp-opts[hidden],.vars[hidden]{display:none!important}
+
+html{overflow-x:clip}

@@ -2543,6 +2543,25 @@ html.qdlg-open{overflow:hidden}
 .var small,.pp-opt small{display:block;font-size:.72em;opacity:.7;letter-spacing:.04em;margin-top:1px}
 .cq[hidden]{display:none!important}
 .kit-n[hidden],.pp-opts[hidden],.vars[hidden]{display:none!important}
+/* v1142 (Chris: "the site does not fit different screen sizes"): the page never scrolls sideways on phones (Safari ignores
+   overflow on body alone), and the phone hero fits one screen with the browser bars showing: the copy starts over the
+   bottom of the truck, the three-line label is dropped on phones, and both buttons sit inside the first screen at 360-414 wide.
+   Still placed by screen width, so the copy doesn't slide when the browser bar collapses (v1129). */
+html{overflow-x:clip}
+@media (max-width:560px){
+  .hero:not(#_):not(#_){padding-top:calc(min(108vw,640px) * .7)}
+  .hero-h1 .kick:not(#_):not(#_){display:none}
+  .hero .lede:not(#_){font-size:15px;line-height:1.45;margin-top:10px}
+  .hero .cta-row:not(#_){margin-top:14px}
+}
+/* v1142: portrait tablets (iPad) fit the hero on one screen too: copy starts right under the truck, smaller ITM logo, no label row */
+@media (min-width:561px) and (max-width:1100px) and (orientation:portrait){
+  .hero:not(#_):not(#_){padding-top:calc(min(108vw,640px) * .78)}
+  .hero-h1 .kick:not(#_):not(#_){display:none}
+  .hero .hero-logo:not(#_){width:min(380px,50vw);height:auto;margin-bottom:6px}
+  .hero .lede:not(#_){margin-top:10px}
+  .hero .cta-row:not(#_){margin-top:16px}
+}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
