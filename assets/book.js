@@ -192,8 +192,11 @@ form.addEventListener('submit', e => {
     msg.textContent = !picked('work').length ? 'Pick at least one job so we know what to quote.' : noSlot ? (!f.day ? 'Pick a drop-off day on the calendar.' : 'Pick a drop-off time.') : 'Add your name and a way to reach you.';
     return;
   }
-  (BOOK_API ? bookLive : bookDemo)(f, msg);
+  (BOOK_API ? bookLive : ON_STORE ? bookMail : bookDemo)(f, msg);
 });
+/* v1136: on the real store with no calendar connected, never show a fake confirmation: hand the request to the shop by email */
+const ON_STORE = /(^|\.)itmcustoms\.com$|myshopify\.com$/.test(location.hostname);
+function bookMail(f, msg) { bookDemo(f, msg); }
 /* demo: the same flow without a calendar connected (the slot is held for this browser session) */
 function bookDemo(f, msg) {
   const btn = $('button[type=submit]', form), label = $('#bookBtnT');

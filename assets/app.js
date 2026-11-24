@@ -72,7 +72,7 @@ if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(loca
   Promise.all(P.map(p => fetch(`/products/${p.h}.js`).then(r => r.ok ? r.json() : null).catch(() => null).then(sp => {
     if (!sp) return;
     p.v.forEach(v => {
-      const m = sp.variants.find(x => norm(x.title) === norm(v.t));  // exact option name only: a store listing sold another way (e.g. 16 lights for $500) must never stand in for a set of 4
+      const m = sp.variants.find(x => x.id === +v.id) || sp.variants.find(x => norm(x.title) === norm(v.t));  // exact option name only: a store listing sold another way (e.g. 16 lights for $500) must never stand in for a set of 4
       if (m) { v.id = m.id; v.p = m.price / 100; v.ok = m.available; }
     });
   }))).then(() => { try { renderCart(); } catch (e) {} });
@@ -198,6 +198,15 @@ let cart = [];
 try { cart = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
 cart = cart.filter(l => byH[l.h] && byH[l.h].v[l.i]);  // drop lines for products that are no longer sold
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} };
+/* v1136: the drawer's cart lives in this browser and checkout runs on Shopify, so the drawer can't see an order go through.
+   Checkout sets a flag; on the next visit, an empty Shopify cart means the order was placed and the drawer clears too */
+if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(location.hostname)) {
+  let started = null; try { started = localStorage.getItem('itm_co'); } catch (e) {}
+  if (started) fetch('/cart.js').then(r => r.json()).then(c => {
+    if (c.item_count === 0) { cart = []; save(); try { localStorage.removeItem('itm_co'); } catch (e) {} try { renderCart(); } catch (e) {} }
+  }).catch(() => {});
+  document.addEventListener('click', e => { const co = e.target.closest('#checkout'); if (co && !co.hasAttribute('aria-disabled')) try { localStorage.setItem('itm_co', Date.now()); } catch (x) {} });
+}
 function add(h, i, qty = 1) {
   const p = byH[h], v = p.v[i];
   const line = cart.find(l => l.id === v.id);
@@ -221,12 +230,16 @@ function renderCart() {
   /* v1135: checkout uses each option's real Shopify variant id (resolved from the store at load); an option the store
      doesn't sell yet keeps a local key, and checkout stays off with a note instead of sending a broken cart link */
   const vid = l => byH[l.h].v[l.i].id, bad = cart.filter(l => !/^\d+$/.test(String(vid(l))));
-  const ok = cart.length && !bad.length;
+  /* v1136: an option the store has but marks sold out would be dropped at Shopify checkout, so catch it here first */
+  const out = cart.filter(l => /^\d+$/.test(String(vid(l))) && byH[l.h].v[l.i].ok === false);
+  const ok = cart.length && !bad.length && !out.length;
   co.href = '#';
   co.toggleAttribute('aria-disabled', !cart.length); co.style.pointerEvents = cart.length ? '' : 'none'; co.style.opacity = cart.length ? '' : '.45';
   let nb = $('#drNote'); if (!nb) { nb = document.createElement('p'); nb.id = 'drNote'; nb.className = 'dr-note'; co.parentNode.insertBefore(nb, co); }
-  nb.hidden = true;
-  nb.textContent = bad.length ? `${[...new Set(bad.map(l => byH[l.h].name + ' · ' + byH[l.h].v[l.i].t))].join(', ')} can't be checked out online yet. Remove it to check out, or book an install and we'll sort it out with you.` : '';
+  const nm = a => [...new Set(a.map(l => byH[l.h].name + ' · ' + byH[l.h].v[l.i].t))].join(', ');
+  nb.hidden = !bad.length && !out.length;
+  nb.textContent = [bad.length ? `${nm(bad)} can't be checked out online yet.` : '', out.length ? `${nm(out)} ${out.length > 1 ? 'are' : 'is'} sold out online right now.` : '',
+    (bad.length || out.length) ? `Remove ${bad.length + out.length > 1 ? 'them' : 'it'} to check out, or book an install and we'll sort it out with you.` : ''].filter(Boolean).join(' ');
 }
 $('#drBody').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return; const k = +b.dataset.k;
@@ -469,8 +482,12 @@ function syncAdded() {
   window.ITMtrack = track;
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href="book/"], a[href="#booker"], .btn-chrome'); if (a) track('book_cta_click', { location: a.closest('.mbar') ? 'mobile_bar' : a.closest('header') ? 'nav' : a.closest('footer') ? 'footer' : (a.closest('section')?.id || 'page'), label: a.textContent.trim() });
-    const add = e.target.closest('.add[data-h], [data-add], #countAdd'); if (add) track('add_to_cart', { item: add.dataset.h || add.dataset.add || '84-chip-pure-white-rocklights' });
-    if (e.target.closest('#checkout')) track('begin_checkout');
+    /* v1136: GA4 ecommerce shape (currency, value, items) so the cart funnel and its dollar value show up in reports */
+    const gaItem = (h, i, q) => { const p = byH[h], v = p && p.v[i]; return p && v ? { item_id: h, item_name: p.name, item_variant: v.t, price: v.p, quantity: q } : { item_id: h, quantity: q }; };
+    const add = e.target.closest('.add[data-h], [data-add], #countAdd'); if (add) { const h = add.dataset.h || add.dataset.add || '84-chip-pure-white-rocklights', it = gaItem(h, +(add.dataset.i || 0), Math.max(1, +(add.closest('[data-qty]')?.dataset.qty || 1)));
+      track('add_to_cart', { item: h, currency: 'USD', value: +((it.price || 0) * it.quantity).toFixed(2), items: [it] }); }
+    const co = e.target.closest('#checkout'); if (co && !co.hasAttribute('aria-disabled')) { const items = cart.map(l => gaItem(l.h, l.i, l.q));
+      track('begin_checkout', { currency: 'USD', value: +items.reduce((a, x) => a + (x.price || 0) * x.quantity, 0).toFixed(2), items }); }
     if (e.target.closest('#shopToggle')) track('menu_open');
     const cat = e.target.closest('.sm-item, .lane, .chip'); if (cat) track('category_select', { category: cat.dataset.cat || cat.dataset.filter });
     if (e.target.closest('#seg button')) track('light_count_select', { count: e.target.closest('#seg button').dataset.n });
