@@ -35,7 +35,6 @@
 ## More
 - [Book An Install](https://itmcustoms.com/book/)
 - [Customer Builds](https://itmcustoms.com/builds/)
-- [Gallery](https://itmcustoms.com/pages/gallery/)
 - [Reviews](https://itmcustoms.com/pages/reviews/)
 - [Contact](https://itmcustoms.com/pages/contact/)
 - [Warranty](https://itmcustoms.com/pages/warranty-information)
