@@ -174,7 +174,8 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     /* v1146: an option with its own photo moves the gallery to it */
     if (b.dataset.img) { var g = box.closest('.pp, .pp-grid, section'), tr = g && g.querySelector('.pp-gal .m-track');
       if (tr) { var ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.getAttribute('src').indexOf(b.dataset.img + '.webp') > -1; });
-        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); tr.scrollTo({ left: k * tr.clientWidth, behavior: 'smooth' }); } } }
+        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); var go = function () { tr.scrollLeft += ims[k].getBoundingClientRect().left - tr.getBoundingClientRect().left; }; go();  /* v1147: jump to the photo itself; slide widths settle as photos load, so re-aim twice */
+          [400, 1200].forEach(function (t) { setTimeout(go, t); }); } } }
   });
 })();
 
@@ -228,7 +229,8 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
       var sw = e.target.closest('.pp-sw button');
       if (sw) { var tr = post.querySelector('.m-track'), ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.dataset.m.indexOf(sw.dataset.sw) > -1; });
         post.querySelectorAll('.pp-sw button').forEach(function (b) { b.classList.toggle('on', b === sw); });
-        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); tr.scrollTo({ left: k * tr.clientWidth, behavior: 'smooth' }); } }
+        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); var go = function () { tr.scrollLeft += ims[k].getBoundingClientRect().left - tr.getBoundingClientRect().left; }; go();  /* v1147: the color photos now sit behind the studio shots; aim at the photo, re-aim as photos load */
+          [400, 1200].forEach(function (t) { setTimeout(go, t); }); } }
     }
     var t = e.target.closest('.pch');
     if (t) { var box = t.closest('.pchoose');
