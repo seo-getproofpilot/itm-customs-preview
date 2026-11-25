@@ -244,6 +244,22 @@ function add(h, i, qty = 1) {
   save(); renderCart(); bump();
   toast(`${qty > 1 ? qty + ' × ' : ''}${p.name}${p.v.length > 1 ? ' · ' + v.t : ''} Added`);
 }
+/* v1154 (Chris): last-minute add-ons in the cart, like Tiburon's: stickers, decals and keychains under the items.
+   Pick a style, tap Add, then +/- once it's in. */
+const AO = ['itm-sticker', '6-decal', 'itm-keychain'], aoSel = {};
+function addons() {
+  /* on the store, offer only options Shopify can check out and has in stock (sticker and keychain appear once Isaac creates them), so an add-on never blocks checkout */
+  const onStore = location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(location.hostname);
+  const can = v => v.ok !== false && (!onStore || /^\d+$/.test(String(v.id)));
+  const hs = AO.filter(h => byH[h] && byH[h].v.some(can)); if (!hs.length) return '';
+  return `<section class="ao" aria-label="Add to your order"><p class="ao-h">Add To Your Order</p><div class="ao-row">${hs.map(h => {
+    const p = byH[h], d = p.def ?? 0, i = aoSel[h] ?? (can(p.v[d]) ? d : p.v.findIndex(can)), v = p.v[i], line = cart.find(l => l.id === v.id);
+    return `<div class="ao-c" data-ao="${h}"><img src="${IMG(v.img || p.imgs[0])}" alt="${p.name}, ${v.t}" loading="lazy">
+      <b class="ao-n">${p.name}<span class="ao-p">${money(v.p)}</span></b>
+      <select class="ao-s" aria-label="${p.name} style">${p.v.map((x, j) => can(x) ? `<option value="${j}"${j === i ? ' selected' : ''}>${x.t}</option>` : '').join('')}</select>
+      ${line ? `<div class="qty ao-q"><button type="button" data-ao-d="-1" aria-label="One less">−</button><span>${line.q}</span><button type="button" data-ao-d="1" aria-label="One more">+</button></div>`
+             : `<button type="button" class="ao-add">Add</button>`}</div>`; }).join('')}</div></section>`;
+}
 function renderCart() {
   const n = cart.reduce((a, l) => a + l.q, 0);
   const cn = $('#cartN'); cn.textContent = n; cn.classList.toggle('has', n > 0);
@@ -254,6 +270,7 @@ function renderCart() {
       <div><div class="li-n">${p.name}</div><div class="li-v">${v.t}</div>
         <div class="qty"><button data-k="${k}" data-d="-1" aria-label="Less">−</button><span>${isKit(p) ? (l.i + 1) * 4 : l.q}</span><button data-k="${k}" data-d="1" aria-label="More">+</button></div></div>
       <div><div class="li-p">${money(+(v.p * l.q).toFixed(2))}</div><button class="li-rm" data-k="${k}">Remove</button></div></div>`; }).join('');
+  if (cart.length) body.insertAdjacentHTML('beforeend', addons());
   const tot = cart.reduce((a, l) => a + byH[l.h].v[l.i].p * l.q, 0);
   $('#drTotal').textContent = '$' + tot.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const co = $('#checkout');
@@ -271,8 +288,15 @@ function renderCart() {
   nb.textContent = [bad.length ? `${nm(bad)} can't be checked out online yet.` : '', out.length ? `${nm(out)} ${out.length > 1 ? 'are' : 'is'} sold out online right now.` : '',
     (bad.length || out.length) ? `Remove ${bad.length + out.length > 1 ? 'them' : 'it'} to check out, or call or text (480) 444-6550 to order ${bad.length + out.length > 1 ? 'them' : 'it'}.` : ''].filter(Boolean).join(' ');
 }
+$('#drBody').addEventListener('change', e => { const sel = e.target.closest('.ao-s'); if (!sel) return; aoSel[sel.closest('.ao-c').dataset.ao] = +sel.value; renderCart(); });
 $('#drBody').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return; const k = +b.dataset.k;
+  const b = e.target.closest('button'); if (!b) return;
+  const ac = b.closest('.ao-c');
+  if (ac) { const h = ac.dataset.ao, p = byH[h], i = +ac.querySelector('.ao-s').value, v = p.v[i], li = cart.findIndex(l => l.id === v.id);
+    if (b.classList.contains('ao-add')) { add(h, i); window.ITMtrack && ITMtrack('add_to_cart', { item: h, from: 'cart_addons' }); return; }
+    if (b.dataset.aoD && li > -1) { cart[li].q += +b.dataset.aoD; if (cart[li].q < 1) cart.splice(li, 1); save(); renderCart(); }
+    return; }
+  const k = +b.dataset.k;
   if (b.dataset.d && isKit(byH[cart[k].h])) { const l = cart[k], p = byH[l.h], ni = Math.min(p.v.length - 1, l.i + +b.dataset.d); if (ni < 0) cart.splice(k, 1); else Object.assign(l, { i: ni, id: p.v[ni].id, q: 1 }); }
   else if (b.dataset.d) { cart[k].q += +b.dataset.d; if (cart[k].q < 1) cart.splice(k, 1); }
   else if (b.classList.contains('li-rm')) cart.splice(k, 1);
