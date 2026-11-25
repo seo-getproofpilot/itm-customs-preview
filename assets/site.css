@@ -2608,6 +2608,10 @@ html{overflow-x:clip}
 .dn-more a{font-size:12.5px;color:#A1A8B4;text-decoration:none}
 .dn-more a:hover,.dn-more a:focus-visible{color:#fff}
 @media (prefers-reduced-motion:reduce){.dn-panel,.dn-card.on,.dn-fig img{transition:none;animation:none}}
+/* v1151: the bar ends Contact, Book An Install (always shown on desktop); the old header Book button steps aside there */
+.dn-book{margin-left:10px}
+@media (min-width:1180px){ .nav-in>.nav-book,.nav-act .nav-book,.pnav-in>.pnav-book{display:none!important} .nav-act,.pnav-in>.pcart{margin-left:auto!important} }
+@media (min-width:1180px){ .nav-in>.dnav,.pnav-in>.dnav{flex:1 1 auto} .dnav>.dn-book{margin-left:auto!important;margin-right:12px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
