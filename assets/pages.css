@@ -1587,3 +1587,6 @@ html{overflow-x:clip}
 .bft figcaption b{font:italic 800 clamp(17px,1.6vw,22px)/1.05 var(--f-disp);font-stretch:125%;text-transform:uppercase;color:#fff}
 .bft figcaption span{font-size:13px;color:#C8CED6}
 @media (max-width:760px){ .bfeat{grid-template-columns:1fr;grid-template-rows:none;height:auto} .bft-0{grid-row:auto} .bft{aspect-ratio:4/3} }
+
+/* v1153 (Isaac): heading layers wrapped on different lines on iPhone, leaving a ghost word beside the title. Same plain wrapping on all three layers */
+.lh,.lh::before,.lh::after{text-wrap:wrap}
