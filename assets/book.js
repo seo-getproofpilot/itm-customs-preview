@@ -13,16 +13,18 @@ function pick(name, label) {
 }
 const picked = n => $$(`.opts[data-name="${n}"] .opt.on`, form).map(x => x.textContent.trim());
 /* drop-off picker: a month calendar (tomorrow to 60 days out) + a window + an exact time.
-   HOURS is the shop's drop-off schedule: Mon–Fri, 8 AM to 8 PM for drop-off and pickup (Chris, 2026-11-23). When ITM connects a scheduler
+   HOURS is the shop's drop-off schedule: Mon–Fri 8 AM to 8 PM (Chris, 2026-11-23), plus Saturday 8 AM to 5 PM (Isaac, 2026-11-24: open Monday to Saturday). When ITM connects a scheduler
    (Square / Shopify booking), its open slots replace SLOT_OPEN below. */
 const HOURS = {
-  days: [1, 2, 3, 4, 5],                         // Mon to Fri; weekends closed
+  days: [1, 2, 3, 4, 5, 6],                      // Mon to Sat; Sunday closed
+  last: { 6: '4:30 PM' },                        // Saturday closes at 5
   Morning:   ['8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
   Midday:    ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'],
   Afternoon: ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM'],
   ahead: 60,
 };
 const SLOT_OPEN = d => HOURS.days.includes(d.getDay());
+const dayCut = (d, ts) => { const l = HOURS.last[d.getDay()]; if (!l) return ts; const k = ALL_SLOTS.indexOf(l); return ts.filter(t => ALL_SLOTS.indexOf(t) <= k); };
 /* live availability from the shop's Google Calendar (booking/Code.gs, set in <meta name="itm-booking-api">).
    Without an endpoint the demo runs on sample availability so the behaviour is visible. */
 const BOOK_API = (document.querySelector('meta[name="itm-booking-api"]')?.content || '').trim();
@@ -35,7 +37,7 @@ function sampleDay(d) {               // demo data only: a day off now and then,
   const n = d.getDate() + d.getMonth() * 31;
   if (n % 11 === 3) return { open: false, reason: 'off', times: [] };
   let mine = []; try { mine = JSON.parse(sessionStorage.getItem('itm_demo_booked') || '[]'); } catch (e) {}
-  const times = ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0 && !mine.includes(isoOf(d) + ' ' + t));
+  const times = dayCut(d, ALL_SLOTS.filter((t, i) => (n * 7 + i * 3) % 5 !== 0 && !mine.includes(isoOf(d) + ' ' + t)));
   return { open: times.length > 0, reason: times.length ? '' : 'full', times };
 }
 const calStatus = t => { const el = $('#calStatus'); if (el) el.textContent = t; };
@@ -51,7 +53,7 @@ async function loadMonth(y, m, done) {
   } catch (e) { AV_DONE.delete(key); AV_FAIL = true; calStatus('Live times didn’t load. Pick a day and time and we’ll confirm it.'); }
   done();
 }
-const dayInfo = d => AV[isoOf(d)] || (AV_FAIL ? { open: SLOT_OPEN(d), times: ALL_SLOTS } : null);
+const dayInfo = d => AV[isoOf(d)] || (AV_FAIL ? { open: SLOT_OPEN(d), times: dayCut(d, ALL_SLOTS) } : null);
 const dayIn = $('[name=day]', form), timeIn = $('[name=time]', form), dateIn = $('[name=date]', form);
 const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 const dkey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
@@ -96,10 +98,11 @@ $('#slotTimes').addEventListener('click', e => { const b = e.target.closest('.sl
 function refreshTimes() {
   const win = $('#slotTimes .slot.on'), hrs = $('#slotHours'); if (!win) return;
   const free = (dateIn.value && AV[dateIn.value] && AV[dateIn.value].times) || (dateIn.value ? null : ALL_SLOTS) || ALL_SLOTS;
-  hrs.innerHTML = HOURS[win.dataset.t].map(t => { const ok = free.includes(t);
+  const dd = dateIn.value ? new Date(dateIn.value + 'T12:00') : null, list = dd ? dayCut(dd, HOURS[win.dataset.t]) : HOURS[win.dataset.t];  // v1145: Saturday ends at 5
+  hrs.innerHTML = list.map(t => { const ok = free.includes(t);
     return `<button type="button" class="stime${timeIn.value === t ? ' on' : ''}${ok ? '' : ' taken'}" role="radio" aria-checked="${timeIn.value === t}" data-t="${t}"${ok ? '' : ' disabled aria-label="' + t + ', booked"'}>${t}</button>`; }).join('');
   hrs.hidden = false;
-  if (!HOURS[win.dataset.t].includes(timeIn.value) || !free.includes(timeIn.value)) { if (timeIn.value) $$('.stime.on', hrs).forEach(x => x.classList.remove('on')); timeIn.value = ''; }
+  if (!list.includes(timeIn.value) || !free.includes(timeIn.value)) { if (timeIn.value) $$('.stime.on', hrs).forEach(x => x.classList.remove('on')); timeIn.value = ''; }
 }
 $('#slotHours').addEventListener('click', e => { const b = e.target.closest('.stime'); if (!b || b.disabled) return;
   choose($('#slotHours'), b); timeIn.value = b.dataset.t; slotLabel(); });

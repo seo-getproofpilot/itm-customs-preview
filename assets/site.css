@@ -2562,6 +2562,9 @@ html{overflow-x:clip}
   .hero .lede:not(#_){margin-top:10px}
   .hero .cta-row:not(#_){margin-top:16px}
 }
+/* v1145 (Isaac): the phone rule that trims cards (.vars hidden) also hid the size and count buttons in Full Details; they always show there */
+.pv-info .vars:not(#_):not(#_){display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.vars-n .var{min-width:64px}
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
