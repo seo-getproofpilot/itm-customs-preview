@@ -171,6 +171,10 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     if (p) p.textContent = b.dataset.p;
     if (u) u.textContent = b.dataset.u || b.dataset.n + ' lights';
     if (a) a.href = a.dataset.root + '?add=' + a.dataset.h + '&v=' + b.dataset.i + '#shop';
+    /* v1146: an option with its own photo moves the gallery to it */
+    if (b.dataset.img) { var g = box.closest('.pp, .pp-grid, section'), tr = g && g.querySelector('.pp-gal .m-track');
+      if (tr) { var ims = [].slice.call(tr.querySelectorAll('img')), k = ims.findIndex(function (im) { return im.getAttribute('src').indexOf(b.dataset.img + '.webp') > -1; });
+        if (k > -1) { ims.forEach(function (im) { im.loading = 'eager'; }); tr.scrollTo({ left: k * tr.clientWidth, behavior: 'smooth' }); } } }
   });
 })();
 
