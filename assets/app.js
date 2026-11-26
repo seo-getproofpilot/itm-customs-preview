@@ -751,7 +751,7 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-front", "p-72-
   var END = Date.parse('2026-11-27T15:00:00Z'); if (Date.now() >= END) return;
   var SEL = '.card .c-fig, .card.m-pcard .m-gal, .ppost .pp-gal, .kit';
   function paint() {
-    if (Date.now() >= END) { document.querySelectorAll('.bf-rib').forEach(function (r) { r.remove(); }); return; }
+    if (Date.now() >= END) { document.querySelectorAll('.bf-rib').forEach(function (r) { r.remove(); }); document.querySelectorAll('.bf-has').forEach(function (h) { h.classList.remove('bf-has'); }); return; }
     document.querySelectorAll(SEL).forEach(function (el) {
       var host = el;
       if (el.classList.contains('kit')) {   /* kit cards: wrap the photo so the ribbon sits on it, not on the whole card */
