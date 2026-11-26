@@ -2676,6 +2676,29 @@ html{overflow-x:clip}
   .nav.scrolled .promo:not(#_){margin-top:-55px}
 }
 @media (max-width:360px){ .promo:not(#_) b{font-size:13.5px} .promo:not(#_) .pm-s{font-size:12.5px} }
+/* v1161: Black Friday corner ribbon on product card photos (drawn by app.js/pages.js until 2026-11-27 8 AM AZ) */
+.c-fig,.pp-gal,.card.m-pcard .m-gal{position:relative}
+.bf-kfig{position:relative;display:block;overflow:hidden;border-radius:inherit}
+.bf-kfig>img{display:block}
+.bf-rib{position:absolute;z-index:6;right:-46px;bottom:22px;width:180px;padding:7px 0 6px;transform:rotate(-45deg);pointer-events:none;
+  background:linear-gradient(180deg,#FFC15E,#FFB23F 55%,#F08A1C);color:#140B00;text-align:center;
+  font:italic 900 15px/1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.04em;
+  box-shadow:0 0 0 1px rgba(20,11,0,.35),0 4px 14px rgba(0,0,0,.55),0 0 18px rgba(255,178,63,.45);border-top:1px solid rgba(255,255,255,.55)}
+.kit .bf-rib{right:-50px;bottom:14px;width:170px;font-size:12px;padding:5px 0 4px}
+@media (max-width:560px){ .bf-rib{right:-48px;bottom:18px;width:170px;font-size:13.5px} }
+@media (prefers-reduced-motion:no-preference){ .bf-rib{animation:bfIn .5s var(--ease,ease) both} @keyframes bfIn{from{opacity:0;transform:rotate(-45deg) translateY(8px)}to{opacity:1;transform:rotate(-45deg)}} }
+/* v1161: the kit photo wrapper takes over the kit photo's sizing (the photo now sits inside it) */
+.kit>.bf-kfig{width:100%;aspect-ratio:4/3;border-radius:0}
+.kit>.bf-kfig>img:not(#_){width:100%!important;height:100%!important;aspect-ratio:auto;object-fit:cover;border-radius:0}
+@media (min-width:941px){
+  .kits:has(>.kit:only-child)>.kit>.bf-kfig,.kits:has(>.kit:nth-child(2):last-child)>.kit>.bf-kfig{height:100%;min-height:260px;aspect-ratio:auto}
+}
+@media (max-width:420px){ .kit>.bf-kfig{aspect-ratio:4/3} }
+/* v1161: while the ribbon is up, the photo counter moves to the lower-left so the ribbon doesn't cover it */
+.bf-has .m-count:not(#_),.bf-has .c-view:not(#_){right:auto;left:10px}
+.bf-rib:not(#_){right:-54px;bottom:16px}
+.kit .bf-rib:not(#_){right:-52px;bottom:12px}
+@media (max-width:560px){ .bf-rib:not(#_){right:-52px;bottom:14px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}

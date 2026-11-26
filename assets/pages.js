@@ -316,3 +316,30 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     setInterval(function () { if (Date.now() - hold > 9000 && document.visibilityState === 'visible') go(k + 1); }, ms);
   });
 })();
+
+/* v1161 (Chris, 2026-11-26): Black Friday "15% Off" ribbon across the lower-right corner of every product card photo.
+   Shows until 8:00 AM Arizona time on 2026-11-27 (15:00 UTC), then never draws again. Isaac's automatic BFITM discount does the math at checkout. */
+(function () {
+  var END = Date.parse('2026-11-27T15:00:00Z'); if (Date.now() >= END) return;
+  var SEL = '.card .c-fig, .card.m-pcard .m-gal, .ppost .pp-gal, .kit';
+  function paint() {
+    if (Date.now() >= END) { document.querySelectorAll('.bf-rib').forEach(function (r) { r.remove(); }); return; }
+    document.querySelectorAll(SEL).forEach(function (el) {
+      var host = el;
+      if (el.classList.contains('kit')) {   /* kit cards: wrap the photo so the ribbon sits on it, not on the whole card */
+        host = el.querySelector(':scope > .bf-kfig'); var im = el.querySelector(':scope > img');
+        if (!host && im) { host = document.createElement('span'); host.className = 'bf-kfig'; im.parentNode.insertBefore(host, im); host.appendChild(im); }
+        if (!host) return;
+      }
+      if (host.querySelector(':scope > .bf-rib')) return;
+      if (host.parentElement && host.parentElement.closest(SEL) && !host.parentElement.closest('.kit')) return;   /* one ribbon per card: skip a frame nested in another */
+      host.querySelectorAll('.bf-rib').forEach(function (x) { x.remove(); });   /* and drop any from a frame nested inside this one */
+      host.classList.add('bf-has');
+      var r = document.createElement('span'); r.className = 'bf-rib'; r.setAttribute('aria-label', '15% off for Black Friday'); r.textContent = '15% Off';
+      host.appendChild(r);
+    });
+  }
+  paint();
+  var t = 0; new MutationObserver(function () { clearTimeout(t); t = setTimeout(paint, 60); }).observe(document.body, { childList: true, subtree: true });
+  setTimeout(paint, END - Date.now() + 1000);
+})();
