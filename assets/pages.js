@@ -245,15 +245,38 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
     document.querySelectorAll('.ppost').forEach(function (p) { io.observe(p); }); }
 })();
 
-/* v1130: tap-a-count picker on service pages */
+/* v1160: service-page count picker = the homepage's Build Your Count section (same markup and ids; app.js runs it on the homepage) */
 (function () {
-  document.addEventListener('click', function (e) {
-    var b = e.target.closest('.cp-b'); if (!b) return; var box = b.closest('.cpick');
-    box.querySelectorAll('.cp-b').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-    var img = box.querySelector('.cp-fig img'), src = box.dataset.root + 'assets/img/count-' + b.dataset.n + '-lights.webp', pre = new Image();
-    pre.onload = function () { img.src = src; img.alt = 'Truck with ' + b.dataset.n + ' ITM rock lights: ' + b.dataset.d; }; pre.src = src;
-    box.querySelector('.cp-n').textContent = b.dataset.n + ' Lights'; box.querySelector('.cp-d').textContent = b.dataset.d;
+  var box = document.querySelector('.count-svc'); if (!box) return;
+  var seg = document.getElementById('seg'), frame = box.querySelector('.count-frame'), img = document.getElementById('countImg'), cur = 8;
+  var add = document.getElementById('countAdd'), bk = document.getElementById('countBook');
+  function packs(n) { return Math.ceil(n / 4); }
+  function set(n) {
+    cur = n; var p = packs(n);
+    seg.querySelectorAll('button').forEach(function (b) { var on = +b.dataset.n === n; b.classList.toggle('on', on); b.setAttribute('aria-checked', on ? 'true' : 'false'); });
+    document.getElementById('mLights').textContent = n; document.getElementById('mSets').textContent = p;
+    document.getElementById('mPrice').textContent = '$' + (p * 55).toLocaleString('en-US');
+    document.getElementById('vfN').textContent = n;
+    add.querySelector('span').textContent = 'Add ' + p + ' Packs To Cart';
+    add.href = add.href.replace(/([?&]q=)\d+/, '$1' + p);
+    if (bk) bk.href = bk.href.replace(/([?&]count=)\d+/, '$1' + n);
+    var src = box.dataset.root + 'assets/img/count-' + n + '-lights.webp', pre = new Image();
+    pre.onload = function () { if (cur !== n) return; img.src = src; img.alt = 'Truck lit by ' + n + ' ITM rock lights, with where each light goes'; };
+    pre.src = src;
+  }
+  seg.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) set(+b.dataset.n); });
+  seg.addEventListener('keydown', function (e) {
+    var ks = [].map.call(seg.querySelectorAll('button'), function (b) { return +b.dataset.n; }), i = ks.indexOf(cur);
+    var d = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 0;
+    if (d) { e.preventDefault(); var n = ks[(i + d + ks.length) % ks.length]; set(n); seg.querySelector('[data-n="' + n + '"]').focus(); }
   });
+  /* frame takes the photo's true shape, like the homepage */
+  function fit() { if (img.naturalWidth) frame.style.aspectRatio = img.naturalWidth + ' / ' + img.naturalHeight; }
+  img.complete ? fit() : img.addEventListener('load', fit, { once: true });
+  /* phones: the count buttons ride on the photo, like the homepage (m.js) */
+  var PH = matchMedia('(max-width:560px)'), home = [seg.parentNode, seg.nextSibling];
+  function place() { if (PH.matches) { frame.appendChild(seg); seg.classList.add('seg-on-photo'); } else { seg.classList.remove('seg-on-photo'); home[0].insertBefore(seg, home[1]); } }
+  PH.addEventListener ? PH.addEventListener('change', place) : PH.addListener(place); place();
 })();
 
 /* v1130 batch 2: scroll sections (pinned photo follows the copy) and the builds rail arrows */

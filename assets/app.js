@@ -80,7 +80,7 @@ P.forEach(p => p.v.forEach((v, i) => { if (!v.id) v.id = `${p.h}#${i}`; }));
 if (location.hostname === new URL(STORE).hostname || /myshopify\.com$/.test(location.hostname)) {
   const norm = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '');
   /* v1148: skip products that aren't in Shopify yet (no 404s in the console); remove each handle once Isaac creates the product */
-  const NOSHOP = new Set(['144-chip-pure-white-rock-light-kit', '219-chip-pure-white-rock-light-kit', 'itm-sticker', 'itm-keychain']);
+  const NOSHOP = new Set([]);  /* v1159 (launch 2026-11-26): every site product now exists in Shopify */
   Promise.all(P.filter(p => !NOSHOP.has(p.h)).map(p => fetch(`/products/${p.h}.js`).then(r => r.ok ? r.json() : null).catch(() => null).then(sp => {
     if (!sp) return;
     p.v.forEach(v => {
@@ -336,7 +336,7 @@ function setCount(n) {
   $$('#seg button').forEach(b => { const on = +b.dataset.n === n; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
   $('#mLights').textContent = n; $('#mSets').textContent = packs; $('#mPrice').textContent = money(packs * 55);
   const vf = $('#vfN'); if (vf) vf.textContent = n;
-  $('#countAdd span').textContent = `Add ${packs} packs to cart`;
+  $('#countAdd span').textContent = `Add ${packs} Packs To Cart`;
   const cb = $('#countBook'); if (cb) cb.setAttribute('href', `book/?book=1&count=${n}`);
   const img = $('#countImg'), src = IMG(`count-${n}-lights`);
   if (img.getAttribute('src') !== src) {
