@@ -2655,27 +2655,27 @@ html{overflow-x:clip}
 @media (min-width:561px){ .specs li:not(#_):not(#_){font-size:12.5px} .rating:not(#_):not(#_){font-size:13px} }
 @media (max-width:560px){ .booker .slot b:not(#_):not(#_),.booker .slot span:not(#_):not(#_){font-size:12px} }
 /* v1160 (Chris): Black Friday bar, large and visible on web and phone */
-.promo:not(#_){min-height:44px;background:linear-gradient(180deg,#FFC15E,#FFB23F 55%,#F59A26);border-bottom:1px solid #D9700A;color:#140B00;font:700 15px/1.2 var(--f-body);letter-spacing:.01em}
-.promo:not(#_) a{min-height:44px;color:#140B00;gap:10px}
-.promo:not(#_) a:hover{color:#000;text-decoration:underline;text-underline-offset:3px}
-.promo:not(#_) b{color:#140B00;font:italic 900 16px/1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.03em}
-.promo:not(#_) i{color:#140B00;opacity:.6}
-.nav.scrolled .promo:not(#_){margin-top:-45px}
+.promo.bf:not(#_){min-height:44px;background:linear-gradient(180deg,#FFC15E,#FFB23F 55%,#F59A26);border-bottom:1px solid #D9700A;color:#140B00;font:700 15px/1.2 var(--f-body);letter-spacing:.01em}
+.promo.bf:not(#_) a{min-height:44px;color:#140B00;gap:10px}
+.promo.bf:not(#_) a:hover{color:#000;text-decoration:underline;text-underline-offset:3px}
+.promo.bf:not(#_) b{color:#140B00;font:italic 900 16px/1 var(--f-disp);font-stretch:125%;text-transform:uppercase;letter-spacing:.03em}
+.promo.bf:not(#_) i{color:#140B00;opacity:.6}
+.nav.scrolled .promo.bf:not(#_){margin-top:-45px}
 @media (max-width:560px){
-  .promo:not(#_){min-height:40px;font-size:13.5px;padding:0 10px}
-  .promo:not(#_) a{min-height:40px;gap:7px}
-  .promo:not(#_) b{font-size:13.5px}
-  .nav.scrolled .promo:not(#_){margin-top:-41px}
+  .promo.bf:not(#_){min-height:40px;font-size:13.5px;padding:0 10px}
+  .promo.bf:not(#_) a{min-height:40px;gap:7px}
+  .promo.bf:not(#_) b{font-size:13.5px}
+  .nav.scrolled .promo.bf:not(#_){margin-top:-41px}
 }
-@media (max-width:360px){ .promo:not(#_) b{font-size:12.5px} .promo:not(#_){font-size:12.5px} }
+@media (max-width:360px){ .promo.bf:not(#_) b{font-size:12.5px} .promo.bf:not(#_){font-size:12.5px} }
 @media (max-width:560px){
-  .promo:not(#_) a{flex-direction:column;gap:3px;padding:7px 0;min-height:54px;justify-content:center}
-  .promo:not(#_) i{display:none}
-  .promo:not(#_) b{font-size:15px}
-  .promo:not(#_) .pm-s{font-size:13px;font-weight:700}
-  .nav.scrolled .promo:not(#_){margin-top:-55px}
+  .promo.bf:not(#_) a{flex-direction:column;gap:3px;padding:7px 0;min-height:54px;justify-content:center}
+  .promo.bf:not(#_) i{display:none}
+  .promo.bf:not(#_) b{font-size:15px}
+  .promo.bf:not(#_) .pm-s{font-size:13px;font-weight:700}
+  .nav.scrolled .promo.bf:not(#_){margin-top:-55px}
 }
-@media (max-width:360px){ .promo:not(#_) b{font-size:13.5px} .promo:not(#_) .pm-s{font-size:12.5px} }
+@media (max-width:360px){ .promo.bf:not(#_) b{font-size:13.5px} .promo.bf:not(#_) .pm-s{font-size:12.5px} }
 /* v1161: Black Friday corner ribbon on product card photos (drawn by app.js/pages.js until 2026-11-27 8 AM AZ) */
 .c-fig,.pp-gal,.card.m-pcard .m-gal{position:relative}
 .bf-kfig{position:relative;display:block;overflow:hidden;border-radius:inherit}

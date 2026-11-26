@@ -320,10 +320,19 @@ box.addEventListener('keydown',function(e){if(e.key==='ArrowRight')step(1);if(e.
 /* v1161 (Chris, 2026-11-26): Black Friday "15% Off" ribbon across the lower-right corner of every product card photo.
    Shows until 8:00 AM Arizona time on 2026-11-27 (15:00 UTC), then never draws again. Isaac's automatic BFITM discount does the math at checkout. */
 (function () {
-  var END = Date.parse('2026-11-27T15:00:00Z'); if (Date.now() >= END) return;
+  var END = Date.parse('2026-11-27T15:00:00Z');
+  /* v1162: the top bar is on the same timer; after it ends the bar goes back to Isaac's military discount + lifetime warranty bar */
+  function oldBar() {
+    var p = document.querySelector('.promo.bf'); if (!p) return; var a = p.querySelector('a');
+    var root = a ? a.getAttribute('href').replace(/#shop$/, '') : '';
+    var mil = /(^|\.)itmcustoms\.com$|myshopify\.com$/.test(location.hostname) ? '/pages/military-first-responder-discount' : root + 'pages/military-first-responder-discount/';
+    p.classList.remove('bf');
+    p.innerHTML = '<a href="' + mil + '"><b>10% Off</b> <span class="pm-l">For Military, Veterans, Police, Fire And EMS</span><span class="pm-s">Military, Police, Fire, EMS</span></a><i aria-hidden="true">&middot;</i><span><b>Lifetime Warranty</b><span class="pm-l"> On Every Install</span></span>';
+  }
+  if (Date.now() >= END) { oldBar(); return; }
   var SEL = '.card .c-fig, .card.m-pcard .m-gal, .ppost .pp-gal, .kit';
   function paint() {
-    if (Date.now() >= END) { document.querySelectorAll('.bf-rib').forEach(function (r) { r.remove(); }); document.querySelectorAll('.bf-has').forEach(function (h) { h.classList.remove('bf-has'); }); return; }
+    if (Date.now() >= END) { document.querySelectorAll('.bf-rib').forEach(function (r) { r.remove(); }); document.querySelectorAll('.bf-has').forEach(function (h) { h.classList.remove('bf-has'); }); oldBar(); return; }
     document.querySelectorAll(SEL).forEach(function (el) {
       var host = el;
       if (el.classList.contains('kit')) {   /* kit cards: wrap the photo so the ribbon sits on it, not on the whole card */
