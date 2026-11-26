@@ -2648,6 +2648,12 @@ html{overflow-x:clip}
 .card{position:relative;isolation:isolate;filter:none}
 .card::before{content:"";position:absolute;inset:10px 8px 2px;z-index:-1;pointer-events:none;box-shadow:0 14px 22px rgba(0,0,0,.55);border-radius:4px}
 .card.m-pcard:hover:not(#_){filter:none}
+/* v1160 live QA: nothing readable under 12px (spec chips, ratings, cart option line, booking time slots on phones) */
+:is(.specs li,.rating,.li-v):not(#_):not(#_){font-size:max(12px,1em)}
+.specs li:not(#_):not(#_){font-size:12px}
+.rating:not(#_):not(#_),.li-v:not(#_):not(#_){font-size:12px}
+@media (min-width:561px){ .specs li:not(#_):not(#_){font-size:12.5px} .rating:not(#_):not(#_){font-size:13px} }
+@media (max-width:560px){ .booker .slot b:not(#_):not(#_),.booker .slot span:not(#_):not(#_){font-size:12px} }
 
 /* ---------- preview build ---------- */
 :root{color-scheme:dark}
