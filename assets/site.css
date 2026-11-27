@@ -2676,7 +2676,7 @@ html{overflow-x:clip}
   .nav.scrolled .promo.bf:not(#_){margin-top:-55px}
 }
 @media (max-width:360px){ .promo.bf:not(#_) b{font-size:13.5px} .promo.bf:not(#_) .pm-s{font-size:12.5px} }
-/* v1161: Black Friday corner ribbon on product card photos (drawn by app.js/pages.js until 2026-11-27 8 AM AZ) */
+/* v1161: Black Friday corner ribbon on product card photos (drawn by app.js/pages.js until 2026-11-30 noon AZ) */
 .c-fig,.pp-gal,.card.m-pcard .m-gal{position:relative}
 .bf-kfig{position:relative;display:block;overflow:hidden;border-radius:inherit}
 .bf-kfig>img{display:block}
