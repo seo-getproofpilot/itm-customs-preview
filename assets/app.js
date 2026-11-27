@@ -746,9 +746,9 @@ const PX = {"84-chip-pure-white-rocklights": {"imgs": ["p-84-chip-front", "p-72-
 })();
 
 /* v1161 (Chris, 2026-11-26): Black Friday "15% Off" ribbon across the lower-right corner of every product card photo.
-   Shows until 12:00 PM (noon) Arizona time on Monday 2026-11-30 (19:00 UTC; Chris, 2026-11-27), then never draws again. Isaac's automatic BFITM discount does the math at checkout. */
+   Shows until 11:30 AM Arizona time on Monday 2026-11-30 (18:30 UTC), when Isaac's BFITM discount ends (Chris, 2026-11-27), then never draws again. Isaac's automatic BFITM discount does the math at checkout. */
 (function () {
-  var END = Date.parse('2026-11-30T19:00:00Z');
+  var END = Date.parse('2026-11-30T18:30:00Z');
   /* v1162: the top bar is on the same timer; after it ends the bar goes back to Isaac's military discount + lifetime warranty bar */
   function oldBar() {
     var p = document.querySelector('.promo.bf'); if (!p) return; var a = p.querySelector('a');
